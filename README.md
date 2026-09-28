@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, agent profiles, and an agent-network visualization.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, and an agent-network visualization.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -21,8 +21,9 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
 - **Security Command Center:** Overview of example metrics, sample events, an illustrative execution pipeline, and locally simulated demo actions.
 - **Agent Registry:** Sample agent list with status filters, search, registration, a profile panel, and local preview status/permission changes.
 - **Agent Detail:** Shared sample identity profile, permission scope editor, sample activity feed, and locally confirmed status actions.
+- **Permission Management:** Filter agents, inspect assigned scopes, add predefined sample grants, revoke a grant with confirmation, and export a local policy snapshot. Review-required and denied examples are not grantable from this screen.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry and audit views can download JSON files containing sample data.
+- **Sample exports:** Registry, permission management, and audit views can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -59,12 +60,13 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **Agent Registry**, **Agent Detail**, or **Agent Network**. The registry and network share sample agent records with agent profiles.
+2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
-4. In **Agent Detail**, edit sample permission scopes, inspect example events, or change the sample status. Confirmations explicitly state that no live agent is affected.
-5. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-6. Use the export buttons to download JSON snapshots of the visible sample data.
-7. Use the workspace profile button to return to the access screen.
+4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
+5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
+6. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+7. Use the export buttons to download JSON snapshots of the visible sample data.
+8. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -96,6 +98,9 @@ NexusGuard/
 │   │   │   ├── AgentDetail/
 │   │   │   ├── AgentNetwork/
 │   │   │   ├── Agents/
+│   │   │   ├── Permissions/
+│   │   │   │   ├── PermissionManagement.tsx
+│   │   │   │   └── permission-management.css
 │   │   │   └── ...   # Planned feature page folders
 │   │   ├── App.tsx
 │   │   ├── Dashboard.tsx
