@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, and a real-time threat detection center.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, and an adversarial AI testing simulator (RedAgent).
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -46,8 +46,17 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
   - *Real-Time SOC Event Stream Ticker:* Footer live stream with interactive Pause/Resume controls.
   - *eBPF Rule Configuration Modal:* Live operator toggles for kernel socket traps, unicode sanitizers, IMDS gateways, and loop breakers.
   - *Fullscreen Forensic View Modal:* Expanded inspection view for high-criticality incidents.
+- **RedAgent Simulator — Autonomous Adversarial Testing (Page 10):** Isolated strike lab to simulate zero-day jailbreaks, semantic drift, indirect prompt injection, and rogue agent behavior patterns against production weights without operational downtime.
+  - *Tactical Simulation Header:* Live status pill, engine build indicator (`v2.4.9-SECURE`), enclave designation, and dynamic telemetry KPI counters (`Simulated Breaches: 1,842 / 1,842 MITIGATED`, `Active Enclaves: 14 AGENTS LIVE`).
+  - *Adversarial Attack Vector Matrix Rail:* 8 interactive scenarios (`01. INJECTION Prompt Override`, `02. HIJACK Goal Hijacking`, `03. ESCALATION Privilege Esc`, `04. POISONING Memory Poison`, `05. SPOOF Agent Impersonation`, `06. TOOL ABUSE Tool Chain Abuse`, `07. EXFIL Data Exfiltration`, `08. LATERAL Agent Worming`) mapped to OWASP LLM and MITRE ATLAS v4.2.
+  - *Strike Configuration Panel:* Dynamic target micro-agent selection, 5-level adversarial rigor slider (Basic Heuristic to Zero-Day MCTS), vector specification with CVSS scoring, blast radius alert, and live SVG virtual sandbox clone schematic.
+  - *Simulation Execution Engine:* Animated interactive strike execution with multi-stage progress feedback (`RE-SIMULATING ATTACK ON SANDBOX...` $\rightarrow$ `SIMULATION COMPLETE • CONTAINED`).
+  - *Live Attack Pipeline & Automated Interception Log:* 5-stage vertical high-density execution telemetry (Attack Dispatch, Target Agent Ingestion, NexusGuard Semantic Detection, Policy Trigger, Risk Engine & Final Verdict).
+  - *Simulation Outcome & Bento Telemetry Matrix:* Interception latency (214 ms), protected records, agent trust score degradation (`87 → 42`), containment protocol, circular policy effectiveness gauge (`100%`), and quick action buttons (**View Forensic Trace**, **Download Attack Replay**, **Rollback Agent Memory**).
+  - *Posture Delta Cards:* Threat matrix coverage (98.4%), Mean Time to Contain (189 ms), and Quarantined Agent re-evaluation control with sandbox purge.
+  - *Forensic Trace Modal:* Decoded weaponized payloads and NexusGuard runtime intercept logs.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, and audit views can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, and audit views can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -84,7 +93,7 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, or **Agent Network**. These pages share sample agent records during the current browser session.
+2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, **RedAgent Simulator**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
 4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
 5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
@@ -114,9 +123,17 @@ All sample records and metrics are presented for interface demonstration; they a
    - **Export Intelligence:** Click **Export STIX / TAXII** to download a standards-compliant STIX 2.1 Threat Intelligence bundle.
    - **Configure Rules:** Open the rule configuration modal to toggle eBPF kernel traps, unicode steganography sanitizers, and circuit breakers.
    - **Fullscreen Deep Dive:** Click the expand icon on the flyout to view the comprehensive incident forensic modal.
-9. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-10. Use the export buttons to download JSON snapshots of the visible sample data.
-11. Use the workspace profile button to return to the access screen.
+9. In **RedAgent Simulator — Autonomous Adversarial Testing (Page 10)**:
+   - **Select Attack Scenario:** Choose any vector from the 8-scenario matrix rail (Prompt Override, Goal Hijacking, Privilege Escalation, Memory Poisoning, Agent Impersonation, Tool Chain Abuse, Data Exfiltration, Agent Worming).
+   - **Configure Parameters:** Pick the target entity from the active agent fleet and adjust the adversarial rigor slider from Level 1 (Basic Heuristic) to Level 5 (Zero-Day MCTS).
+   - **Review Blast Radius & Sandbox Clone:** Inspect CVSS scores, threat descriptions, and the visual virtual sandbox node schematic.
+   - **Launch Simulation:** Click **LAUNCH ADVERSARIAL SIMULATION** to trigger the animated live execution loop, watching the 5-step pipeline execute and intercept in real-time.
+   - **Examine Outcome & Bento Matrix:** Review the containment status (`100% Defense Score`), latency, protected data records, and trust score downgrade.
+   - **Forensic Trace & Replay Export:** Click **View Forensic Trace** to open the raw injection payload inspector, or **Download Attack Replay** to export complete simulation proof as JSON.
+   - **Remediate & Rollback:** Click **Rollback Agent Memory** to purge the ephemeral sandbox and restore benign model weights.
+10. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+11. Use the export buttons to download JSON snapshots of the visible sample data.
+12. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -154,6 +171,9 @@ NexusGuard/
 │   │   │   ├── Permissions/
 │   │   │   │   ├── PermissionManagement.tsx
 │   │   │   │   └── permission-management.css
+│   │   │   ├── RedAgent/
+│   │   │   │   ├── RedAgent.tsx
+│   │   │   │   └── red-agent.css
 │   │   │   ├── RiskCenter/
 │   │   │   │   ├── RiskCenter.tsx
 │   │   │   │   └── risk-center.css
