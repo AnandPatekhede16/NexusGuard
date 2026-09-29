@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, a human-in-the-loop approval center (HITL Enclave), a comprehensive agent audit trail and cryptographic ledger, and a zero-trust tool and system integrations control plane.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, a human-in-the-loop approval center (HITL Enclave), a comprehensive agent audit trail and cryptographic ledger, a zero-trust tool and system integrations control plane, and a core zero-trust system architecture and execution topology.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -157,8 +157,28 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
     - **Revoke All Agent Leases:** Emergency safeguard modal severing RPC endpoints, invalidating mTLS leases, and isolating connected assets.
     - **Re-validate Enclaves:** Cluster-wide hardware attestation re-check.
     - **Export Access Matrix:** One-click JSON export of the entire perimeter integration state.
+- **Core System Architecture & Topology (System Architecture — COMMAND):** Visual topological layout and latency SLA telemetry of the NexusGuard deterministic control plane sitting between autonomous AI agents and enterprise resource boundaries.
+  - *Operational SLA & Telemetry Deck:* 6 dynamic status KPI cards tracking Core Latency SLA (2.53ms / 5.0ms with simulated fastpath jitter), Ingress Rate (42,810 req/s), Attestation State (100% TPM 2.0 / Nitro Secure Enclave), Sandbox Intercept (0.00% Bypass / eBPF Ring Buffer Active), Merkle Anchor Block (`#4,891,012` SHA-256 root verified), and Kill Switch Status (Armed, 0 Tripped).
+  - *Main 4-Stage Zero-Trust Execution Flow:*
+    - **L1 Ingress & Orchestration (3 Cols):** Invocation sources (User Prompts, Cron, Webhooks), frameworks (LangChain, CrewAI, AutoGPT, Custom), registered agent directory (`FIN-AGENT-01`, `COD-AGENT-01`, `RES-AGENT-01`, `HR-AGENT-01`, `DB-AGENT-01`), and ephemeral Ed25519 TPM handshake.
+    - **L2 NexusGuard Core Control Plane (6 Cols):** Sub-1.5ms aggregate overhead with 8 pipelined micro-engines (`01 Attestation`, `02 Semantic Firewall`, `03 Dynamic Invariants`, `04 Risk Engine`, `05 OWASP Threat Detector`, `06 Adaptive Trust Matrix`, `07 Tool Gateway`, `08 Cryptographic Ledger`).
+    - **L3 HITL Escalation Ring:** 2-man quorum interlock for sensitivity tier ≥ 4 with 24/7 SOC gating.
+    - **L4 Egress & Target Assets (3 Cols):** DLP-masked production databases, mTLS cloud APIs, isolated Chromium browsers, signed Git pipelines, encrypted IPC agent bus, and air-gapped quarantine sinkhole.
+  - *Interactive Layer Inspection Panel & Latency Breakdown (8 / 4 Split):*
+    - 5-tab deep dive (`Overview`, `Control Plane Internals`, `Cryptographic Pipeline`, `Enclave Attestation`, `Latency Budget`).
+    - Detailed latency budget bar breakdown totaling 2.53ms against guaranteed 4.80ms SLA.
+  - *Security Guarantees & Technical Assurances:*
+    - Zero-Knowledge Proofs for Audits (ZK-SNARK / Circom 2.1).
+    - Sub-Millisecond eBPF Interception (Kernel 6.1+ RingBuffer).
+    - FIPS 140-3 Hardware Root of Trust (Level 3 HSM / TPM 2.0).
+  - *Operational Exports & Modals:*
+    - Export Spec (.SVG) vector diagram download.
+    - Blueprint Specification (.JSON) export.
+    - Live Telemetry streaming toggle with dynamic latency jitter.
+    - Sub-Engine Deep Dive inspection modals.
+    - Egress Boundary Enclave inspection modals.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, and integrations matrices can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, integrations matrices, and architecture blueprints can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -195,7 +215,7 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, **RedAgent Simulator**, **Agent Trust & Behavioral Drift Analytics**, **Kill Switch & Response**, **Policy Center & Compliance**, **Human Approvals**, **Audit Trail**, **Integrations**, or **Agent Network**. These pages share sample agent records during the current browser session.
+2. Use the left navigation to open **System Architecture**, **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, **RedAgent Simulator**, **Agent Trust & Behavioral Drift Analytics**, **Kill Switch & Response**, **Policy Center & Compliance**, **Human Approvals**, **Audit Trail**, **Integrations**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
 4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
 5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
@@ -292,9 +312,17 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Emergency Lease Revocation:** Click **Revoke All Agent Leases** to confirm immediate session token revocation and resource isolation.
     - **Re-validate Enclaves:** Click **Re-validate Enclaves** to trigger cluster-wide PCR0 attestation re-verification.
     - **Export Matrix:** Click **Export Matrix** to download the complete integrations perimeter state as JSON.
-16. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-17. Use the export buttons to download JSON snapshots of the visible sample data.
-18. Use the workspace profile button to return to the access screen.
+16. In **Core System Architecture & Topology (System Architecture — COMMAND)**:
+    - **Inspect 4-Layer Zero-Trust Flow:** Review the end-to-end architectural boundary across Ingress & Orchestration (L1), NexusGuard Core Control Plane (L2), HITL Escalation Ring (L3), and Egress Boundaries & Enterprise Assets (L4).
+    - **Toggle Live Telemetry:** Click **Live Telemetry: ACTIVE** to toggle simulated real-time latency and ingress telemetry streaming with microsecond jitter.
+    - **Inspect Sub-Engines:** Click any of the 8 sub-engine cards (`01 Attestation`, `02 Semantic Firewall`, `03 Dynamic Invariants`, `04 Risk Engine`, `05 OWASP Threat Detector`, `06 Adaptive Trust Matrix`, `07 Tool Gateway`, `08 Cryptographic Ledger`) to open its detailed inspection modal with verification vectors and tech stack.
+    - **Inspect Egress Enclaves:** Click any egress resource card (`Production Databases`, `Cloud APIs`, `Chromium Browsers`, `Git Repos`, `IPC Bus`, `Quarantine Sandbox`) to view endpoints and security modes.
+    - **Explore Layer Inspection Tabs:** Navigate through **Overview**, **Control Plane Internals**, **Cryptographic Pipeline**, **Enclave Attestation**, and **Latency Budget** tabs.
+    - **Analyze Latency SLA Breakdown:** Examine the step-by-step latency bar graph totaling 2.53ms against the 4.80ms SLA ceiling.
+    - **Export Spec & Blueprint:** Click **Export Spec (.SVG)** to download the vector diagram or **Blueprint Spec (.JSON)** for the structured architectural specification.
+17. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+18. Use the export buttons to download JSON snapshots of the visible sample data.
+19. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -329,6 +357,9 @@ NexusGuard/
 │   │   │   ├── Approvals/
 │   │   │   │   ├── HumanApprovals.tsx
 │   │   │   │   └── human-approvals.css
+│   │   │   ├── Architecture/
+│   │   │   │   ├── SystemArchitecture.tsx
+│   │   │   │   └── system-architecture.css
 │   │   │   ├── Audit/
 │   │   │   │   ├── AuditTrail.tsx
 │   │   │   │   └── audit-trail.css
