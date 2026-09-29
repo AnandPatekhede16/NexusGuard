@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, a human-in-the-loop approval center (HITL Enclave), a comprehensive agent audit trail and cryptographic ledger, a zero-trust tool and system integrations control plane, and a core zero-trust system architecture and execution topology.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, a human-in-the-loop approval center (HITL Enclave), a comprehensive agent audit trail and cryptographic ledger, a zero-trust tool and system integrations control plane, a core zero-trust system architecture and execution topology, and enterprise security and governance settings.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -177,8 +177,20 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
     - Live Telemetry streaming toggle with dynamic latency jitter.
     - Sub-Engine Deep Dive inspection modals.
     - Egress Boundary Enclave inspection modals.
+- **Enterprise Security & Governance Settings (Settings — PLATFORM):** Sovereign enterprise configuration engine, zero-trust cryptographic root governance, and multi-tenant security perimeter management under FIPS 140-3 and 2-Man Rule protocol.
+  - *2-Man Rule Protocol Banner:* High-visibility hardware security banner featuring live epoch timestamp, FIPS 140-3 Level 3 HSM hardware chip, and 2-Man Quorum gating requiring secondary SecOps cryptographic sign-off.
+  - *Sticky Sub-Navigation Dock:* 8-section quick jump dock (`Topology`, `Auth & SSO`, `Agent Enclaves`, `Threat Policies`, `Kill Switch`, `Audit & WORM`, `API Tokens`, `Clusters`) with a live SHA-256 Config Integrity indicator (`0x94FA...B881`).
+  - *Global Topology & Multi-Tenancy:* Enterprise organization identity (`NexusGuard Global Cyber Defense Operations`), tenant identifier (`org_98bf4e2910ba`), primary secure enclave selection, and Optical-Dark theme mode toggle.
+  - *Authentication, Identity & SSO Federation:* Strict enterprise SAML 2.0 / OIDC SSO enforcement toggle, FIDO2 / WebAuthn hardware security key enforcement, session inactivity auto-lockout selector (`15m`, `30m`, `1h`, `4h`), and interactive 2-Man Quorum approval threshold slider (1 to 4 authorized keys).
+  - *Autonomous Agent Enclaves & Runtime Guardrails:* Global baseline trust floor slider (60 to 95 minimum score for unmonitored egress), automated mTLS certificate rotation period (`12 Hours`, `24 Hours`, `7 Days`, `30 Days`), and eBPF kernel socket trap interlock toggle.
+  - *Cryptographic Audit & WORM Retention:* Customer-Managed KMS Key ARN rotation input (`arn:aws:kms:us-east-1:keys/nexusguard-merkle-master-9801fa`) with live Key Rotation trigger, immutable WORM storage retention policy selector (1 to 7 years with SEC Rule 17a-4 / FINRA compliance), and real-time Merkle tree proof integrity checker.
+  - *API Tokens & Ingress Gateway:* Active master ingress token with visibility toggle (`••••••••••••••••`), clipboard copy feedback, token regeneration trigger, token revocation trigger, and global ingress rate limiter slider (500 to 50,000 req/min).
+  - *2-Man Quorum Authorization Modal:* Secure cryptographic modal simulating dual-key sign-off (`Commander Key` + `SecOps Quorum Key`) with live SHA-256 config diff hashing and approval workflow.
+  - *Revoke Token Confirmation Modal:* High-severity warning modal confirming immediate gateway credential invalidation.
+  - *Simulated Save Settings & Sealing Animation:* Animated sealing sequence with real-time progress (`SEALING CONFIGURATION HASH...` $\rightarrow$ `SETTINGS CRYPTOGRAPHICALLY APPLIED`), timestamped SHA-256 seal update, and toast notification.
+  - *Snapshot Export:* One-click JSON export of the entire enterprise configuration state (`nexusguard-enterprise-settings-config.json`).
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, integrations matrices, and architecture blueprints can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, integrations matrices, architecture blueprints, and enterprise configuration profiles can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -215,7 +227,7 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **System Architecture**, **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, **RedAgent Simulator**, **Agent Trust & Behavioral Drift Analytics**, **Kill Switch & Response**, **Policy Center & Compliance**, **Human Approvals**, **Audit Trail**, **Integrations**, or **Agent Network**. These pages share sample agent records during the current browser session.
+2. Use the left navigation to open **System Architecture**, **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, **RedAgent Simulator**, **Agent Trust & Behavioral Drift Analytics**, **Kill Switch & Response**, **Policy Center & Compliance**, **Human Approvals**, **Audit Trail**, **Integrations**, **Enterprise Security & Governance Settings**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
 4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
 5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
@@ -319,10 +331,17 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Inspect Egress Enclaves:** Click any egress resource card (`Production Databases`, `Cloud APIs`, `Chromium Browsers`, `Git Repos`, `IPC Bus`, `Quarantine Sandbox`) to view endpoints and security modes.
     - **Explore Layer Inspection Tabs:** Navigate through **Overview**, **Control Plane Internals**, **Cryptographic Pipeline**, **Enclave Attestation**, and **Latency Budget** tabs.
     - **Analyze Latency SLA Breakdown:** Examine the step-by-step latency bar graph totaling 2.53ms against the 4.80ms SLA ceiling.
-    - **Export Spec & Blueprint:** Click **Export Spec (.SVG)** to download the vector diagram or **Blueprint Spec (.JSON)** for the structured architectural specification.
-17. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-18. Use the export buttons to download JSON snapshots of the visible sample data.
-19. Use the workspace profile button to return to the access screen.
+17. In **Enterprise Security & Governance Settings (Settings — PLATFORM)**:
+    - **Navigate Configuration Sections:** Use the sticky sub-navigation dock to jump across Topology, Auth & SSO, Agent Enclaves, Threat Policies, Kill Switch, Audit & WORM, API Tokens, and Clusters.
+    - **Adjust Sliders & Controls:** Fine-tune the Quorum Approval Threshold (1–4 keys), Baseline Trust Floor (60–95), and Ingress Rate Limiting (500–50k req/min) with instant badge feedback.
+    - **Manage API Tokens:** Click the eye icon to reveal the master ingress token, copy it to clipboard, or click **Revoke Token** to open the high-severity revocation modal.
+    - **Rotate KMS Key:** Input a custom customer-managed KMS ARN and click **Rotate Key** to simulate cryptographic root key rollover.
+    - **Audit Changes (2-Man Quorum):** Click **Audit Changes** to open the 2-Man Quorum verification modal, review the SHA-256 config diff hash, sign the Secondary SecOps Key, and commit the revision.
+    - **Save Settings:** Click **SAVE SETTINGS** to trigger the animated cryptographic sealing sequence and commit new parameters.
+    - **Export Snapshot:** Click **Export Config Snapshot** to download the complete configuration JSON.
+18. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+19. Use the export buttons to download JSON snapshots of the visible sample data.
+20. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -384,6 +403,9 @@ NexusGuard/
 │   │   │   ├── RiskCenter/
 │   │   │   │   ├── RiskCenter.tsx
 │   │   │   │   └── risk-center.css
+│   │   │   ├── Settings/
+│   │   │   │   ├── EnterpriseSettings.tsx
+│   │   │   │   └── enterprise-settings.css
 │   │   │   ├── ThreatDetection/
 │   │   │   │   ├── ThreatDetection.tsx
 │   │   │   │   └── threat-detection.css
