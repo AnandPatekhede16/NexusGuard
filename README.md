@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, and an AI governance and regulatory compliance center.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, and a human-in-the-loop approval center (HITL Enclave).
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -106,6 +106,27 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
   - *12-Month Compliance Adherence Trajectory:* Interactive SVG line graph plotting historical adherence across NIST, ISO 42001, EU AI Act, and SOC 2 Type II with milestone pins (ISO initial audit, EU AI Act audit, SOC 2 renewal).
   - *Tier-1 Active Certifications Rail:* Real-time certification cards with audit dates, certifying bodies, and instant downloadable compliance packages (`NIST-AI-RMF-Package.pdf`, `ISO-42001-Certificate.pdf`, `EU-AI-Act-Technical-Doc.pdf`, `SOC2-TypeII-Report.pdf`).
   - *Enterprise Audit Bundle Packaging:* One-click export downloading cryptographically stamped JSON audit bundles (`nexusguard-audit-bundle-compliance.json`) for third-party regulatory examiners.
+- **Human Approval Center & HITL Enclave (Human Approvals — Page 14):** Supervisory authorization queue for sensitive autonomous agent executions, cryptographic delegation elevating, and out-of-bounds enterprise state mutations.
+  - *Top Telemetry & Control Bar:* Live auto-quarantine countdown SLA clock (`04:18.29`) ticking down in real-time, synchronous gating status, and interactive "Re-check Quorum" verification trigger.
+  - *KPI HUD Quad Deck:*
+    - **Pending Decisions:** 08 (2 Critical SLA breaches), active quorum threshold 2 of 2 keys.
+    - **Mean Review Latency:** 4m 12s (-28s vs prev. epoch) with dynamic progress bar.
+    - **Approval Rate:** 78.4% (21.6% quarantined) with breakdown dots (44 approved / 12 intercepted).
+    - **Human SOC Reviewers:** 04 Commanders online with avatar stack (`MV` Col. Marcus Vance, `ER` Elena Rostova, `KS` K. Sharma, `AL` A. Laurent).
+  - *Urgency Filter Bar:* Triage by `ALL [8]`, `CRITICAL [2]`, `HIGH [4]`, `ROUTINE [2]` with auto-escalation note.
+  - *High-Risk Intercept Queue (45% split):* 8 rich real-time authorization requests (`FIN-AGENT-01`, `COD-AGENT-01`, `HR-AGENT-01`, `DB-AGENT-01`, `SEC-AGENT-02`, `RES-AGENT-01`, `OPS-AGENT-04`, `ANL-AGENT-03`) with severity rails, destination URIs, SLA counters, and policy codes.
+  - *Detailed Authorization Dossier (55% split):* Dynamic deep-dive panel for the active intercept request:
+    - Micro-telemetry: Ed25519 signature verification, epoch timestamp, and boundary breach vector.
+    - Intent & Semantic Analysis: Side-by-side comparison of agent stated objective vs. NexusGuard neural intent analysis with anomaly index discrepancy rating.
+    - Impact Assessment Scope: Records affected, restricted classification tier, and compliance exposure mapping.
+    - Dual-Approval Quorum Verification Track: Interactive 2-person quorum slots (Col. Marcus Vance & Elena Rostova) with live click-to-sign toggles and timestamped signature badges.
+    - Historical Decision Log: Recent HITL history for the selected agent with approved/rejected timestamps.
+  - *Action Operations & Modals:*
+    - **Approve With Restrictions:** Ephemeral lease modal with configurable TTL (15m, 30m, 1h) and bounded runtime safeguards.
+    - **Deny & Log Rejection:** Mandatory CISO rejection rationale recorded to WORM audit ledger with automatic prompt block options.
+    - **Request Justification:** Inquiry transmission modal pausing SLA countdown while challenging the agent runtime.
+    - **Emergency Quarantine Agent:** Process isolation modal immediately placing the agent into quarantined status across the workspace.
+    - **Export Authorization Queue:** One-click JSON export of the entire HITL queue.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
 - **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, and audit views can download JSON snapshots containing sample data.
 
@@ -207,9 +228,21 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Run Fleet Compliance Scan:** Click **Scan Fleet** to trigger the 4-phase simulated compliance scan across all 24 deployed autonomous models.
     - **Export Audit Bundle:** Click **Export Audit Bundle** to download a certified JSON compliance report.
     - **Download Framework Packages:** Click any download link in the **Tier-1 Active Certifications** section to export individual compliance artifacts.
-13. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-14. Use the export buttons to download JSON snapshots of the visible sample data.
-15. Use the workspace profile button to return to the access screen.
+13. In **Human Approval Center & HITL Enclave (Human Approvals — Page 14)**:
+    - **Filter Requests by Urgency:** Click urgency filter chips (**ALL [8]**, **CRITICAL [2]**, **HIGH [4]**, **ROUTINE [2]**) to triage high-risk execution intercept tickets.
+    - **Select Intercept Request:** Click any item in the left-hand **High-Risk Intercept Queue** (e.g. `FIN-AGENT-01`, `COD-AGENT-01`, `SEC-AGENT-02`) to load its detailed authorization dossier.
+    - **Evaluate Intent Divergence:** Review the side-by-side comparison of the agent's stated claim vs. NexusGuard's semantic neural intent analysis, inspecting payload names and anomaly discrepancy indices.
+    - **Assess Blast Radius:** Examine affected record counts, data classification tiers (`PII + CONF`, `PROD INFRA`, `ROOT CREDENTIAL`), and regulatory exposures.
+    - **Sign Quorum Review Slots:** Click directly on reviewer cards (Col. Marcus Vance / Elena Rostova) or use the approval workflow to digitally stamp authorization signatures.
+    - **Approve with Restrictions:** Click **Approve With Restrictions** to configure an ephemeral token lease (15m, 30m, 1h) with strict network proxy and row retrieval caps.
+    - **Deny & Refuse Request:** Click **Deny & Log Rejection** to log a structured refusal to the WORM audit ledger and block identical prompt vectors.
+    - **Dispatch Justification Inquiry:** Click **Request Justification** to challenge the agent's supervising runtime and pause the auto-quarantine countdown.
+    - **Execute Emergency Process Quarantine:** Click **Emergency Quarantine Agent** to sever RPC endpoints and isolate the agent across the entire NexusGuard workspace.
+    - **Re-verify Quorum:** Click **Re-check Quorum** to ping online SOC commanders.
+    - **Export Queue:** Click **Export Queue** to download the complete HITL authorization state as JSON.
+14. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+15. Use the export buttons to download JSON snapshots of the visible sample data.
+16. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -241,6 +274,9 @@ NexusGuard/
 │   │   │   ├── AgentDetail/
 │   │   │   ├── AgentNetwork/
 │   │   │   ├── Agents/
+│   │   │   ├── Approvals/
+│   │   │   │   ├── HumanApprovals.tsx
+│   │   │   │   └── human-approvals.css
 │   │   │   ├── Governance/
 │   │   │   │   ├── GovernanceCenter.tsx
 │   │   │   │   └── governance-center.css
