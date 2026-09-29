@@ -22,8 +22,15 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
 - **Agent Registry:** Sample agent list with status filters, search, registration, a profile panel, and local preview status/permission changes.
 - **Agent Detail:** Shared sample identity profile, permission scope editor, sample activity feed, and locally confirmed status actions.
 - **Permission Management:** Filter agents, inspect assigned scopes, add predefined sample grants, revoke a grant with confirmation, and export a local policy snapshot. Review-required and denied examples are not grantable from this screen.
+- **Semantic AI Firewall (Intent Firewall - Page 7):** Real-time zero-trust semantic interception mesh and deep syntactic parser telemetry engine (v4.2-PROD).
+  - *Operational Pipeline Architecture:* Full visualization of the autonomous interception mesh (`AGENT REQUEST` → `INTENT EXTRACTION` → `SENSITIVE DETECTION` → `POLICY EVALUATION` → `RISK ANALYSIS` → `ALLOW / REVIEW / BLOCK`).
+  - *Live Intercepted Request Inspector:* Inspects raw intercepted payloads, natural language synthesized intent with model confidence scores, target agents, requested operations, permission scopes, sensitivity tiers, target database/enclave nodes, and interception delays.
+  - *Semantic Parse Entropy Curve:* 120-second real-time parse rate curve highlighting anomalous mutation spikes (e.g. 94 ops/s executive payroll attack).
+  - *Dynamic Firewall Verdict:* Cryptographic termination notice, risk score progress meter (0–100), triggered enclave security policies (`STRICT_ENFORCE`, `MANDATORY_REVIEW`, `SCOPED_ALLOW`), and deep root cause analysis.
+  - *Human-in-the-Loop Override Operations:* Immediate cryptographic quarantine of target agents (synchronized across the workspace), escalation to the Human Governance Council, and Hardware SOC Token challenge workflow (FIDO2 / YubiKey / Duo MFA).
+  - *Fleet Decision Stream Ledger:* 10 comprehensive evaluations across diverse agents (`FIN-AGENT-01`, `COD-AGENT-01`, `HR-AGENT-01`, `RES-AGENT-01`, `DEV-AGENT-04`, `SUP-AGENT-09`, `ANL-AGENT-02`, `OPS-AGENT-03`, `INF-AGENT-08`, `MKT-AGENT-05`), filterable by verdict (`ALL`, `BLOCKED`, `REVIEW`, `ALLOWED`), searchable, refreshable, and exportable to JSON. Selecting any row instantly inspects that evaluation.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, and audit views can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, and audit views can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -60,13 +67,23 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, or **Agent Network**. These pages share sample agent records during the current browser session.
+2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
 4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
 5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
-6. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-7. Use the export buttons to download JSON snapshots of the visible sample data.
-8. Use the workspace profile button to return to the access screen.
+6. In **Semantic Intent Firewall (Page 7)**:
+   - **Inspect Intercepts:** Click any row in the **Recent Firewall Decision Stream** table to immediately load that request's raw payload, natural language extracted intent, model confidence, target node, and interception delay into the **Live Intercepted Request** panel.
+   - **Review Verdicts:** View the **Firewall Verdict** card showing the calculated risk score (0–100), triggered policy rules (`POLICY-FIN-003`, `POLICY-PCI-001`, `POLICY-PRIV-002`, etc.), and root cause analysis.
+   - **Quarantine Agent:** Click **Quarantine Agent <ID>** to place rogue agents into cryptographic isolation, updating their status to quarantined across all NexusGuard views.
+   - **Escalate to Council:** Click **Escalate Approvals** to queue the incident for human review.
+   - **SOC Exemption Challenge:** Click **Request SOC Token** to open the multi-party quorum challenge modal with hardware security key verification.
+   - **Telemetry Control:** Click **Pause Telemetry** / **Resume Stream** to toggle live feed parsing.
+   - **Filter & Search:** Filter the stream by verdict (`ALL`, `BLOCKED`, `REVIEW`, `ALLOWED`) or search by agent ID, intent, resource, or policy rule.
+   - **Export Ledger:** Click **Export JSON** to download a full telemetry ledger snapshot.
+   - **Navigate to Profile:** Click **Open <Agent ID> Profile** to jump directly to the agent's detail view.
+7. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+8. Use the export buttons to download JSON snapshots of the visible sample data.
+9. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -98,6 +115,9 @@ NexusGuard/
 │   │   │   ├── AgentDetail/
 │   │   │   ├── AgentNetwork/
 │   │   │   ├── Agents/
+│   │   │   ├── IntentFirewall/
+│   │   │   │   ├── IntentFirewall.tsx
+│   │   │   │   └── intent-firewall.css
 │   │   │   ├── Permissions/
 │   │   │   │   ├── PermissionManagement.tsx
 │   │   │   │   └── permission-management.css
