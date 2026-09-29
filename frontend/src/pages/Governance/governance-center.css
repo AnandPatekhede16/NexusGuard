@@ -1,0 +1,1297 @@
+/* NexusGuard AI Governance & Regulatory Compliance Center Styles */
+
+.governance-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  color: #e1e2ec;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 1. Header Bar & Breadcrumbs */
+.gov-header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.gov-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #849396;
+}
+
+.crumb-pipe {
+  color: #3b494c;
+}
+
+.gov-header-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 1280px) {
+  .gov-header-row {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.gov-header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 56rem;
+}
+
+.gov-page-title {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: #e1e2ec;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.gov-page-desc {
+  font-size: 0.875rem;
+  line-height: 1.4rem;
+  color: #bac9cc;
+  margin: 0;
+}
+
+.gov-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.gov-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.gov-btn-primary {
+  background: #00e5ff;
+  color: #001f24;
+  border-color: #00daf3;
+  box-shadow: 0 2px 10px rgba(0, 229, 255, 0.25);
+  font-weight: 700;
+}
+
+.gov-btn-primary:hover:not(:disabled) {
+  background: #00daf3;
+  box-shadow: 0 4px 14px rgba(0, 229, 255, 0.4);
+}
+
+.gov-btn-secondary {
+  background: #272a32;
+  color: #e1e2ec;
+  border-color: rgba(59, 73, 76, 0.6);
+}
+
+.gov-btn-secondary:hover:not(:disabled) {
+  background: #363941;
+  color: #ffffff;
+  border-color: #849396;
+}
+
+.anim-spin {
+  animation: spinGov 1s infinite linear;
+}
+
+@keyframes spinGov {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 2. Top Executive Compliance Scorecards (6 metrics) */
+.gov-kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .gov-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gov-kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .gov-kpi-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.gov-kpi-card {
+  background: #191b23;
+  border: 1px solid rgba(59, 73, 76, 0.35);
+  border-radius: 0.375rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.2s;
+}
+
+.gov-kpi-card:hover {
+  border-color: rgba(0, 229, 255, 0.35);
+}
+
+.kpi-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #849396;
+}
+
+.kpi-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.2rem;
+}
+
+.badge-mint {
+  background: rgba(91, 233, 173, 0.15);
+  color: #5be9ad;
+}
+
+.kpi-metric-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+}
+
+.kpi-num {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #e1e2ec;
+}
+
+.kpi-unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #849396;
+}
+
+.kpi-foot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.kpi-foot-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #bac9cc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 3. Main Compliance Frameworks & Controls Grid */
+.gov-main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 1280px) {
+  .gov-main-grid {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+.gov-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+/* Framework Tabs & Pillars Card */
+.framework-tabs-card {
+  background: #191b23;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  border-radius: 0.375rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.framework-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.framework-tabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.framework-tab-btn {
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #272a32;
+  color: #bac9cc;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.framework-tab-btn:hover {
+  color: #e1e2ec;
+  background: #363941;
+}
+
+.framework-tab-btn.tab-active {
+  background: #00e5ff !important;
+  color: #001f24 !important;
+  border-color: #00daf3 !important;
+  box-shadow: 0 1px 6px rgba(0, 229, 255, 0.3);
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .pillars-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.pillar-item-box {
+  background: #10131a;
+  border: 1px solid rgba(59, 73, 76, 0.35);
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.pillar-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pillar-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pillar-rate {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #e1e2ec;
+}
+
+.pillar-bar-bg {
+  width: 100%;
+  height: 0.35rem;
+  background: #272a32;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.pillar-bar-fill {
+  height: 100%;
+  border-radius: 0.25rem;
+  transition: width 0.3s ease;
+}
+
+.bar-cyan {
+  background: #00e5ff;
+}
+
+.bar-secondary {
+  background: #1493ff;
+}
+
+.bar-mint {
+  background: #5be9ad;
+}
+
+.bar-primary {
+  background: #c3f5ff;
+}
+
+.pillar-desc {
+  font-size: 0.6875rem;
+  line-height: 1.15rem;
+  color: #bac9cc;
+  margin: 0;
+}
+
+/* Controls Table Card */
+.controls-table-card {
+  background: #191b23;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.controls-table-header {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(59, 73, 76, 0.3);
+}
+
+@media (min-width: 640px) {
+  .controls-table-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.controls-table-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #e1e2ec;
+  margin: 0;
+}
+
+.controls-table-sub {
+  font-size: 0.75rem;
+  color: #bac9cc;
+  margin: 0.15rem 0 0 0;
+}
+
+.controls-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.filter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #849396;
+}
+
+.filter-chip {
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background: #272a32;
+  color: #bac9cc;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-chip:hover {
+  background: #363941;
+  color: #e1e2ec;
+}
+
+.filter-chip-active {
+  background: rgba(0, 229, 255, 0.15) !important;
+  color: #00e5ff !important;
+  border-color: #00e5ff !important;
+}
+
+.table-scroll-wrap {
+  overflow-x: auto;
+}
+
+.gov-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.75rem;
+}
+
+.gov-table thead tr {
+  background: #10131a;
+  border-bottom: 1px solid rgba(59, 73, 76, 0.4);
+}
+
+.gov-table th {
+  padding: 0.65rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #849396;
+  white-space: nowrap;
+}
+
+.gov-table th.text-right {
+  text-align: right;
+}
+
+.gov-table tbody tr {
+  border-bottom: 1px solid rgba(59, 73, 76, 0.25);
+  transition: background-color 0.15s;
+}
+
+.gov-table tbody tr:hover {
+  background: rgba(39, 42, 50, 0.6);
+}
+
+.gov-table tbody tr.row-alt {
+  background: rgba(16, 19, 26, 0.4);
+}
+
+.gov-table td {
+  padding: 0.65rem 1rem;
+  vertical-align: middle;
+}
+
+.ctrl-code-text {
+  font-family: 'JetBrains Mono', monospace;
+  color: #00e5ff;
+  font-size: 0.75rem;
+}
+
+.ctrl-standard-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: #e1e2ec;
+}
+
+.ctrl-standard-sub {
+  font-size: 0.6875rem;
+  color: #849396;
+}
+
+.ctrl-mechanism-text {
+  color: #bac9cc;
+}
+
+.ctrl-scope-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #e1e2ec;
+}
+
+.ctrl-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-mint {
+  background: rgba(91, 233, 173, 0.15);
+  color: #5be9ad;
+}
+
+.status-secondary {
+  background: rgba(20, 147, 255, 0.18);
+  color: #a3c9ff;
+}
+
+.evidence-hash-link {
+  background: transparent;
+  border: none;
+  color: #a3c9ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.evidence-hash-link:hover {
+  color: #ffffff;
+}
+
+/* 4. Right Column: Executive Compliance Dossier Card */
+.gov-right-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.executive-dossier-card {
+  position: relative;
+  background: #191b23;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  border-radius: 0.375rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.dossier-glow-orb {
+  position: absolute;
+  top: -4rem;
+  right: -4rem;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.1);
+  filter: blur(2.5rem);
+  pointer-events: none;
+}
+
+.dossier-top-line {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.dossier-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #849396;
+}
+
+.dossier-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e1e2ec;
+  margin: 0.1rem 0 0 0;
+}
+
+.dossier-audit-chip {
+  padding: 0.25rem 0.55rem;
+  border-radius: 0.25rem;
+  background: rgba(91, 233, 173, 0.18);
+  color: #5be9ad;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Cryptographic Seal Box */
+.crypto-seal-card {
+  background: #0b0e15;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  border-radius: 0.375rem;
+  padding: 0.875rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.seal-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.seal-head-left {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #00e5ff;
+}
+
+.seal-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.seal-block {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #849396;
+}
+
+.seal-hash-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #bac9cc;
+  background: #191b23;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.25rem;
+  word-break: break-all;
+  border: 1px solid rgba(59, 73, 76, 0.3);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.seal-hash-display:hover {
+  color: #ffffff;
+  border-color: #00e5ff;
+}
+
+.seal-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  padding-top: 0.2rem;
+}
+
+/* Findings Section */
+.findings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.findings-header-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  color: #849396;
+}
+
+.findings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.finding-item {
+  background: #272a32;
+  border: 1px solid rgba(59, 73, 76, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.finding-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #e1e2ec;
+  display: block;
+}
+
+.finding-desc {
+  font-size: 0.75rem;
+  line-height: 1.15rem;
+  color: #bac9cc;
+  margin: 0.1rem 0 0 0;
+}
+
+/* Artifacts Section */
+.artifacts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.artifacts-header-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  color: #849396;
+}
+
+.artifacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.artifact-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #272a32;
+  border: 1px solid rgba(59, 73, 76, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.artifact-row:hover {
+  background: #363941;
+  border-color: #00e5ff;
+}
+
+.artifact-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.artifact-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #e1e2ec;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artifact-row:hover .artifact-name {
+  color: #00e5ff;
+}
+
+.artifact-size {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  color: #849396;
+  background: #10131a;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.2rem;
+  flex-shrink: 0;
+}
+
+/* Attestation Sign Button */
+.attestation-sign-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  background: #00e5ff;
+  color: #001f24;
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 4px 14px rgba(0, 229, 255, 0.25);
+}
+
+.attestation-sign-btn:hover:not(:disabled) {
+  background: #00daf3;
+  box-shadow: 0 6px 18px rgba(0, 229, 255, 0.4);
+}
+
+.attestation-sign-btn.btn-signed {
+  background: #5be9ad !important;
+  color: #002113 !important;
+  box-shadow: 0 4px 14px rgba(91, 233, 173, 0.3) !important;
+}
+
+/* 5. Bottom Compliance Trend & Tier-1 Certifications Section */
+.gov-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 1280px) {
+  .gov-bottom-grid {
+    grid-template-columns: 8fr 4fr;
+  }
+}
+
+.trajectory-card-col {
+  background: #191b23;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  border-radius: 0.375rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.trajectory-head-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .trajectory-head-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.trajectory-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #e1e2ec;
+  margin: 0;
+}
+
+.trajectory-sub {
+  font-size: 0.75rem;
+  color: #bac9cc;
+  margin: 0.15rem 0 0 0;
+}
+
+.trajectory-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+}
+
+.legend-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-dot.dot-measured {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #00e5ff;
+}
+
+.legend-bar.bar-baseline {
+  width: 0.75rem;
+  height: 0.15rem;
+  background: #849396;
+}
+
+.chart-svg-container {
+  width: 100%;
+  height: 9rem;
+  position: relative;
+}
+
+.trajectory-chart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.chart-x-axis {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #849396;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(59, 73, 76, 0.25);
+}
+
+@media (max-width: 640px) {
+  .hidden-mobile {
+    display: none;
+  }
+}
+
+/* Tier-1 Certifications Column */
+.certifications-card-col {
+  background: #191b23;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  border-radius: 0.375rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.certs-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.certs-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #e1e2ec;
+  margin: 0;
+}
+
+.certs-sub {
+  font-size: 0.75rem;
+  color: #bac9cc;
+  margin: 0.15rem 0 0 0;
+}
+
+.certs-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cert-item-row {
+  background: #272a32;
+  border: 1px solid rgba(59, 73, 76, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.625rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cert-item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.cert-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #e1e2ec;
+  display: block;
+}
+
+.cert-spec {
+  font-size: 0.6875rem;
+  color: #849396;
+  display: block;
+}
+
+.cert-status-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.2rem;
+  background: rgba(91, 233, 173, 0.15);
+  color: #5be9ad;
+}
+
+.certs-foot-bar {
+  background: #0b0e15;
+  border: 1px solid rgba(59, 73, 76, 0.35);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #849396;
+}
+
+.cert-verify-link {
+  background: transparent;
+  border: none;
+  color: #00e5ff;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cert-verify-link:hover {
+  text-decoration: underline;
+}
+
+/* 6. Modals */
+.gov-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.gov-modal-box {
+  background: #10131a;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 34rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalEnter 0.2s ease-out;
+}
+
+@keyframes modalEnter {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-head {
+  padding: 1rem 1.25rem;
+  background: #191b23;
+  border-bottom: 1px solid rgba(59, 73, 76, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-title-wrap h3 {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #e1e2ec;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #849396;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.modal-close-btn:hover {
+  color: #ffffff;
+}
+
+.modal-body-evidence {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.evidence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  background: #191b23;
+  border: 1px solid rgba(59, 73, 76, 0.35);
+  border-radius: 0.25rem;
+  padding: 0.875rem;
+}
+
+.evidence-prop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.prop-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  color: #849396;
+}
+
+.prop-val {
+  font-size: 0.75rem;
+  color: #e1e2ec;
+}
+
+.evidence-hash-box {
+  background: #0b0e15;
+  border: 1px solid rgba(59, 73, 76, 0.4);
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.hash-box-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.copy-hash-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: none;
+  color: #00e5ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  cursor: pointer;
+}
+
+.copy-hash-btn:hover {
+  text-decoration: underline;
+}
+
+.evidence-hash-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: #00e5ff;
+  word-break: break-all;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+}
+
+.evidence-verifying-node {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.node-val {
+  font-size: 0.75rem;
+  color: #bac9cc;
+}
+
+.modal-foot-actions {
+  padding: 0.875rem 1.25rem;
+  background: #191b23;
+  border-top: 1px solid rgba(59, 73, 76, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.625rem;
+}
+
+/* Modal 2: Scan Simulation */
+.modal-body-scan {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scan-intro-desc {
+  font-size: 0.8125rem;
+  color: #bac9cc;
+  margin: 0;
+}
+
+.scan-steps-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.scan-step-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.step-done {
+  background: rgba(91, 233, 173, 0.1);
+  color: #e1e2ec;
+  border-color: rgba(91, 233, 173, 0.3);
+}
+
+.step-pending {
+  background: #191b23;
+  color: #849396;
+  border-color: rgba(59, 73, 76, 0.3);
+}
+
+.scan-complete-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(91, 233, 173, 0.15);
+  border: 1px solid rgba(91, 233, 173, 0.4);
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+/* Colors */
+.text-mint {
+  color: #5be9ad;
+}
+
+.text-cyan {
+  color: #00e5ff;
+}
+
+.text-secondary {
+  color: #a3c9ff;
+}
+
+.text-error {
+  color: #ffb4ab;
+}
+
+.text-outline {
+  color: #849396;
+}

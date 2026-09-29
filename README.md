@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, and an adversarial AI testing simulator (RedAgent).
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, and an AI governance and regulatory compliance center.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -85,6 +85,27 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
     - **Broadcast Zero-Day IoC:** Distribute signature `RULE-IOC-0891` mesh-wide.
   - *Commander Operational Log & Forensics Export:* Cryptographically signed log annotations, structured JSON dossier download, and signed `.PCAP` network capture simulation.
   - *Isolation Chamber Status Widget:* Active monitoring of occupied air-gapped chambers.
+- **AI Governance & Regulatory Compliance Center (Policy Center & Compliance — Page 13):** Continuous autonomous regulatory posture monitoring, cryptographic policy proof engine, and audit bundle packaging (v4.2-COMPLIANCE).
+  - *Executive Compliance Scorecard Deck:* 6 real-time compliance KPIs:
+    - **AI Governance Score:** 96.4 / 100 (+2.1% across 24 models).
+    - **Policy Invariants:** 97.8% verified (54/55 rules passing).
+    - **Cryptographic Auditability:** 99.2% on WORM immutable ledger.
+    - **Identity Attestation:** 100% (24/24 agents mTLS & Nitro Enclave verified).
+    - **Active High-Risk Enclaves:** 3 agents under continuous isolation monitoring.
+    - **Pending Auditor Reviews:** 1 regulatory waiver queue item.
+  - *Interactive Regulatory Framework Switcher:* 5 enterprise compliance frameworks:
+    - **NIST AI RMF 1.0:** GOVERN (98%), MAP (95%), MEASURE (97%), MANAGE (96%).
+    - **ISO/IEC 42001:2023:** POLICY & OBJ (99%), RISK ASSESS (96%), LIFE-CYCLE (94%), IMPROVEMENT (98%).
+    - **EU AI Act (Regulation 2024/1689):** TRANSPARENCY (100%), RISK CLASSIF (96%), HUMAN OVERSIGHT (97%), DATA GOVERN (95%).
+    - **SOC 2 Type II AI Trust Criteria:** SECURITY CC6 (99%), CONFIDENTIALITY (98%), PRIVACY (97%), AVAILABILITY (99.9%).
+    - **HIPAA / BAA AI Guidelines:** EPHI ISOLATION (100%), ACCESS CONTROL (98%), AUDIT CONTROLS (99%), TRANSMISSION (100%).
+  - *Cryptographic Zero-Knowledge Root Seal:* Live Ed25519 Merkle root tree seal (`0x7f9a8b2c4d6e1f0a...`), block height `#4,198,204`, with interactive copy, verification modal, and one-click CISO attestation signing workflow.
+  - *Regulatory Controls & Automated Enforcements Matrix:* High-density controls table tracking Control Code (`GOV-AI-01`, `ISO-A.6.2`, `EU-ART-14`, `SOC-CC-6.1`, `HIPAA-164.312`, `NIST-MAP-2.3`), standard classification, verification mechanism, fleet scope, enforcement status, and Merkle leaf evidence link. Includes filter toggle (`ALL CONTROLS` vs. `HIGH RISK ONLY`).
+  - *Evidence Leaf Inspector Modal:* Deep-dive forensic leaf inspector displaying cryptographic verification status, transaction hash, block height, verifying consensus node, and SHA-256 evidence payload dump.
+  - *Automated Fleet Compliance Scan Modal:* Interactive 4-step fleet audit scan simulation (`Verifying enclave identities` $\rightarrow$ `Testing semantic policy invariants` $\rightarrow$ `Validating ePHI & PII data egress` $\rightarrow$ `Chaining Merkle proof to WORM ledger`).
+  - *12-Month Compliance Adherence Trajectory:* Interactive SVG line graph plotting historical adherence across NIST, ISO 42001, EU AI Act, and SOC 2 Type II with milestone pins (ISO initial audit, EU AI Act audit, SOC 2 renewal).
+  - *Tier-1 Active Certifications Rail:* Real-time certification cards with audit dates, certifying bodies, and instant downloadable compliance packages (`NIST-AI-RMF-Package.pdf`, `ISO-42001-Certificate.pdf`, `EU-AI-Act-Technical-Doc.pdf`, `SOC2-TypeII-Report.pdf`).
+  - *Enterprise Audit Bundle Packaging:* One-click export downloading cryptographically stamped JSON audit bundles (`nexusguard-audit-bundle-compliance.json`) for third-party regulatory examiners.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
 - **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, and audit views can download JSON snapshots containing sample data.
 
@@ -178,9 +199,17 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Examine Containment Timeline & Wire Dump:** Follow the chronological event stream and inspect the raw HTTP/2 SQL payload dump.
     - **Execute Tactical Mitigations:** One-click triggers to **Quarantine Agent**, **Roll Back Snapshot #172890**, **Flush Context Window**, and **Broadcast Zero-Day IoC**.
     - **Sign Commander Notes & Export:** Add cryptographic commander annotations and download structured JSON logs or `.PCAP` network dumps.
-12. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-13. Use the export buttons to download JSON snapshots of the visible sample data.
-14. Use the workspace profile button to return to the access screen.
+12. In **AI Governance & Regulatory Compliance Center (Policy Center & Compliance — Page 13)**:
+    - **Switch Frameworks:** Click any framework tab (**NIST AI RMF 1.0**, **ISO/IEC 42001**, **EU AI Act**, **SOC 2 Type II**, **HIPAA/BAA**) to dynamically update compliance pillars, progress bars, and standards mapping.
+    - **Filter Controls:** Toggle between **ALL CONTROLS** and **HIGH RISK ONLY** to isolate critical high-risk guardrails.
+    - **Inspect Merkle Evidence:** Click any **Leaf #...** in the controls table to open the **Evidence Leaf Inspector** modal with cryptographic proof and block hashes.
+    - **Sign CISO Attestation:** Click **Sign Attestation (Ed25519)** on the Zero-Knowledge Root Seal card to cryptographically sign the compliance block with audit confirmation.
+    - **Run Fleet Compliance Scan:** Click **Scan Fleet** to trigger the 4-phase simulated compliance scan across all 24 deployed autonomous models.
+    - **Export Audit Bundle:** Click **Export Audit Bundle** to download a certified JSON compliance report.
+    - **Download Framework Packages:** Click any download link in the **Tier-1 Active Certifications** section to export individual compliance artifacts.
+13. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+14. Use the export buttons to download JSON snapshots of the visible sample data.
+15. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -212,6 +241,9 @@ NexusGuard/
 │   │   │   ├── AgentDetail/
 │   │   │   ├── AgentNetwork/
 │   │   │   ├── Agents/
+│   │   │   ├── Governance/
+│   │   │   │   ├── GovernanceCenter.tsx
+│   │   │   │   └── governance-center.css
 │   │   │   ├── IntentFirewall/
 │   │   │   │   ├── IntentFirewall.tsx
 │   │   │   │   └── intent-firewall.css
