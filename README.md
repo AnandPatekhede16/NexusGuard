@@ -201,8 +201,17 @@ NexusGuard is architected from the ground up to establish six sovereign operatio
   - *Revoke Token Confirmation Modal:* High-severity warning modal confirming immediate gateway credential invalidation.
   - *Simulated Save Settings & Sealing Animation:* Animated sealing sequence with real-time progress (`SEALING CONFIGURATION HASH...` $\rightarrow$ `SETTINGS CRYPTOGRAPHICALLY APPLIED`), timestamped SHA-256 seal update, and toast notification.
   - *Snapshot Export:* One-click JSON export of the entire enterprise configuration state (`nexusguard-enterprise-settings-config.json`).
-- **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, integrations matrices, architecture blueprints, and enterprise configuration profiles can download JSON snapshots containing sample data.
+- **Agent Network & Inter-Agent Bus (Page 6):** Real-time sovereign multi-agent mesh topology, high-throughput inter-agent communication bus, cryptographic mTLS/eBPF verification, animated directional packet flow, and granular channel security governance.
+  - *Fleet Telemetry Banner:* 13 active agent nodes mapped across 5 functional tiers, 15 inter-agent channels, 100% cryptographic cipher coverage (AES-256-GCM / TLS 1.3 / eBPF-Ring), zero micro-fonts with WCAG-compliant high-contrast typography, and live particle packet transmission along verified channels.
+  - *Multi-Tier Topological Mesh:* Visualized 1240×780 coordinate space organizing agents into Ingress Gateway, Core Swarm, Specialized Logic, Database Engine, Storage Vault, and Adversarial Sandbox.
+  - *Dynamic Security Filter Rail:* Live filtering across channel security status (`ALL`, `VERIFIED`, `SEVERED`, `QUORUM_LOCKED`, `SANDBOXED`), tier isolation, search query, zoom controls, simulated radar ping, and live particle toggle.
+  - *Dual-Target Deep-Dive Inspector:*
+    - **Channel Inspector:** Decoded cipher suite, transit latency (p99), current message rate (msg/s), synthesized neural intent, active enforcement policy (`STRICT_INSPECT`, `ZERO_EGRESS`, `RESTRICTED_LEASE`, `QUORUM_GATED`), raw packet payload dump, and direct **Sever / Restore Channel** interlock.
+    - **Node Inspector:** Full agent operational profile, cluster assignment, behavioral trust score, assigned permission scopes, active egress channels, and direct **Quarantine / Restore Agent** toggle synchronized with fleet state.
+  - *2-Man Quorum Channel Exemption Modal:* Dual-key cryptographic sign-off (`Commander Key` + `SecOps Quorum Key`) with live SLA timer to exempt high-risk inter-agent communication links.
+  - *Inter-Agent Route Latency Tracer Modal:* Real-time multi-hop transit hop breakdown with microsecond packet trace benchmark, jitter analysis, and eBPF kernel hook confirmation.
+  - *Topology Snapshot Export:* One-click JSON export of the entire 13-node, 15-channel mesh architecture (`nexusguard-agent-network-topology.json`).
+- **Sample exports:** Registry, permission management, agent network topology, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, integrations matrices, architecture blueprints, and enterprise configuration profiles can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -351,7 +360,16 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Audit Changes (2-Man Quorum):** Click **Audit Changes** to open the 2-Man Quorum verification modal, review the SHA-256 config diff hash, sign the Secondary SecOps Key, and commit the revision.
     - **Save Settings:** Click **SAVE SETTINGS** to trigger the animated cryptographic sealing sequence and commit new parameters.
     - **Export Snapshot:** Click **Export Config Snapshot** to download the complete configuration JSON.
-18. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+18. In **Agent Network & Inter-Agent Bus (Page 6)**:
+    - **Navigate Topological Mesh:** Explore the 13-node, 5-tier architecture across Ingress, Core Swarm, Specialized Logic, Database Engine, Storage Vault, and Adversarial Sandbox.
+    - **Filter Bus Channels:** Filter channels by security state (**ALL**, **VERIFIED**, **SEVERED**, **QUORUM_LOCKED**, **SANDBOXED**) or search by agent identifier.
+    - **Simulate Radar Ping & Particles:** Click **Radar Ping** to broadcast a cryptographic attestation wave across the canvas; toggle **Particles** to show/hide animated directional data packets.
+    - **Inspect Channel Links:** Click any channel line or badge to inspect its cipher suite, message throughput, transit latency, synthesized neural intent, enforced policy, and raw packet dump.
+    - **Sever / Restore Channels:** In the channel inspector, click **Sever Channel** to instantly cut inter-agent communication, or **Restore Channel** to reconnect the link.
+    - **Exempt Quorum Links (2-Man Rule):** On quorum-locked channels, click **Request 2-Man Quorum Exemption** to open the dual-key authorization modal and authorize temporary traffic.
+    - **Trace Route Latency:** Click **Trace Route Latency** to launch the hop-by-hop packet trace benchmark with microsecond transit diagnostics.
+    - **Inspect & Quarantine Nodes:** Click any agent node in the topology to view its profile, trust score, and active links; click **Quarantine Agent** to place the agent in cryptographic isolation across the workspace.
+    - **Export Topology JSON:** Click **Export Topology** to download the complete 13-node, 15-channel network configuration.
 19. Use the export buttons to download JSON snapshots of the visible sample data.
 20. Use the workspace profile button to return to the access screen.
 
