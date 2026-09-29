@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, and an AI risk assessment and anomaly center.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, and a real-time threat detection center.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -36,8 +36,18 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
   - *Deep-Dive Specimen Dossier:* Detailed operational profile of the selected specimen agent, including 24-hour SVG risk velocity curve with peak marker, trust score degradation counter, anomalous vector tags, and one-click interventions (**Sandbox Runtime**, **Dual-Key Enforcement**, **Demote Permissions**).
   - *Real-Time Anomaly Stream Ledger:* 7 live anomalous events with status tabs (`ALL`, `CONTAINED`, `MONITORED`, `MITIGATED`), modal inspection dialog with raw payload samples and isolation triggers, and full archive export.
   - *Executive Briefing Generation:* Instant AI-generated Markdown risk briefing downloadable directly to the operator's machine.
+- **Threat Detection Center & Zero-Day Intercepts (Threat Detection - Page 9):** Continuous autonomous threat hunting, prompt injection vector isolation, and multi-agent kill-chain neutralization across distributed sovereign clusters.
+  - *Tactical Status Deck:* Real-time interception monitor, Heuristics Engine [v4.18], eBPF Snooper (0.12ms sync), and STIX 2.1 / TAXII export.
+  - *Severity Vector Filter Bar:* Instant filtering across `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`, and `ALL` threats with active attempt counters.
+  - *OWASP Top 10 for LLMs / MITRE ATLAS Taxonomy Grid:* 8 interactive category summary cards (`LLM-01 Prompt Injection`, `ATL-04 Goal Hijacking`, `LLM-06 Privilege Escalation`, `LLM-03 Memory Poisoning`, `ATL-09 Agent Impersonation`, `LLM-08 Tool Abuse & Loops`, `LLM-02 Data Exfiltration`, `ATL-02 Lateral Worming`) with click-to-filter capability.
+  - *Active Threat Log SOC Table:* High-density workstation table featuring threat severity, signature descriptions, target agents, detection engines, response latency, containment status, and one-click investigation.
+  - *Telemetry Sparkline:* Real-time kill-chain latency (avg 0.54ms), false positive rate (<0.002%), enclave attestation, and ingress density SVG sparkline.
+  - *Integrated Forensic Investigation Drawer:* Deep-dive panel featuring MITRE ATLAS attack path telemetry (4-phase attack kill-chain), decoded raw payload inspector with syntax highlighting, origin metadata grid, and immediate mitigation triggers (**Quarantine Agent**, **Distribute IoC**, **Rollback Context**).
+  - *Real-Time SOC Event Stream Ticker:* Footer live stream with interactive Pause/Resume controls.
+  - *eBPF Rule Configuration Modal:* Live operator toggles for kernel socket traps, unicode sanitizers, IMDS gateways, and loop breakers.
+  - *Fullscreen Forensic View Modal:* Expanded inspection view for high-criticality incidents.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, and audit views can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, and audit views can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -74,7 +84,7 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, or **Agent Network**. These pages share sample agent records during the current browser session.
+2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
 4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
 5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
@@ -95,9 +105,18 @@ All sample records and metrics are presented for interface demonstration; they a
    - **Prescribed Interventions:** Intervene directly by clicking **Sandbox Runtime** (automatically demotes agent to quarantined/restricted in fleet state with toast feedback), **Enforce Dual-Key**, or **Demote Permissions**.
    - **Anomaly Stream & Modal Inspection:** Review the real-time anomaly ledger, filter by status (`ALL`, `CONTAINED`, `MONITORED`, `MITIGATED`), click **Inspect** on any event to view payload samples, trigger isolation, and export the anomaly archive.
    - **Executive Reports:** Click **Generate Risk Briefing** to download an AI-synthesized markdown report or **Download Risk Weights (JSON)** for vector weights.
-8. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-9. Use the export buttons to download JSON snapshots of the visible sample data.
-10. Use the workspace profile button to return to the access screen.
+8. In **Threat Detection Center & Zero-Day Intercepts (Threat Detection - Page 9)**:
+   - **Filter Vectors & Taxonomy:** Filter threats by severity (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`) or click any OWASP/MITRE taxonomy card (`LLM-01`, `ATL-04`, etc.) to isolate matching threats.
+   - **Active Threat Log:** Click any incident row in the high-density table to immediately inspect it in the right-hand flyout.
+   - **Attack Path Telemetry:** Follow the 4-phase MITRE ATLAS attack timeline from payload ingress to execution cutoff.
+   - **Forensic Payload Inspection:** Examine decoded UTF-8/Hex payloads and copy malicious embedding strings with one click.
+   - **Execute Mitigations:** Click **Quarantine Agent** to lock down the target agent across the entire NexusGuard workspace, **Distribute IoC** to broadcast the threat hash to all cluster gateways, or **Rollback Context** to restore verified memory tensor states.
+   - **Export Intelligence:** Click **Export STIX / TAXII** to download a standards-compliant STIX 2.1 Threat Intelligence bundle.
+   - **Configure Rules:** Open the rule configuration modal to toggle eBPF kernel traps, unicode steganography sanitizers, and circuit breakers.
+   - **Fullscreen Deep Dive:** Click the expand icon on the flyout to view the comprehensive incident forensic modal.
+9. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+10. Use the export buttons to download JSON snapshots of the visible sample data.
+11. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -138,6 +157,9 @@ NexusGuard/
 │   │   │   ├── RiskCenter/
 │   │   │   │   ├── RiskCenter.tsx
 │   │   │   │   └── risk-center.css
+│   │   │   ├── ThreatDetection/
+│   │   │   │   ├── ThreatDetection.tsx
+│   │   │   │   └── threat-detection.css
 │   │   │   └── ...   # Planned feature page folders
 │   │   ├── App.tsx
 │   │   ├── Dashboard.tsx

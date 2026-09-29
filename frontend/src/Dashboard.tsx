@@ -13,6 +13,7 @@ import AgentNetwork from './pages/AgentNetwork/AgentNetwork';
 import PermissionManagement from './pages/Permissions/PermissionManagement';
 import IntentFirewall from './pages/IntentFirewall/IntentFirewall';
 import RiskCenter from './pages/RiskCenter/RiskCenter';
+import ThreatDetection from './pages/ThreatDetection/ThreatDetection';
 
 type Incident = {
   id: string;
@@ -26,7 +27,7 @@ type Incident = {
   detail: string;
 };
 
-type Page = 'overview' | 'agents' | 'agent-detail' | 'agent-network' | 'permissions' | 'intent-firewall' | 'risk-center';
+type Page = 'overview' | 'agents' | 'agent-detail' | 'agent-network' | 'permissions' | 'intent-firewall' | 'risk-center' | 'threat-detection';
 type NavigationItem = { label: string; icon: typeof Gauge; target: string; page?: Exclude<Page, 'overview'> };
 
 const initialIncidents: Incident[] = [
@@ -50,7 +51,7 @@ const navigation: { group: string; items: NavigationItem[] }[] = [
     { label: 'Intent Firewall', icon: Siren, target: '', page: 'intent-firewall' },
     { label: 'Permission Management', icon: LockKeyhole, target: '', page: 'permissions' },
     { label: 'Risk Center', icon: AlertTriangle, target: '', page: 'risk-center' },
-    { label: 'Threat Detection', icon: ShieldAlert, target: 'threat-stream' },
+    { label: 'Threat Detection', icon: ShieldAlert, target: '', page: 'threat-detection' },
   ] },
   { group: 'DEFENSE & TESTING', items: [
     { label: 'RedAgent Simulator', icon: Bug, target: 'quick-actions' },
@@ -121,6 +122,8 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
               ? 'NexusGuard | Semantic Intent Firewall'
               : activePage === 'risk-center'
                 ? 'NexusGuard | AI Risk Center'
+                : activePage === 'threat-detection'
+                  ? 'NexusGuard | Threat Detection Center'
             : 'NexusGuard | Security Command Center';
   }, [activePage]);
 
@@ -206,13 +209,13 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
           <span className="console-divider" /><span className="demo-protection"><span /> DEMO PROTECTION PREVIEW</span>
         </div>
         <label className="console-search"><Search size={16} /><input aria-label="Search incidents" onChange={(event) => setQuery(event.target.value)} placeholder="Search agents, intents, policies..." ref={searchInput} value={query} /><kbd>Ctrl K</kbd></label>
-        <div className="console-user-area"><span className="region-pill"><Globe2 size={14} /> US-EAST-SECURE-PROD-CLUSTER-01</span><span className="threat-pill"><AlertTriangle size={14} /> {incidents.length} EVENTS</span><button className="icon-control notification-control" aria-label="Notifications" onClick={() => openPage('overview', 'Threat Detection')}><Bell size={17} /><i /></button><span className="console-divider" /><button className="profile-button" onClick={onSignOut} title="Return to sign-in preview"><span className="profile-avatar">MV</span><span className="profile-name"><strong>Col. Marcus Vance</strong><small>Chief AI Security Officer</small></span><ChevronRight size={14} /></button></div>
+        <div className="console-user-area"><span className="region-pill"><Globe2 size={14} /> US-EAST-SECURE-PROD-CLUSTER-01</span><button className="threat-pill" onClick={() => openPage('threat-detection', 'Threat Detection')} style={{ cursor: 'pointer', border: 'none' }}><AlertTriangle size={14} /> {incidents.length} EVENTS</button><button className="icon-control notification-control" aria-label="Notifications" onClick={() => openPage('threat-detection', 'Threat Detection')}><Bell size={17} /><i /></button><span className="console-divider" /><button className="profile-button" onClick={onSignOut} title="Return to sign-in preview"><span className="profile-avatar">MV</span><span className="profile-name"><strong>Col. Marcus Vance</strong><small>Chief AI Security Officer</small></span><ChevronRight size={14} /></button></div>
       </header>
 
       <aside className={`console-sidebar${mobileNavOpen ? ' console-sidebar-open' : ''}`}><nav aria-label="Command center navigation">{navigation.map((group) => <div className="nav-group" key={group.group}><h2>{group.group}</h2>{group.items.map(({ label, icon: Icon, ...item }) => <button aria-current={activeNav === label ? 'page' : undefined} className={`nav-link${activeNav === label ? ' nav-link-active' : ''}`} key={label} onClick={() => navigate({ label, icon: Icon, ...item })}><Icon size={16} /><span>{label}</span></button>)}</div>)}</nav><div className="sidebar-foot" id="workspace-status"><span className="sidebar-status-dot" /><span><strong>Backend not connected</strong><small>Showing sample data only</small></span></div></aside>
 
       <main className="console-main" id="overview"><div className="console-content">
-        {activePage === 'agents' ? <AgentRegistry agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'agent-detail' && selectedAgent ? <AgentDetail agent={selectedAgent} onAgentChange={(agentId, change) => setAgents((current) => current.map((agent) => agent.id === agentId ? { ...agent, ...change } : agent))} onNotify={notify} onBack={() => openPage('agents', 'Agent Registry')} /> : activePage === 'agent-network' ? <AgentNetwork agents={agents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'permissions' ? <PermissionManagement agents={agents} setAgents={setAgents} selectedAgentId={selectedAgentId} onSelectedAgentChange={setSelectedAgentId} query={query} onQueryChange={setQuery} onNotify={notify} /> : activePage === 'intent-firewall' ? <IntentFirewall agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'risk-center' ? <RiskCenter agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : <>
+        {activePage === 'agents' ? <AgentRegistry agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'agent-detail' && selectedAgent ? <AgentDetail agent={selectedAgent} onAgentChange={(agentId, change) => setAgents((current) => current.map((agent) => agent.id === agentId ? { ...agent, ...change } : agent))} onNotify={notify} onBack={() => openPage('agents', 'Agent Registry')} /> : activePage === 'agent-network' ? <AgentNetwork agents={agents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'permissions' ? <PermissionManagement agents={agents} setAgents={setAgents} selectedAgentId={selectedAgentId} onSelectedAgentChange={setSelectedAgentId} query={query} onQueryChange={setQuery} onNotify={notify} /> : activePage === 'intent-firewall' ? <IntentFirewall agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'risk-center' ? <RiskCenter agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'threat-detection' ? <ThreatDetection agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : <>
           <section className="command-heading"><div><div className="command-kickers"><span className="monitor-tag"><i /> PREVIEW MONITORING</span><span className="epoch-label">WORKSPACE: LOCAL-DEMO</span></div><h1>Security Command Center</h1><p>Review sample agent activity, policy events, and workspace posture in one place.</p></div><div className="heading-actions"><span className="sync-chip"><RefreshCw size={14} /> UPDATED {lastSynced}</span><button className="button-primary" onClick={exportSnapshot}><ArrowDownToLine size={15} /> AUDIT SNAPSHOT</button></div></section>
 
           <section aria-label="Sample workspace metrics" className="kpi-grid" id="metrics">{metrics.map(({ label, value, note, icon: Icon, tone, foot }) => <article className={`kpi-card kpi-${tone}`} key={label}><div className="kpi-top"><span>{label}</span><Icon size={16} /></div><div className="kpi-value-row"><strong>{value}</strong><span>{note}</span></div><div className="kpi-foot"><span>{foot}</span><span className="kpi-spark" aria-hidden="true"><i /><i /><i /><i /><i /><i /></span></div></article>)}</section>
