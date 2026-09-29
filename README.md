@@ -55,8 +55,18 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
   - *Simulation Outcome & Bento Telemetry Matrix:* Interception latency (214 ms), protected records, agent trust score degradation (`87 → 42`), containment protocol, circular policy effectiveness gauge (`100%`), and quick action buttons (**View Forensic Trace**, **Download Attack Replay**, **Rollback Agent Memory**).
   - *Posture Delta Cards:* Threat matrix coverage (98.4%), Mean Time to Contain (189 ms), and Quarantined Agent re-evaluation control with sandbox purge.
   - *Forensic Trace Modal:* Decoded weaponized payloads and NexusGuard runtime intercept logs.
+- **Agent Trust & Behavioral Drift Analytics (Trust & Behavior - Page 11):** Autonomous dynamic trust scoring, heuristic velocity tracking, and privilege envelope modulation engine.
+  - *Dynamic Fleet Telemetry KPIs:* Mean Trust Score (88.4/100) with 7-day trend sparkline, High-Trust Workloads (≥85 Auto-Pass), Degraded/Restricted workloads (60–84 Mandatory 2-Man Quorum), and Quarantined active isolations (<60 Zero Privileges).
+  - *Interactive Workload Filter & Segment Tabs:* Instant triage across `All Agents (12)`, `Optimal (>85)`, `Review (60-84)`, and `Untrusted (<60)` with workload search and multi-key sorting (Score Asc/Desc, Compliance, Anomaly Delta, Agent ID).
+  - *Comprehensive Fleet Telemetry Ledger:* High-density table tracking Agent ID, LLM specification, cluster enclave, adaptive score progress bar, compliance rate, real-time anomaly delta, behavioral state badges, and direct isolation/inspection triggers.
+  - *Dynamic Trust Dossier & Sigmoid Breakdown:* Real-time deep dive into the selected agent's 4-component weighted formula (Policy Compliance 35%, Identity & Attestation 25%, Heuristic Velocity & Cadence 20%, Tool Egress & Boundary 20%).
+  - *30-Day Adaptive Trust Trajectory Curve:* Interactive SVG trend chart visualizing historical stability vs. sudden incident plunge or recovery vectors.
+  - *Active Dynamic Interventions:* Enforced algorithmic envelopes (Read-Only Sandboxing, Dual-Key Approval, Session Token Revocation).
+  - *Algorithmic Decay & Calibration Controls:* Interactive modal to tune Sigmoid Steepness ($\alpha$), Decay Half-Life (Hours), Anomaly Velocity Multipliers, and TPM Enclave Attestation Offsets.
+  - *Baseline Restoration & Audit Trail:* Mandatory justification modal with approver signature and incident resolution notes to restore baseline trust scores.
+  - *Forensic Telemetry Stream Modal:* Raw JSON log inspector with one-click copy and download.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, and audit views can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, and audit views can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -131,9 +141,18 @@ All sample records and metrics are presented for interface demonstration; they a
    - **Examine Outcome & Bento Matrix:** Review the containment status (`100% Defense Score`), latency, protected data records, and trust score downgrade.
    - **Forensic Trace & Replay Export:** Click **View Forensic Trace** to open the raw injection payload inspector, or **Download Attack Replay** to export complete simulation proof as JSON.
    - **Remediate & Rollback:** Click **Rollback Agent Memory** to purge the ephemeral sandbox and restore benign model weights.
-10. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-11. Use the export buttons to download JSON snapshots of the visible sample data.
-12. Use the workspace profile button to return to the access screen.
+10. In **Agent Trust & Behavioral Drift Analytics (Page 11)**:
+    - **Filter Workloads:** Switch between `All Agents`, `Optimal (>85)`, `Review (60-84)`, and `Untrusted (<60)` tabs or search for specific agents, roles, or enclaves.
+    - **Inspect Adaptive Dossier:** Click any agent row in the telemetry table (e.g. `FIN-AGENT-01`, `COD-AGENT-01`, `RED-AGENT-01`) to load its live dynamic trust dossier.
+    - **Analyze Formula Breakdown:** Examine the 4 weighted parameters (Policy Compliance 35%, Identity & Attestation 25%, Heuristic Velocity 20%, Tool Egress 20%) and penalty deductions.
+    - **Review Historical Trajectory:** Trace the agent's 30-day adaptive trust trajectory SVG curve and identify inflection points.
+    - **Enforce Dynamic Interventions:** Toggle instant cryptographic quarantine to isolate untrusted agents or lift quarantine on remediated workloads.
+    - **Restore Baseline:** Click **Restore Baseline (+Audit Justification)** to open the CISO override modal, provide ticket justifications, and reset the agent baseline.
+    - **Configure Decay Parameters:** Click **Configure Decay Rate** to tune mathematical half-life ($\lambda$), sigmoid sensitivity ($\alpha$), and TPM attestation offsets.
+    - **Export Fleet Matrix:** Click **Export Matrix (.JSON)** to download a complete telemetry snapshot.
+11. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+12. Use the export buttons to download JSON snapshots of the visible sample data.
+13. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -180,6 +199,9 @@ NexusGuard/
 │   │   │   ├── ThreatDetection/
 │   │   │   │   ├── ThreatDetection.tsx
 │   │   │   │   └── threat-detection.css
+│   │   │   ├── TrustBehavior/
+│   │   │   │   ├── TrustBehavior.tsx
+│   │   │   │   └── trust-behavior.css
 │   │   │   └── ...   # Planned feature page folders
 │   │   ├── App.tsx
 │   │   ├── Dashboard.tsx
