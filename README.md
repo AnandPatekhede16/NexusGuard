@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, and an agent-network visualization.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, and an AI risk assessment and anomaly center.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -29,8 +29,15 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
   - *Dynamic Firewall Verdict:* Cryptographic termination notice, risk score progress meter (0–100), triggered enclave security policies (`STRICT_ENFORCE`, `MANDATORY_REVIEW`, `SCOPED_ALLOW`), and deep root cause analysis.
   - *Human-in-the-Loop Override Operations:* Immediate cryptographic quarantine of target agents (synchronized across the workspace), escalation to the Human Governance Council, and Hardware SOC Token challenge workflow (FIDO2 / YubiKey / Duo MFA).
   - *Fleet Decision Stream Ledger:* 10 comprehensive evaluations across diverse agents (`FIN-AGENT-01`, `COD-AGENT-01`, `HR-AGENT-01`, `RES-AGENT-01`, `DEV-AGENT-04`, `SUP-AGENT-09`, `ANL-AGENT-02`, `OPS-AGENT-03`, `INF-AGENT-08`, `MKT-AGENT-05`), filterable by verdict (`ALL`, `BLOCKED`, `REVIEW`, `ALLOWED`), searchable, refreshable, and exportable to JSON. Selecting any row instantly inspects that evaluation.
+- **AI Risk Assessment & Anomaly Center (Risk Center - Page 8):** Real-time spatial telemetry and multi-agent risk divergence engine (v4.2-PROD).
+  - *Cluster Risk Metric KPI Cards:* 6 dynamic telemetry dimensions (Overall Fleet Risk 68/100, Anomalous Node Count 7/24, Drift Velocity +14%/hr, Graph Clustering Coefficient 0.42, Cryptographic Enclave Attestation 99.4%, Intercept Latency p95 18ms) with timeframe selector (`1H`, `6H`, `24H`, `7D`) and live recalculation.
+  - *Interactive Spatial Cohort Heatmap:* Interactive SVG scatter matrix mapping fleet agents across Behavioral Drift (X-axis) vs. Permission Entropy (Y-axis) with dual risk boundary thresholds (elevated >50, critical >80). Clicking any node selects that agent for deep-dive investigation.
+  - *Primary Anomaly Vectors:* 5 weighted anomaly contribution bars (Unusual Behavioral Deviation, Excessive Tool Egress, Failed Auth / Handshake Mismatch, Sensitive Schema Probe, Lateral Inter-Agent Communication Drift) with JSON vector export.
+  - *Deep-Dive Specimen Dossier:* Detailed operational profile of the selected specimen agent, including 24-hour SVG risk velocity curve with peak marker, trust score degradation counter, anomalous vector tags, and one-click interventions (**Sandbox Runtime**, **Dual-Key Enforcement**, **Demote Permissions**).
+  - *Real-Time Anomaly Stream Ledger:* 7 live anomalous events with status tabs (`ALL`, `CONTAINED`, `MONITORED`, `MITIGATED`), modal inspection dialog with raw payload samples and isolation triggers, and full archive export.
+  - *Executive Briefing Generation:* Instant AI-generated Markdown risk briefing downloadable directly to the operator's machine.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, and audit views can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, and audit views can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -67,7 +74,7 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, or **Agent Network**. These pages share sample agent records during the current browser session.
+2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
 4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
 5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
@@ -81,9 +88,16 @@ All sample records and metrics are presented for interface demonstration; they a
    - **Filter & Search:** Filter the stream by verdict (`ALL`, `BLOCKED`, `REVIEW`, `ALLOWED`) or search by agent ID, intent, resource, or policy rule.
    - **Export Ledger:** Click **Export JSON** to download a full telemetry ledger snapshot.
    - **Navigate to Profile:** Click **Open <Agent ID> Profile** to jump directly to the agent's detail view.
-7. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-8. Use the export buttons to download JSON snapshots of the visible sample data.
-9. Use the workspace profile button to return to the access screen.
+7. In **AI Risk Assessment & Anomaly Center (Risk Center - Page 8)**:
+   - **Timeframe & Cluster Filters:** Switch timeframes (`1H`, `6H`, `24H`, `7D`) or cluster scopes (`All Enclaves`, `Cluster-US-East-01`, etc.) to trigger live telemetry recalculation.
+   - **Interactive Risk Heatmap:** Inspect the 2D scatter matrix of fleet agents across Behavioral Drift and Permission Entropy. Click any agent node (e.g. `RED-AGENT-01`, `FIN-AGENT-01`, `DEV-AGENT-04`) to load its deep-dive specimen dossier.
+   - **Specimen Dossier & Velocity Curve:** View the agent's 24-hour SVG risk velocity trajectory, peak risk timestamps, trust decay, and active anomalous vector tags.
+   - **Prescribed Interventions:** Intervene directly by clicking **Sandbox Runtime** (automatically demotes agent to quarantined/restricted in fleet state with toast feedback), **Enforce Dual-Key**, or **Demote Permissions**.
+   - **Anomaly Stream & Modal Inspection:** Review the real-time anomaly ledger, filter by status (`ALL`, `CONTAINED`, `MONITORED`, `MITIGATED`), click **Inspect** on any event to view payload samples, trigger isolation, and export the anomaly archive.
+   - **Executive Reports:** Click **Generate Risk Briefing** to download an AI-synthesized markdown report or **Download Risk Weights (JSON)** for vector weights.
+8. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+9. Use the export buttons to download JSON snapshots of the visible sample data.
+10. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -121,6 +135,9 @@ NexusGuard/
 │   │   │   ├── Permissions/
 │   │   │   │   ├── PermissionManagement.tsx
 │   │   │   │   └── permission-management.css
+│   │   │   ├── RiskCenter/
+│   │   │   │   ├── RiskCenter.tsx
+│   │   │   │   └── risk-center.css
 │   │   │   └── ...   # Planned feature page folders
 │   │   ├── App.tsx
 │   │   ├── Dashboard.tsx
