@@ -201,17 +201,22 @@ NexusGuard is architected from the ground up to establish six sovereign operatio
   - *Revoke Token Confirmation Modal:* High-severity warning modal confirming immediate gateway credential invalidation.
   - *Simulated Save Settings & Sealing Animation:* Animated sealing sequence with real-time progress (`SEALING CONFIGURATION HASH...` $\rightarrow$ `SETTINGS CRYPTOGRAPHICALLY APPLIED`), timestamped SHA-256 seal update, and toast notification.
   - *Snapshot Export:* One-click JSON export of the entire enterprise configuration state (`nexusguard-enterprise-settings-config.json`).
-- **Agent Network & Inter-Agent Bus (Page 6):** Real-time sovereign multi-agent mesh topology, high-throughput inter-agent communication bus, cryptographic mTLS/eBPF verification, animated directional packet flow, and granular channel security governance.
-  - *Fleet Telemetry Banner:* 13 active agent nodes mapped across 5 functional tiers, 15 inter-agent channels, 100% cryptographic cipher coverage (AES-256-GCM / TLS 1.3 / eBPF-Ring), zero micro-fonts with WCAG-compliant high-contrast typography, and live particle packet transmission along verified channels.
-  - *Multi-Tier Topological Mesh:* Visualized 1240×780 coordinate space organizing agents into Ingress Gateway, Core Swarm, Specialized Logic, Database Engine, Storage Vault, and Adversarial Sandbox.
-  - *Dynamic Security Filter Rail:* Live filtering across channel security status (`ALL`, `VERIFIED`, `SEVERED`, `QUORUM_LOCKED`, `SANDBOXED`), tier isolation, search query, zoom controls, simulated radar ping, and live particle toggle.
-  - *Dual-Target Deep-Dive Inspector:*
-    - **Channel Inspector:** Decoded cipher suite, transit latency (p99), current message rate (msg/s), synthesized neural intent, active enforcement policy (`STRICT_INSPECT`, `ZERO_EGRESS`, `RESTRICTED_LEASE`, `QUORUM_GATED`), raw packet payload dump, and direct **Sever / Restore Channel** interlock.
-    - **Node Inspector:** Full agent operational profile, cluster assignment, behavioral trust score, assigned permission scopes, active egress channels, and direct **Quarantine / Restore Agent** toggle synchronized with fleet state.
-  - *2-Man Quorum Channel Exemption Modal:* Dual-key cryptographic sign-off (`Commander Key` + `SecOps Quorum Key`) with live SLA timer to exempt high-risk inter-agent communication links.
-  - *Inter-Agent Route Latency Tracer Modal:* Real-time multi-hop transit hop breakdown with microsecond packet trace benchmark, jitter analysis, and eBPF kernel hook confirmation.
-  - *Topology Snapshot Export:* One-click JSON export of the entire 13-node, 15-channel mesh architecture (`nexusguard-agent-network-topology.json`).
-- **Sample exports:** Registry, permission management, agent network topology, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, integrations matrices, architecture blueprints, and enterprise configuration profiles can download JSON snapshots containing sample data.
+- **Agent Network & Inter-Agent Bus (Page 6):** Real-time cryptographic visualization of multi-agent dialogue, mutual TLS handshakes, and lateral intent verification across isolation enclaves.
+  - *Operational Status Deck:* Real-time mesh telemetry banner tracking Protocol v4.2, Zero-Trust Graph Health (99.4%), eBPF mTLS PROV status (ACTIVE), protocol filters (`All`, `mTLS-Ed25519`, `REST API`, `Vector RPC`, `Websocket`), floating physics drift toggle (`Physics: ON / OFF`), and interactive `Simulate Agent Ping` with animated radar wave attestation broadcast.
+  - *Tactical Vector Topology Canvas (70% viewport):* 1000×680 coordinate space with tactical ambient grid and radial glow, SVG connection paths with laser-glow and crimson-glow filters, directional traveling data particles, pulsing red blockage barrier (`✖`), severed enclave markers, and interactive path labels (`420 msgs/hr`, `BLOCKED // POLICY-FIN-003`, `HITL REVIEW REQ`, `QUARANTINE SEVERED`).
+  - *Interactive HTML Node Layer:* 7 precisely mapped agent and gateway cards (`USER-GATEWAY`, `RES-AGENT-01`, `FIN-AGENT-01`, `COD-AGENT-01`, `DB-AGENT-01`, `HR-AGENT-01`, `RED-AGENT-01`) with dynamic trust badges, status indicators, floating drift physics, and click-to-inspect interactivity.
+  - *Bottom Canvas Controls:* Smooth zoom controls (`Zoom In`, `Zoom Out`, `100% Reset`), flow status legend (Safe Flow, Monitored/HITL, Blocked Intent, Severed Enclave), and live metrics (Lateral Bandwidth: 14.2 MB/s, Crypto Latency: 0.8ms).
+  - *Lateral Bus Inspection Drawer (30% HUD):*
+    - Dynamic connection header with real-time status pill, sequence code (`SEQ #8942-eBPF`), and risk indicator (`BLOCKED [HIGH RISK 91/100]`).
+    - Key metadata grid: Intercept Time (UTC), Channel Crypto (mTLS v1.3 Ed25519), Signature Hash, and Target Schema.
+    - Intercepted lateral intent box with confidence rating (99.8%).
+    - Policy violation tag (`POLICY-FIN-003: Strict Enclave Read-Only Invariant`, `REJECT_WRITE`).
+    - Forensic Payload Diff box with syntax highlighting and `// [NexusGuard] INTENT REWRITE INVARIANT`.
+    - Action controls: **Sever Connection Immediately / Restore**, **Escalate to SOC**, **2-Man Bypass**, **Inspect Profile**, and **Quarantine / Restore Agent** (synchronized with workspace fleet state).
+  - *Recent Lateral Handshakes Mini-Table:* Interactive recent handshake ledger (`RES-AGENT-01 ➔ FIN-AGENT-01`, `COD-AGENT-01 ➔ DB-AGENT-01`, `RED-AGENT-01 ➔ COD-AGENT-01`, `HR-AGENT-01 ➔ AUTH-BROKER`) with one-click inspection that loads that channel into the HUD.
+  - *2-Man Multi-Sig Bypass Modal:* Dual-key cryptographic authorization modal requiring Commander Authority (Col. Marcus Vance) and SecOps Secondary Quorum (Elena Rostova) signatures to grant 15-minute ephemeral bypass leases.
+  - *SOC Threat Escalation Modal:* High-priority dispatch modal generating ticket `TICK-SOC-8942-eBPF` with SEV-1 assignment to the 24/7 Threat Hunting Enclave.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, integrations matrices, architecture blueprints, and enterprise configuration profiles can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -361,15 +366,16 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Save Settings:** Click **SAVE SETTINGS** to trigger the animated cryptographic sealing sequence and commit new parameters.
     - **Export Snapshot:** Click **Export Config Snapshot** to download the complete configuration JSON.
 18. In **Agent Network & Inter-Agent Bus (Page 6)**:
-    - **Navigate Topological Mesh:** Explore the 13-node, 5-tier architecture across Ingress, Core Swarm, Specialized Logic, Database Engine, Storage Vault, and Adversarial Sandbox.
-    - **Filter Bus Channels:** Filter channels by security state (**ALL**, **VERIFIED**, **SEVERED**, **QUORUM_LOCKED**, **SANDBOXED**) or search by agent identifier.
-    - **Simulate Radar Ping & Particles:** Click **Radar Ping** to broadcast a cryptographic attestation wave across the canvas; toggle **Particles** to show/hide animated directional data packets.
-    - **Inspect Channel Links:** Click any channel line or badge to inspect its cipher suite, message throughput, transit latency, synthesized neural intent, enforced policy, and raw packet dump.
-    - **Sever / Restore Channels:** In the channel inspector, click **Sever Channel** to instantly cut inter-agent communication, or **Restore Channel** to reconnect the link.
-    - **Exempt Quorum Links (2-Man Rule):** On quorum-locked channels, click **Request 2-Man Quorum Exemption** to open the dual-key authorization modal and authorize temporary traffic.
-    - **Trace Route Latency:** Click **Trace Route Latency** to launch the hop-by-hop packet trace benchmark with microsecond transit diagnostics.
-    - **Inspect & Quarantine Nodes:** Click any agent node in the topology to view its profile, trust score, and active links; click **Quarantine Agent** to place the agent in cryptographic isolation across the workspace.
-    - **Export Topology JSON:** Click **Export Topology** to download the complete 13-node, 15-channel network configuration.
+    - **Filter by Protocol:** Click protocol filter buttons (**All**, **mTLS-Ed25519**, **REST API**, **Vector RPC**, **Websocket**) to isolate matching communication links and nodes across the mesh.
+    - **Toggle Physics Drift:** Click **Physics: ON / OFF** to toggle subtle organic floating motion across the topology nodes.
+    - **Simulate Agent Ping:** Click **Simulate Agent Ping** to broadcast a mutual TLS handshake ping with animated radar wave attestation across the canvas.
+    - **Inspect Nodes:** Click any of the 7 agent/gateway cards (`USER-GATEWAY`, `RES-AGENT-01`, `FIN-AGENT-01`, `COD-AGENT-01`, `DB-AGENT-01`, `HR-AGENT-01`, `RED-AGENT-01`) to focus that node, view its trust score and metadata, inspect its profile, or toggle its cryptographic quarantine state across the fleet.
+    - **Inspect Lateral Bus Channels:** Click any SVG connection path, blockage barrier (`✖`), or callout badge to inspect its channel crypto, transit latency, synthesized neural intent, violated policy rules, and forensic payload diff in the right-hand HUD.
+    - **Sever / Restore Channels:** In the inspection drawer, click **Sever Connection Immediately** to cut lateral communication via eBPF kernel filters, or click again to restore the connection.
+    - **Authorize 2-Man Bypass:** Click **2-Man Bypass** to launch the dual-key authorization modal, sign Key-1 (Commander) and Key-2 (SecOps), and grant an ephemeral 15-minute lease.
+    - **Escalate to SOC:** Click **Escalate to SOC** to dispatch high-priority incident ticket `TICK-SOC-8942-eBPF` to the 24/7 Threat Hunting Enclave.
+    - **Review Recent Lateral Handshakes:** Click any entry in the **Recent Lateral Handshakes** mini-table to immediately focus and inspect that transaction.
+    - **Zoom Controls:** Use the zoom controls in the bottom toolbar to zoom in, zoom out, or reset to 100%.
 19. Use the export buttons to download JSON snapshots of the visible sample data.
 20. Use the workspace profile button to return to the access screen.
 
