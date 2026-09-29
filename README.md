@@ -65,8 +65,28 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
   - *Algorithmic Decay & Calibration Controls:* Interactive modal to tune Sigmoid Steepness ($\alpha$), Decay Half-Life (Hours), Anomaly Velocity Multipliers, and TPM Enclave Attestation Offsets.
   - *Baseline Restoration & Audit Trail:* Mandatory justification modal with approver signature and incident resolution notes to restore baseline trust scores.
   - *Forensic Telemetry Stream Modal:* Raw JSON log inspector with one-click copy and download.
+- **Incident Response & Fleet Kill Switch (Kill Switch & Response - Page 12):** Immediate operational containment, cryptographic credential revocation, and global agent suspension across distributed compute fabrics.
+  - *Emergency DEFCON Broadcast Deck:* Global state banner displaying DEFCON level, isolated agent registry, enclave status, live system epoch timestamp, and fleet-wide broadcast trigger.
+  - *Critical Global Mesh Interlocks (Stage Zero):* 4 hard stop safeguard switches requiring dual-key confirmation:
+    - **Global Agent Kill Switch:** Immediately halt all autonomous LLM tool executions and thread loops cluster-wide.
+    - **Lock Down DB Egress:** Revoke read/write connection pools for PostgreSQL, Redis, Snowflake, and Vector stores.
+    - **Revoke mTLS Tokens:** Nuke all short-lived x509 leaf certificates across active container envelopes and worker pods.
+    - **Isolate Enclaves:** Apply zero-trust kernel firewall partitions around compromised worker clusters.
+  - *Dual-Key Security Authorization Modal:* Interlock confirmation modal requiring Commander Authorization Key (Key-1) and DevSecOps Secondary Token (Key-2) before command transmission.
+  - *Active Incident Investigation Dossier:* Sev-0 Critical incident telemetry (`INC-2025-0891`), offending entity metadata (`FIN-AGENT-01`), demoted trust score (42/100), and execution environment with shadow sandbox clone (`sandbox-09`).
+  - *Real-Time Anomaly Velocity Telemetry Graph:* Interactive responsive SVG telemetry curve illustrating baseline calls/hr (12/hr) vs. anomaly surge (1,480 calls/hr, 123.3x surge) and precise interception timestamp markers.
+  - *Impact Spectrum Bento Cards:* Memory Poison Risk (96.0%), Intent Deviation (+64.2%), and Vector Signature (Indirect Prompt Injection via XML table steganography).
+  - *Chronological Containment Timeline:* 5-stage timestamped ledger from anomaly trigger to human escalation.
+  - *Live Wire Dump Packet Capture:* Raw HTTP/2 wire dump displaying intercepted payload snippet and NexusGuard intent firewall termination response.
+  - *Tactical Mitigation Action Center:* 4 one-click mitigation operations:
+    - **Quarantine Agent:** Immediate process isolation toggle synchronized with fleet state.
+    - **Roll Back Snapshot:** Restore verified pre-injection weights (`Snapshot #172890`).
+    - **Flush Context Window:** Purge in-flight poisoning prompts and working token buffers.
+    - **Broadcast Zero-Day IoC:** Distribute signature `RULE-IOC-0891` mesh-wide.
+  - *Commander Operational Log & Forensics Export:* Cryptographically signed log annotations, structured JSON dossier download, and signed `.PCAP` network capture simulation.
+  - *Isolation Chamber Status Widget:* Active monitoring of occupied air-gapped chambers.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, and audit views can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, and audit views can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -150,9 +170,17 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Restore Baseline:** Click **Restore Baseline (+Audit Justification)** to open the CISO override modal, provide ticket justifications, and reset the agent baseline.
     - **Configure Decay Parameters:** Click **Configure Decay Rate** to tune mathematical half-life ($\lambda$), sigmoid sensitivity ($\alpha$), and TPM attestation offsets.
     - **Export Fleet Matrix:** Click **Export Matrix (.JSON)** to download a complete telemetry snapshot.
-11. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-12. Use the export buttons to download JSON snapshots of the visible sample data.
-13. Use the workspace profile button to return to the access screen.
+11. In **Incident Response & Fleet Kill Switch (Page 12)**:
+    - **Trigger Emergency Broadcast:** Click **Broadcast Red Alert** on the top DEFCON banner to broadcast emergency notices to regional SOC bridges.
+    - **Arm Stage-Zero Interlocks:** Activate global safeguards (**Global Agent Kill Switch**, **Sever DB Egress**, **Revoke mTLS Tokens**, **Isolate Enclaves**) with dual-key authentication (`Col. Marcus Vance` key + DevSecOps token).
+    - **Investigate Active Incident:** Inspect Sev-0 Critical incident `INC-2025-0891` on `FIN-AGENT-01`, tracing the 123.3x DB query anomaly surge curve and intercept markers.
+    - **Review Impact Spectrum Bento:** Check Memory Poison Risk (96%), Intent Deviation (+64.2%), and XML table injection vector details.
+    - **Examine Containment Timeline & Wire Dump:** Follow the chronological event stream and inspect the raw HTTP/2 SQL payload dump.
+    - **Execute Tactical Mitigations:** One-click triggers to **Quarantine Agent**, **Roll Back Snapshot #172890**, **Flush Context Window**, and **Broadcast Zero-Day IoC**.
+    - **Sign Commander Notes & Export:** Add cryptographic commander annotations and download structured JSON logs or `.PCAP` network dumps.
+12. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+13. Use the export buttons to download JSON snapshots of the visible sample data.
+14. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -187,6 +215,9 @@ NexusGuard/
 │   │   │   ├── IntentFirewall/
 │   │   │   │   ├── IntentFirewall.tsx
 │   │   │   │   └── intent-firewall.css
+│   │   │   ├── KillSwitch/
+│   │   │   │   ├── KillSwitch.tsx
+│   │   │   │   └── kill-switch.css
 │   │   │   ├── Permissions/
 │   │   │   │   ├── PermissionManagement.tsx
 │   │   │   │   └── permission-management.css
