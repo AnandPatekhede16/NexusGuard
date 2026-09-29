@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, and a human-in-the-loop approval center (HITL Enclave).
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, a human-in-the-loop approval center (HITL Enclave), and a comprehensive agent audit trail and cryptographic ledger.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -127,6 +127,22 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
     - **Request Justification:** Inquiry transmission modal pausing SLA countdown while challenging the agent runtime.
     - **Emergency Quarantine Agent:** Process isolation modal immediately placing the agent into quarantined status across the workspace.
     - **Export Authorization Queue:** One-click JSON export of the entire HITL queue.
+- **Comprehensive Agent Audit Trail & Cryptographic Ledger (Audit Trail — Page 15):** Immutable zero-knowledge event log, verifiable SHA-256 block hashes, and complete agent-to-resource trace history.
+  - *Top Context & Control Bar:* Real-time event streaming pulse toggle with ping animation, multi-range UTC time picker, Merkle ledger validation trigger (`Verify Ledger: 0x8f4b...39e`), and one-click forensic PCAP / JSON bundle export.
+  - *Audit Telemetry Quad Deck:*
+    - **Total Logged Events:** 248,912 (+1,420/hr) with proportional progress meter.
+    - **Verification Status:** 100% Sealed with Zero-Drift, locked to block `#4,891,012`.
+    - **Storage Retention:** 365 Days WORM Encrypted (FIPS 140-3 & SEC Rule 17a-4 compliant).
+    - **Latency to Ledger:** 1.2ms (p99.9 < 2.4ms) with cluster-wide reconciliation status.
+  - *Search & Multi-Faceted Query Engine:* Keyboard-accessible search (`⌘F`), quick filter buttons (**Blocked Only [412]**, **High/Crit Risk**, **HITL Pending**, **Clear Filters**), and facet dropdown chips for Agent, Decision, and Risk.
+  - *Comprehensive Audit Trail Event Table:* High-density workstation table featuring UTC timestamps, agent roles, user triggers, action types, target resources (PostgreSQL, S3, K8s, ArXiv, Sandboxes), synthesized intents, risk score indicators, applied policies, and color-coded decisions (**ALLOWED**, **BLOCKED**, **HITL-APPROVED**, **REVIEWED**, **ISOLATED**).
+  - *Forensic Trace Expansion Panel (Active Incident Focus):*
+    - **Zero-Knowledge Trace Pipeline:** 6-stage execution call stack (Stimulus Ingestion $\rightarrow$ LLM Generation Phase $\rightarrow$ Autonomous Tool Call $\rightarrow$ NexusGuard Intent Firewall Interception $\rightarrow$ Policy Rejection $\rightarrow$ Cryptographic Sealing) with formatted SQL/API code snippets.
+    - **Merkle Tree Ledger Leaf:** Leaf index (`#194,821`), epoch block height, SHA-256 leaf hash, parent node root, and interactive visual tree diagram showing branch path and target leaf.
+    - **Hardware Enclave Attestation:** AWS Nitro Enclave v2 PCR0 digest, NexusGuard Root CA #4 certificate signature, and WORM-verified immutable log status.
+    - **Forensic Operations:** One-click JSON copy with clipboard feedback, downloadable signed attestation certificates (`nexusguard-attestation-EV-...json`), and complete forensic archive export.
+  - *Raw Cryptographic Payload Schema:* Interactive inline JSON schema viewer displaying raw cryptographic event packets.
+  - *Merkle Ledger Root Validation Modal:* Interactive DAG tree verification simulation confirming 100% sealed zero-drift integrity.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
 - **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, and audit views can download JSON snapshots containing sample data.
 
@@ -240,9 +256,20 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Execute Emergency Process Quarantine:** Click **Emergency Quarantine Agent** to sever RPC endpoints and isolate the agent across the entire NexusGuard workspace.
     - **Re-verify Quorum:** Click **Re-check Quorum** to ping online SOC commanders.
     - **Export Queue:** Click **Export Queue** to download the complete HITL authorization state as JSON.
-14. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-15. Use the export buttons to download JSON snapshots of the visible sample data.
-16. Use the workspace profile button to return to the access screen.
+14. In **Comprehensive Agent Audit Trail & Cryptographic Ledger (Audit Trail — Page 15)**:
+    - **Toggle Real-Time Stream:** Click **Real-Time Refresh** to pause or resume live ledger polling with visual pulse feedback.
+    - **Select Timeframe Window:** Click the UTC time picker to choose between Today, Last 1 Hour, Last 7 Days, or Full Epoch.
+    - **Query with Multi-Facet Filters:** Use the search bar (`⌘F`) or toggle preset chips (**Blocked Only**, **High/Crit Risk**, **HITL Pending**, **Clear Filters**) and facet dropdowns to isolate audit events.
+    - **Select & Trace Event:** Click any event row in the table (e.g. `FIN-AGENT-01` mutation attempt, `COD-AGENT-01` deploy, or `RED-AGENT-01` sandbox attack) to immediately load its forensic inspection into the lower panel.
+    - **Examine 6-Stage Trace Stack:** Review the chronological zero-knowledge call stack from stimulus ingestion to cryptographic sealing with syntax-highlighted code payloads.
+    - **Inspect Merkle Leaf Tree:** Trace the leaf index, SHA-256 hash, and visual Merkle tree hierarchy leading up to root `0x8f4b...39e`.
+    - **Verify Hardware Attestation:** Check AWS Nitro Enclave v2 PCR0 digest and NexusGuard Root CA #4 signature.
+    - **Copy Event JSON & Export Attestation:** Click **Copy Event JSON** to copy raw payloads or **Export Signed Attestation** to download an Ed25519 verification certificate.
+    - **Validate Entire Merkle Ledger:** Click **Verify Ledger: 0x8f4b...39e** to open the cryptographic validation modal and confirm zero-drift WORM compliance.
+    - **Export Full Forensic Dump:** Click **Export Forensic PCAP / JSON** to download the complete indexed event bundle.
+15. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+16. Use the export buttons to download JSON snapshots of the visible sample data.
+17. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -277,6 +304,9 @@ NexusGuard/
 │   │   │   ├── Approvals/
 │   │   │   │   ├── HumanApprovals.tsx
 │   │   │   │   └── human-approvals.css
+│   │   │   ├── Audit/
+│   │   │   │   ├── AuditTrail.tsx
+│   │   │   │   └── audit-trail.css
 │   │   │   ├── Governance/
 │   │   │   │   ├── GovernanceCenter.tsx
 │   │   │   │   └── governance-center.css
