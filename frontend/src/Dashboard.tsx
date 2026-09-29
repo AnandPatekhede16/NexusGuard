@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Activity, AlertTriangle, ArrowDownToLine, ArrowRight, BadgeCheck, Bell,
   Bug, CheckCircle2, ChevronRight, CircleHelp, ClipboardCheck, Database,
-  Download, FileSearch, Fingerprint, Gauge, GitBranch, Globe2, Layers3,
+  Download, Eye, FileSearch, Fingerprint, Gauge, GitBranch, Globe2, Layers3,
   LockKeyhole, Menu, Network, Play, RefreshCw, Search, Shield, ShieldAlert,
   ShieldCheck, Siren, Sliders, Terminal, UserRound, X,
 } from 'lucide-react';
@@ -38,6 +38,130 @@ type Incident = {
 
 type Page = 'overview' | 'agents' | 'agent-detail' | 'agent-network' | 'permissions' | 'intent-firewall' | 'risk-center' | 'threat-detection' | 'red-agent' | 'trust-behavior' | 'kill-switch' | 'policy-center' | 'human-approvals' | 'audit-trail' | 'integrations' | 'system-architecture' | 'settings';
 type NavigationItem = { label: string; icon: typeof Gauge; target: string; page?: Exclude<Page, 'overview'> };
+
+
+type AssurancePillar = {
+  key: string;
+  number: string;
+  pillar: string;
+  tagline: string;
+  status: string;
+  statusClass: string;
+  metric: string;
+  metricNote: string;
+  description: string;
+  icon: typeof ShieldAlert;
+  tone: string;
+  targetPage: Exclude<Page, 'overview'>;
+  targetLabel: string;
+  enforcementEngine: string;
+  compliance: string;
+};
+
+const assurancePillars: AssurancePillar[] = [
+  {
+    key: 'security',
+    number: '01',
+    pillar: 'SECURITY',
+    tagline: 'Zero-Trust Isolation & Kernel Guardrails',
+    status: 'ENFORCED',
+    statusClass: 'status-enforced',
+    metric: '0.00% Bypass',
+    metricNote: '32 intercepted calls',
+    description: 'Deterministic AST intent firewall, eBPF kernel traps, and hardware-attested execution enclaves.',
+    icon: ShieldAlert,
+    tone: 'cyan',
+    targetPage: 'intent-firewall',
+    targetLabel: 'Intent Firewall',
+    enforcementEngine: 'NexusGuard Intent Firewall v4.2 & eBPF Trap Engine',
+    compliance: 'FIPS 140-3 Enclave, NIST AI RMF Manage 2.4',
+  },
+  {
+    key: 'trust',
+    number: '02',
+    pillar: 'TRUST',
+    tagline: 'Continuous Heuristic Drift & Machine Attestation',
+    status: 'ADAPTIVE',
+    statusClass: 'status-optimal',
+    metric: '88.4 / 100',
+    metricNote: 'Fleet mean score',
+    description: 'Sigmoid privilege decay algorithms, AWS Nitro PCR0 attestation, and dynamic privilege envelopes.',
+    icon: BadgeCheck,
+    tone: 'mint',
+    targetPage: 'trust-behavior',
+    targetLabel: 'Trust & Behavior',
+    enforcementEngine: 'Adaptive Sigmoid Heuristic Engine & Nitro Attestor',
+    compliance: 'ISO/IEC 42001 §9.2, SOC 2 CC6.1',
+  },
+  {
+    key: 'control',
+    number: '03',
+    pillar: 'CONTROL',
+    tagline: 'Stage-Zero Interlocks & Ephemeral Privilege Leases',
+    status: 'ARMED',
+    statusClass: 'status-armed',
+    metric: '4 Interlocks',
+    metricNote: 'Dual-key gating active',
+    description: 'Instant fleet-wide kill switches, database egress severing, and time-bounded capability tokens.',
+    icon: LockKeyhole,
+    tone: 'coral',
+    targetPage: 'kill-switch',
+    targetLabel: 'Kill Switch & Response',
+    enforcementEngine: 'DEFCON Emergency Interlock Controller',
+    compliance: 'Dual-Key 2-Man Quorum, FIPS Level 3 HSM',
+  },
+  {
+    key: 'transparency',
+    number: '04',
+    pillar: 'TRANSPARENCY',
+    tagline: 'Full-Stack Deterministic Intent & Call Stacks',
+    status: '100% VISIBLE',
+    statusClass: 'status-transparent',
+    metric: '6-Stage Traces',
+    metricNote: 'Sub-2.53ms SLA',
+    description: 'Natural language intent synthesis, raw decoded payloads, topological flows, and latency budgets.',
+    icon: Eye,
+    tone: 'blue',
+    targetPage: 'system-architecture',
+    targetLabel: 'System Architecture',
+    enforcementEngine: 'Deterministic AST Tokenizer & Zero-Knowledge Trace Stack',
+    compliance: 'EU AI Act Article 13 & 14 Transparency',
+  },
+  {
+    key: 'accountability',
+    number: '05',
+    pillar: 'ACCOUNTABILITY',
+    tagline: 'Immutable WORM Proofs & 2-Man Quorum Ledger',
+    status: 'WORM SEALED',
+    statusClass: 'status-immutable',
+    metric: 'Block #4,891,012',
+    metricNote: 'Zero-drift Merkle seal',
+    description: 'Cryptographic SHA-256 Merkle proofs, SEC Rule 17a-4 compliant WORM storage, and auditor wavers.',
+    icon: FileSearch,
+    tone: 'purple',
+    targetPage: 'audit-trail',
+    targetLabel: 'Audit Trail',
+    enforcementEngine: 'NexusGuard Merkle Ledger & WORM Storage Enclave',
+    compliance: 'SEC Rule 17a-4, FINRA, GDPR Article 22',
+  },
+  {
+    key: 'oversight',
+    number: '06',
+    pillar: 'AUTONOMY WITH OVERSIGHT',
+    tagline: 'Supervised Velocity Bounded by Real-Time Human SLAs',
+    status: 'HITL GATED',
+    statusClass: 'status-gated',
+    metric: 'SLA 04:18.29',
+    metricNote: '8 pending escalations',
+    description: 'High-velocity multi-agent autonomy paired with synchronous escalation countdowns and 2-person review.',
+    icon: UserRound,
+    tone: 'amber',
+    targetPage: 'human-approvals',
+    targetLabel: 'Human Approvals',
+    enforcementEngine: 'Human Governance Council & HITL Enclave Queue',
+    compliance: 'EU AI Act Article 14 Human Oversight',
+  },
+];
 
 const initialIncidents: Incident[] = [
   { id: 'evt-1048', time: '14:32:17 UTC', agent: 'FIN-AGENT-01', category: 'WRITE VIOLATION', risk: 91, payload: "UPDATE employee_salary SET comp = comp * 1.2 WHERE dept = 'AI-CORE'", action: 'BLOCKED', rule: 'FIN-READ-ONLY-POLICY-v4', detail: 'Sample event only. No live database request was made.' },
@@ -114,6 +238,7 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
   const [activeNav, setActiveNav] = useState('Overview');
   const [activePage, setActivePage] = useState<Page>('overview');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [assuranceModalOpen, setAssuranceModalOpen] = useState(false);
   const searchInput = useRef<HTMLInputElement>(null);
   const toastTimer = useRef<number | undefined>(undefined);
   const selectedAgent = agents.find((agent) => agent.id === selectedAgentId) ?? agents[0];
@@ -160,7 +285,7 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
         event.preventDefault();
         searchInput.current?.focus();
       }
-      if (event.key === 'Escape') setSelectedIncident(null);
+      if (event.key === 'Escape') { setSelectedIncident(null); setAssuranceModalOpen(false); }
     }
     window.addEventListener('keydown', handleShortcuts);
     return () => {
@@ -236,7 +361,7 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
           <span className="console-divider" /><span className="demo-protection"><span /> DEMO PROTECTION PREVIEW</span>
         </div>
         <label className="console-search"><Search size={16} /><input aria-label="Search incidents" onChange={(event) => setQuery(event.target.value)} placeholder="Search agents, intents, policies..." ref={searchInput} value={query} /><kbd>Ctrl K</kbd></label>
-        <div className="console-user-area"><span className="region-pill"><Globe2 size={14} /> US-EAST-SECURE-PROD-CLUSTER-01</span><button className="threat-pill" onClick={() => openPage('threat-detection', 'Threat Detection')} style={{ cursor: 'pointer', border: 'none' }}><AlertTriangle size={14} /> {incidents.length} EVENTS</button><button className="icon-control notification-control" aria-label="Notifications" onClick={() => openPage('threat-detection', 'Threat Detection')}><Bell size={17} /><i /></button><span className="console-divider" /><button className="profile-button" onClick={onSignOut} title="Return to sign-in preview"><span className="profile-avatar">MV</span><span className="profile-name"><strong>Col. Marcus Vance</strong><small>Chief AI Security Officer</small></span><ChevronRight size={14} /></button></div>
+        <div className="console-user-area"><button className="assurance-top-pill" onClick={() => setAssuranceModalOpen(true)} title="View Six Core Assurances Matrix"><ShieldCheck size={14} /><span>6 CORE ASSURANCES</span><strong className="assurance-badge-chip">ACTIVE</strong></button><span className="region-pill"><Globe2 size={14} /> US-EAST-SECURE-PROD-CLUSTER-01</span><button className="threat-pill" onClick={() => openPage('threat-detection', 'Threat Detection')} style={{ cursor: 'pointer', border: 'none' }}><AlertTriangle size={14} /> {incidents.length} EVENTS</button><button className="icon-control notification-control" aria-label="Notifications" onClick={() => openPage('threat-detection', 'Threat Detection')}><Bell size={17} /><i /></button><span className="console-divider" /><button className="profile-button" onClick={onSignOut} title="Return to sign-in preview"><span className="profile-avatar">MV</span><span className="profile-name"><strong>Col. Marcus Vance</strong><small>Chief AI Security Officer</small></span><ChevronRight size={14} /></button></div>
       </header>
 
       <aside className={`console-sidebar${mobileNavOpen ? ' console-sidebar-open' : ''}`}><nav aria-label="Command center navigation">{navigation.map((group) => <div className="nav-group" key={group.group}><h2>{group.group}</h2>{group.items.map(({ label, icon: Icon, ...item }) => <button aria-current={activeNav === label ? 'page' : undefined} className={`nav-link${activeNav === label ? ' nav-link-active' : ''}`} key={label} onClick={() => navigate({ label, icon: Icon, ...item })}><Icon size={16} /><span>{label}</span></button>)}</div>)}</nav><div className="sidebar-foot" id="workspace-status"><span className="sidebar-status-dot" /><span><strong>Backend not connected</strong><small>Showing sample data only</small></span></div></aside>
@@ -244,6 +369,54 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
       <main className="console-main" id="overview"><div className="console-content">
         {activePage === 'agents' ? <AgentRegistry agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'agent-detail' && selectedAgent ? <AgentDetail agent={selectedAgent} onAgentChange={(agentId, change) => setAgents((current) => current.map((agent) => agent.id === agentId ? { ...agent, ...change } : agent))} onNotify={notify} onBack={() => openPage('agents', 'Agent Registry')} /> : activePage === 'agent-network' ? <AgentNetwork agents={agents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'permissions' ? <PermissionManagement agents={agents} setAgents={setAgents} selectedAgentId={selectedAgentId} onSelectedAgentChange={setSelectedAgentId} query={query} onQueryChange={setQuery} onNotify={notify} /> : activePage === 'intent-firewall' ? <IntentFirewall agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'risk-center' ? <RiskCenter agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'threat-detection' ? <ThreatDetection agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'red-agent' ? <RedAgent agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'trust-behavior' ? <TrustBehavior agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'kill-switch' ? <KillSwitch agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'policy-center' ? <GovernanceCenter agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'human-approvals' ? <HumanApprovals agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'audit-trail' ? <AuditTrail agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'integrations' ? <IntegrationsControl agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'system-architecture' ? <SystemArchitecture agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'settings' ? <EnterpriseSettings agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : <>
           <section className="command-heading"><div><div className="command-kickers"><span className="monitor-tag"><i /> PREVIEW MONITORING</span><span className="epoch-label">WORKSPACE: LOCAL-DEMO</span></div><h1>Security Command Center</h1><p>Review sample agent activity, policy events, and workspace posture in one place.</p></div><div className="heading-actions"><span className="sync-chip"><RefreshCw size={14} /> UPDATED {lastSynced}</span><button className="button-primary" onClick={exportSnapshot}><ArrowDownToLine size={15} /> AUDIT SNAPSHOT</button></div></section>
+
+          <section aria-label="Six Core Governance Pillars" className="assurance-overview-deck">
+            <div className="assurance-deck-top">
+              <div>
+                <span className="assurance-kicker"><i /> CORE GOVERNANCE PILLARS</span>
+                <h2>Six Pillars of Autonomous Agent Assurance</h2>
+                <p>Continuous mathematical, cryptographic, and operational guardrails enforced across all agent transactions.</p>
+              </div>
+              <div className="assurance-deck-actions">
+                <span className="assurance-cluster-tag"><ShieldCheck size={14} /> 6 OF 6 PILLARS VERIFIED</span>
+                <button className="button-subtle" onClick={() => setAssuranceModalOpen(true)}>
+                  <FileSearch size={14} /> View Assurance Matrix
+                </button>
+              </div>
+            </div>
+
+            <div className="assurance-pillars-grid">
+              {assurancePillars.map((p) => {
+                const Icon = p.icon;
+                return (
+                  <article
+                    className={`assurance-pillar-card pillar-${p.key}`}
+                    key={p.key}
+                    onClick={() => openPage(p.targetPage, p.targetLabel)}
+                    title={`Inspect ${p.pillar} Console`}
+                  >
+                    <div className="pillar-card-top">
+                      <span className="pillar-num">{p.number} / {p.pillar}</span>
+                      <span className={`pillar-status-chip ${p.statusClass}`}><i /> {p.status}</span>
+                    </div>
+                    <div className="pillar-title-row">
+                      <span className="pillar-icon"><Icon size={18} /></span>
+                      <h3>{p.pillar}</h3>
+                    </div>
+                    <p className="pillar-tagline">{p.tagline}</p>
+                    <div className="pillar-metric-row">
+                      <strong>{p.metric}</strong>
+                      <span>{p.metricNote}</span>
+                    </div>
+                    <div className="pillar-card-foot">
+                      <span>{p.targetLabel}</span>
+                      <ChevronRight size={13} />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
 
           <section aria-label="Sample workspace metrics" className="kpi-grid" id="metrics">{metrics.map(({ label, value, note, icon: Icon, tone, foot }) => <article className={`kpi-card kpi-${tone}`} key={label}><div className="kpi-top"><span>{label}</span><Icon size={16} /></div><div className="kpi-value-row"><strong>{value}</strong><span>{note}</span></div><div className="kpi-foot"><span>{foot}</span><span className="kpi-spark" aria-hidden="true"><i /><i /><i /><i /><i /><i /></span></div></article>)}</section>
 
@@ -260,6 +433,76 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
       </div></main>
 
       {selectedIncident && <div className="drawer-backdrop" onClick={() => setSelectedIncident(null)} role="presentation"><aside aria-label="Incident details" aria-modal="true" className="incident-drawer" onClick={(event) => event.stopPropagation()} role="dialog"><div className="drawer-heading"><div><span className="section-kicker">SAMPLE EVENT DETAIL</span><h2>{selectedIncident.category}</h2></div><button aria-label="Close event details" className="icon-control" onClick={() => setSelectedIncident(null)}><X size={18} /></button></div><dl><div><dt>Event ID</dt><dd>{selectedIncident.id}</dd></div><div><dt>Agent</dt><dd>{selectedIncident.agent}</dd></div><div><dt>Observed</dt><dd>{selectedIncident.time}</dd></div><div><dt>Risk score</dt><dd>{selectedIncident.risk} / 100</dd></div><div><dt>Decision</dt><dd>{selectedIncident.action}</dd></div><div><dt>Policy</dt><dd>{selectedIncident.rule}</dd></div></dl><div className="drawer-payload"><h3>Observed request</h3><code>{selectedIncident.payload}</code></div><p className="drawer-note">{selectedIncident.detail}</p><button className="button-primary drawer-close" onClick={() => setSelectedIncident(null)}>Close details</button></aside></div>}
+      {assuranceModalOpen && (
+        <div className="assurance-modal-backdrop" onClick={() => setAssuranceModalOpen(false)} role="presentation">
+          <aside aria-label="Core Governance Assurances Matrix" aria-modal="true" className="assurance-modal" onClick={(e) => e.stopPropagation()} role="dialog">
+            <div className="assurance-modal-header">
+              <div>
+                <span className="assurance-kicker"><i /> ENTERPRISE ZERO-TRUST ARCHITECTURE</span>
+                <h2>Six Core Pillars of Autonomous Agent Assurance</h2>
+                <p>Deterministic cryptographic and operational invariants enforced across the NexusGuard mesh.</p>
+              </div>
+              <button aria-label="Close modal" className="icon-control" onClick={() => setAssuranceModalOpen(false)}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="assurance-modal-body">
+              <div className="assurance-modal-grid">
+                {assurancePillars.map((p) => {
+                  const Icon = p.icon;
+                  return (
+                    <article className={`assurance-modal-card pillar-${p.key}`} key={p.key}>
+                      <div>
+                        <div className="assurance-modal-card-top">
+                          <span className="pillar-num">{p.number} / {p.pillar}</span>
+                          <span className={`pillar-status-chip ${p.statusClass}`}><i /> {p.status}</span>
+                        </div>
+                        <div className="pillar-title-row" style={{ marginTop: '8px' }}>
+                          <span className="pillar-icon"><Icon size={18} /></span>
+                          <h3>{p.pillar}</h3>
+                        </div>
+                        <p>{p.description}</p>
+                      </div>
+
+                      <dl className="assurance-spec-row">
+                        <div className="assurance-spec-item">
+                          <dt>Primary Engine</dt>
+                          <dd>{p.enforcementEngine}</dd>
+                        </div>
+                        <div className="assurance-spec-item">
+                          <dt>Standard & Proof</dt>
+                          <dd>{p.compliance}</dd>
+                        </div>
+                        <div className="assurance-spec-item">
+                          <dt>Active Metric</dt>
+                          <dd style={{ color: 'var(--cyan)' }}>{p.metric}</dd>
+                        </div>
+                      </dl>
+
+                      <button
+                        className="assurance-modal-jump-btn"
+                        onClick={() => {
+                          setAssuranceModalOpen(false);
+                          openPage(p.targetPage, p.targetLabel);
+                        }}
+                      >
+                        <span>Open {p.targetLabel}</span>
+                        <ChevronRight size={14} />
+                      </button>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="assurance-modal-footer">
+              <span>All 6 assurance pillars are continuously verified via FIPS 140-3 HSM & AWS Nitro Enclaves.</span>
+              <button onClick={() => setAssuranceModalOpen(false)}>Close Matrix</button>
+            </div>
+          </aside>
+        </div>
+      )}
       {toast && <div aria-live="polite" className="console-toast" role="status"><CheckCircle2 size={17} /><span>{toast}</span><button aria-label="Dismiss notification" onClick={() => setToast('')}><X size={15} /></button></div>}
     </div>
   );

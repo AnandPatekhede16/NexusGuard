@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Eye,
   EyeOff,
+  FileSearch,
   Fingerprint,
   KeyRound,
   LockKeyhole,
@@ -16,33 +17,52 @@ import {
   Shield,
   ShieldAlert,
   ShieldCheck,
+  UserCheck,
   Webhook,
 } from 'lucide-react';
 import './styles.css';
 
 const capabilities = [
   {
+    pillar: 'SECURITY',
     icon: ShieldCheck,
-    title: 'Intent firewall',
-    description: 'Inspect agent intent before sensitive actions reach your tools.',
+    title: 'Zero-Trust Isolation',
+    description: 'Deterministic AST intent firewall, eBPF kernel traps, and hardened execution enclaves.',
     tone: 'cyan',
   },
   {
-    icon: KeyRound,
-    title: 'Scoped permissions',
-    description: 'Give every agent only the access its task actually needs.',
-    tone: 'blue',
-  },
-  {
-    icon: ShieldAlert,
-    title: 'Risk & threat signals',
-    description: 'Surface unusual behavior and route high-risk actions for review.',
+    pillar: 'TRUST',
+    icon: BadgeCheck,
+    title: 'Adaptive Scoring',
+    description: 'Continuous heuristic drift tracking, sigmoid privilege decay, and Nitro hardware attestation.',
     tone: 'lime',
   },
   {
-    icon: Activity,
-    title: 'Auditable actions',
-    description: 'Keep a clear record of decisions, approvals, and agent activity.',
+    pillar: 'CONTROL',
+    icon: LockKeyhole,
+    title: 'Stage-Zero Interlocks',
+    description: 'Hardware kill switches, dual-key authorizations, and ephemeral privilege envelopes.',
+    tone: 'coral',
+  },
+  {
+    pillar: 'TRANSPARENCY',
+    icon: Eye,
+    title: 'Full-Stack Visibility',
+    description: 'Natural language intent synthesis, raw payload inspection, and deterministic execution trace.',
+    tone: 'blue',
+  },
+  {
+    pillar: 'ACCOUNTABILITY',
+    icon: FileSearch,
+    title: 'Immutable WORM Ledger',
+    description: 'Verifiable SHA-256 Merkle proofs, FIPS 140-3 audit trails, and multi-party quorum sign-offs.',
+    tone: 'purple',
+  },
+  {
+    pillar: 'AUTONOMY WITH OVERSIGHT',
+    icon: UserCheck,
+    title: 'Supervised Velocity',
+    description: 'High-velocity multi-agent autonomy bounded by synchronous SLA countdowns and human escalations.',
     tone: 'amber',
   },
 ];
@@ -87,24 +107,44 @@ export default function App() {
           </header>
 
           <div className="brand-copy">
-            <p className="eyebrow"><span className="eyebrow-rule" /> AGENT SECURITY, IN FOCUS</p>
+            <p className="eyebrow"><span className="eyebrow-rule" /> SOVEREIGN AI AGENT GOVERNANCE</p>
             <h1 id="brand-title">Trust every agent.<br /><span>Verify every action.</span></h1>
             <p className="brand-description">
-              One clear view of the identities, permissions, and decisions shaping your AI workforce.
+              The enterprise zero-trust control plane establishing deterministic <strong>Security</strong>, dynamic <strong>Trust</strong>, absolute <strong>Control</strong>, radical <strong>Transparency</strong>, cryptographic <strong>Accountability</strong>, and <strong>Autonomy with Human Oversight</strong>.
             </p>
           </div>
 
-          <div className="capability-grid" aria-label="NexusGuard capabilities">
-            {capabilities.map(({ icon: Icon, title, description, tone }, index) => (
-              <article className={`capability capability-${tone}`} key={title}>
+          <div className="assurance-ribbon-tag">
+            <ShieldCheck size={14} />
+            <span>SIX CORE PILLARS OF AGENT ASSURANCE</span>
+          </div>
+
+          <div className="capability-grid capability-grid-six" aria-label="NexusGuard capabilities">
+            {capabilities.map(({ pillar, icon: Icon, title, description, tone }, index) => (
+              <article className={`capability capability-${tone}`} key={pillar}>
                 <div className="capability-topline">
                   <span className="capability-icon"><Icon size={17} strokeWidth={1.8} /></span>
+                  <span className="capability-pillar-badge">{pillar}</span>
                   <span className="capability-index">0{index + 1}</span>
                 </div>
                 <h2>{title}</h2>
                 <p>{description}</p>
               </article>
             ))}
+          </div>
+
+          <div className="assurance-ticker-bar">
+            <span>SECURITY</span>
+            <i>·</i>
+            <span>TRUST</span>
+            <i>·</i>
+            <span>CONTROL</span>
+            <i>·</i>
+            <span>TRANSPARENCY</span>
+            <i>·</i>
+            <span>ACCOUNTABILITY</span>
+            <i>·</i>
+            <span>AUTONOMY WITH OVERSIGHT</span>
           </div>
 
           <footer className="platform-status">

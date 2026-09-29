@@ -80,21 +80,72 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .brand-copy h1 span { color: #9dafae; }
 .brand-description { max-width: 435px; margin: 18px 0 0; color: #a2b1b3; font-size: 14px; line-height: 1.8; }
 
-.capability-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.capability { min-height: 132px; padding: 14px 15px 13px; border: 1px solid var(--line); border-radius: 6px; background: rgba(20, 32, 36, 0.68); animation: rise-in 520ms ease-out both; }
-.capability:nth-child(1) { animation-delay: 110ms; }
-.capability:nth-child(2) { animation-delay: 170ms; }
-.capability:nth-child(3) { animation-delay: 230ms; }
-.capability:nth-child(4) { animation-delay: 290ms; }
-.capability-topline { justify-content: space-between; }
-.capability-icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 5px; }
-.capability-index { color: #526468; font-size: 9px; }
-.capability h2 { margin: 10px 0 5px; font-size: 12px; font-weight: 700; }
-.capability p { max-width: 245px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.assurance-ribbon-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(101, 229, 219, 0.08);
+  border: 1px solid rgba(101, 229, 219, 0.22);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+}
+
+.capability-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.capability-grid-six { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.capability { min-height: 110px; padding: 12px 14px 11px; border: 1px solid var(--line); border-radius: 6px; background: rgba(20, 32, 36, 0.68); animation: rise-in 520ms ease-out both; }
+.capability:nth-child(1) { animation-delay: 100ms; }
+.capability:nth-child(2) { animation-delay: 150ms; }
+.capability:nth-child(3) { animation-delay: 200ms; }
+.capability:nth-child(4) { animation-delay: 250ms; }
+.capability:nth-child(5) { animation-delay: 300ms; }
+.capability:nth-child(6) { animation-delay: 350ms; }
+.capability-topline { justify-content: space-between; gap: 8px; }
+.capability-icon { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 5px; flex-shrink: 0; }
+.capability-pillar-badge {
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #c9d7d9;
+}
+.capability-index { color: #526468; font-size: 9px; font-family: var(--mono); }
+.capability h2 { margin: 8px 0 4px; font-size: 11.5px; font-weight: 700; }
+.capability p { max-width: 245px; margin: 0; color: var(--muted); font-size: 9.5px; line-height: 1.5; }
 .capability-cyan .capability-icon { color: #69e6dc; background: rgba(105, 230, 220, 0.1); }
 .capability-blue .capability-icon { color: #91c2e9; background: rgba(117, 175, 222, 0.1); }
 .capability-lime .capability-icon { color: #bbe789; background: rgba(187, 231, 137, 0.1); }
+.capability-coral .capability-icon { color: #ff8577; background: rgba(255, 133, 119, 0.1); }
+.capability-purple .capability-icon { color: #d0a4ff; background: rgba(208, 164, 255, 0.1); }
 .capability-amber .capability-icon { color: #e6c57a; background: rgba(230, 197, 122, 0.1); }
+
+.assurance-ticker-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 8px 12px;
+  background: rgba(11, 21, 25, 0.6);
+  border: 1px solid rgba(101, 229, 219, 0.15);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  color: var(--cyan);
+  letter-spacing: 0.7px;
+  overflow-x: auto;
+}
+.assurance-ticker-bar span { white-space: nowrap; font-weight: 600; }
+.assurance-ticker-bar i { color: rgba(181, 211, 211, 0.3); font-style: normal; }
 
 .platform-status { margin-top: 20px; padding: 14px 15px 12px; border: 1px solid var(--line); border-radius: 6px; background: rgba(9, 16, 19, 0.42); }
 .status-heading { justify-content: space-between; gap: 12px; }
@@ -519,4 +570,461 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   .posture-panel { display: flex; }
   .distribution-legend { font-size: 8px; }
   .console-footer { flex-direction: column; gap: 5px; font-size: 7px; }
+}
+/* ==========================================================================
+   SIX PILLARS OF ASSURANCE: SECURITY · TRUST · CONTROL · TRANSPARENCY · ACCOUNTABILITY · OVERSIGHT
+   ========================================================================== */
+
+.assurance-top-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(101, 229, 219, 0.08);
+  border: 1px solid rgba(101, 229, 219, 0.28);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.assurance-top-pill:hover {
+  background: rgba(101, 229, 219, 0.16);
+  border-color: rgba(101, 229, 219, 0.5);
+  box-shadow: 0 0 12px rgba(101, 229, 219, 0.2);
+}
+.assurance-badge-chip {
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(182, 231, 126, 0.2);
+  color: var(--green);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.assurance-overview-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(17, 26, 30, 0.95) 0%, rgba(13, 20, 24, 0.98) 100%);
+  border: 1px solid rgba(181, 211, 211, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  animation: rise-in 400ms ease-out both;
+}
+
+.assurance-deck-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid rgba(181, 211, 211, 0.08);
+  padding-bottom: 14px;
+}
+.assurance-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  font-weight: 700;
+}
+.assurance-kicker i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+.assurance-deck-top h2 {
+  margin: 4px 0 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  color: #f1f5f5;
+}
+.assurance-deck-top p {
+  margin: 3px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.assurance-deck-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.assurance-cluster-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(182, 231, 126, 0.08);
+  border: 1px solid rgba(182, 231, 126, 0.25);
+  border-radius: 4px;
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.assurance-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.assurance-pillar-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 195px;
+  padding: 14px 13px 12px;
+  background: rgba(22, 34, 38, 0.55);
+  border: 1px solid rgba(181, 211, 211, 0.12);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.assurance-pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 220ms ease;
+}
+.assurance-pillar-card:hover {
+  transform: translateY(-2px);
+  background: rgba(26, 40, 45, 0.85);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.pillar-security:hover::before { background: #65e5db; }
+.pillar-security:hover { border-color: rgba(101, 229, 219, 0.4); }
+.pillar-trust:hover::before { background: #b6e77e; }
+.pillar-trust:hover { border-color: rgba(182, 231, 126, 0.4); }
+.pillar-control:hover::before { background: #ff8577; }
+.pillar-control:hover { border-color: rgba(255, 133, 119, 0.4); }
+.pillar-transparency:hover::before { background: #91c2e9; }
+.pillar-transparency:hover { border-color: rgba(145, 194, 233, 0.4); }
+.pillar-accountability:hover::before { background: #d0a4ff; }
+.pillar-accountability:hover { border-color: rgba(208, 164, 255, 0.4); }
+.pillar-oversight:hover::before { background: #ffd166; }
+.pillar-oversight:hover { border-color: rgba(255, 209, 102, 0.4); }
+
+.pillar-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.pillar-num {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: #7b8f92;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+}
+
+.pillar-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+.pillar-status-chip i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+.status-enforced { background: rgba(101, 229, 219, 0.12); color: #65e5db; border: 1px solid rgba(101, 229, 219, 0.25); }
+.status-enforced i { background: #65e5db; box-shadow: 0 0 6px #65e5db; }
+.status-optimal { background: rgba(182, 231, 126, 0.12); color: #b6e77e; border: 1px solid rgba(182, 231, 126, 0.25); }
+.status-optimal i { background: #b6e77e; box-shadow: 0 0 6px #b6e77e; }
+.status-armed { background: rgba(255, 133, 119, 0.12); color: #ff8577; border: 1px solid rgba(255, 133, 119, 0.25); }
+.status-armed i { background: #ff8577; box-shadow: 0 0 6px #ff8577; }
+.status-transparent { background: rgba(145, 194, 233, 0.12); color: #91c2e9; border: 1px solid rgba(145, 194, 233, 0.25); }
+.status-transparent i { background: #91c2e9; box-shadow: 0 0 6px #91c2e9; }
+.status-immutable { background: rgba(208, 164, 255, 0.12); color: #d0a4ff; border: 1px solid rgba(208, 164, 255, 0.25); }
+.status-immutable i { background: #d0a4ff; box-shadow: 0 0 6px #d0a4ff; }
+.status-gated { background: rgba(255, 209, 102, 0.12); color: #ffd166; border: 1px solid rgba(255, 209, 102, 0.25); }
+.status-gated i { background: #ffd166; box-shadow: 0 0 6px #ffd166; }
+
+.pillar-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.pillar-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.pillar-security .pillar-icon { color: #65e5db; background: rgba(101, 229, 219, 0.12); }
+.pillar-trust .pillar-icon { color: #b6e77e; background: rgba(182, 231, 126, 0.12); }
+.pillar-control .pillar-icon { color: #ff8577; background: rgba(255, 133, 119, 0.12); }
+.pillar-transparency .pillar-icon { color: #91c2e9; background: rgba(145, 194, 233, 0.12); }
+.pillar-accountability .pillar-icon { color: #d0a4ff; background: rgba(208, 164, 255, 0.12); }
+.pillar-oversight .pillar-icon { color: #ffd166; background: rgba(255, 209, 102, 0.12); }
+
+.pillar-title-row h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: #f1f5f5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pillar-tagline {
+  margin: 0 0 10px;
+  font-size: 9.5px;
+  color: #a4b4b6;
+  line-height: 1.4;
+  min-height: 26px;
+}
+
+.pillar-metric-row {
+  padding: 8px 10px;
+  background: rgba(11, 17, 21, 0.7);
+  border: 1px solid rgba(181, 211, 211, 0.08);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pillar-metric-row strong {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  font-family: var(--mono);
+}
+.pillar-metric-row span {
+  font-size: 8.5px;
+  color: var(--muted);
+}
+
+.pillar-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(181, 211, 211, 0.08);
+  font-size: 8.5px;
+  color: var(--cyan);
+  font-weight: 600;
+}
+.pillar-card-foot span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   ASSURANCE MATRIX MODAL
+   ========================================================================== */
+
+.assurance-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(4, 8, 10, 0.84);
+  backdrop-filter: blur(8px);
+  animation: fade-in 180ms ease-out both;
+}
+
+.assurance-modal {
+  width: min(1080px, 100%);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  background: #0d1519;
+  border: 1px solid rgba(101, 229, 219, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 30px rgba(101, 229, 219, 0.1);
+  overflow: hidden;
+  animation: frame-in 240ms ease-out both;
+}
+
+.assurance-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: linear-gradient(90deg, rgba(16, 27, 31, 0.95), rgba(12, 19, 22, 0.95));
+  border-bottom: 1px solid rgba(181, 211, 211, 0.15);
+}
+.assurance-modal-header h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  color: #fff;
+}
+.assurance-modal-header p {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.assurance-modal-body {
+  padding: 22px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.assurance-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.assurance-modal-card {
+  padding: 16px;
+  border: 1px solid rgba(181, 211, 211, 0.12);
+  border-radius: 6px;
+  background: rgba(17, 26, 30, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.assurance-modal-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.assurance-modal-card h3 {
+  margin: 8px 0 3px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #f1f5f5;
+}
+.assurance-modal-card p {
+  margin: 0;
+  font-size: 10px;
+  color: #a4b4b6;
+  line-height: 1.5;
+}
+
+.assurance-spec-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(9, 14, 17, 0.85);
+  border-radius: 4px;
+  border: 1px solid rgba(181, 211, 211, 0.08);
+  font-size: 9px;
+}
+.assurance-spec-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.assurance-spec-item dt {
+  color: #7b8f92;
+  font-family: var(--mono);
+}
+.assurance-spec-item dd {
+  margin: 0;
+  color: #dbe4e5;
+  text-align: right;
+  font-weight: 600;
+}
+
+.assurance-modal-jump-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(101, 229, 219, 0.28);
+  border-radius: 4px;
+  background: rgba(101, 229, 219, 0.08);
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.assurance-modal-jump-btn:hover {
+  background: rgba(101, 229, 219, 0.18);
+  border-color: rgba(101, 229, 219, 0.5);
+  box-shadow: 0 0 10px rgba(101, 229, 219, 0.2);
+}
+
+.assurance-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(12, 18, 21, 0.95);
+  border-top: 1px solid rgba(181, 211, 211, 0.12);
+  font-size: 10px;
+  color: var(--muted);
+}
+.assurance-modal-footer button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: var(--cyan);
+  border: none;
+  color: #0b1115;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+  .assurance-pillars-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 950px) {
+  .assurance-pillars-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .assurance-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .assurance-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .assurance-deck-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
