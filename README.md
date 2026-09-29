@@ -1,6 +1,6 @@
 # NexusGuard
 
-NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, a human-in-the-loop approval center (HITL Enclave), and a comprehensive agent audit trail and cryptographic ledger.
+NexusGuard is a frontend prototype for an AI-agent security and governance workspace. It provides a sign-in preview, a security command center, an agent directory, permission management, agent profiles, an agent-network visualization, a semantic intent firewall, an AI risk assessment and anomaly center, a real-time threat detection center, an adversarial AI testing simulator (RedAgent), agent trust and drift analytics, fleet kill switch controls, an AI governance and regulatory compliance center, a human-in-the-loop approval center (HITL Enclave), a comprehensive agent audit trail and cryptographic ledger, and a zero-trust tool and system integrations control plane.
 
 > **Prototype status:** The backend, authentication, live telemetry, identity provider, and enforcement services are not implemented or connected. The frontend uses illustrative sample data and local browser state. Do not use it to secure or operate production agents.
 
@@ -143,8 +143,22 @@ NexusGuard is a frontend prototype for an AI-agent security and governance works
     - **Forensic Operations:** One-click JSON copy with clipboard feedback, downloadable signed attestation certificates (`nexusguard-attestation-EV-...json`), and complete forensic archive export.
   - *Raw Cryptographic Payload Schema:* Interactive inline JSON schema viewer displaying raw cryptographic event packets.
   - *Merkle Ledger Root Validation Modal:* Interactive DAG tree verification simulation confirming 100% sealed zero-drift integrity.
+- **Tool & System Integrations Control Plane (Integrations — Page 16):** Unified zero-trust perimeter management and AST deterministic tree interception for external APIs, relational databases, cloud enclaves, browsers, and code repositories accessed by autonomous agents.
+  - *Operational Status Deck:* Real-time enclave telemetry banner tracking Connected Integrations (8 active across 7 infra sectors), 100% Protected & Proxied Enclave Hooks, 0.00% Tool Abuse Bypass (32 rogue calls neutralized), and Throughput & Overhead (48.2 MB/s, 0.65ms avg overhead).
+  - *Infrastructure Category Filter & Search:* 6-sector tab pills (`All [8]`, `Databases [2]`, `APIs & Webhooks [2]`, `Cloud Infrastructure [2]`, `Browsers & Sandboxes [1]`, `Code & Git Repos [1]`), live keyword search across resource names, ARNs, and endpoints, and dual Card/Table view mode toggle.
+  - *Integration Asset Cards & Compact Table:* Interactive cards and high-density tabular view with colored category rails, cluster badges, protocol indicators, scoped agent leases with permission tiers, and hard invariant rules (`DROP / ALTER TABLE strictly barred`, `Zero unencrypted egress`, `eBPF network sandbox`).
+  - *Live Intent Gateway Topology & Egress Traces:* Interactive SVG schematic illustrating live flow lines between Agent Swarm (`FIN / COD / RES`), NexusGuard Intent Gateway (`AST Verification OK`, `Latency: 0.65ms`), and target enclaves (`PostgreSQL Core`, `S3 Vault SSE-C`, `Swift Financial`) with live enclave verification tokens (`0x88F7...AE3B`).
+  - *Deep-Dive Active Inspection Drawer:* Dynamic right-hand panel for selected integration displaying connection parameters (AST Deterministic Tree Checker, Dynamic Nitro Ephemeral Auth, SHA-256 Hashing, Assigned Policy Pack), active perimeter tripwires (DDL tripwire, rate-limiter, sensitive column masking), and AST parse latency telemetry sparkline (p99: 0.81ms).
+  - *Nitro Enclave Cryptographic Attestation:* Real-time hardware attestation card verifying Nitro enclave PCR0 digests through AWS KMS.
+  - *Interactive Operations & Modals:*
+    - **Register New Tool (+):** Modal to enroll external assets into the NexusGuard zero-trust proxy with assigned primary autonomous agents.
+    - **Test Gateway Connection:** Live mTLS 1.3 cryptographic handshake ping simulation with latency benchmarking.
+    - **Inspect Proxy Access Logs:** Decoded AST tokenizer audit stream terminal showing real-time allowed and severed execution attempts.
+    - **Revoke All Agent Leases:** Emergency safeguard modal severing RPC endpoints, invalidating mTLS leases, and isolating connected assets.
+    - **Re-validate Enclaves:** Cluster-wide hardware attestation re-check.
+    - **Export Access Matrix:** One-click JSON export of the entire perimeter integration state.
 - **Agent Network:** Seven-node illustrative topology, protocol filters, selectable nodes and links, zoom controls, simulated ping, and local-only sever/review interactions.
-- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, and audit views can download JSON snapshots containing sample data.
+- **Sample exports:** Registry, permission management, intent firewall stream, risk center metrics, STIX/TAXII threat intelligence bundles, RedAgent attack replays, dynamic trust matrices, incident response dossiers, audit views, and integrations matrices can download JSON snapshots containing sample data.
 
 All sample records and metrics are presented for interface demonstration; they are not sourced from live agents or services.
 
@@ -181,7 +195,7 @@ All sample records and metrics are presented for interface demonstration; they a
 ## Use the prototype
 
 1. On the access screen, choose **Preview the command center**. Submitting the sign-in form does not authenticate a user; it displays a message that authentication is not connected.
-2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, **RedAgent Simulator**, or **Agent Network**. These pages share sample agent records during the current browser session.
+2. Use the left navigation to open **Agent Registry**, **Agent Detail**, **Permission Management**, **Semantic Intent Firewall**, **Risk Center**, **Threat Detection**, **RedAgent Simulator**, **Agent Trust & Behavioral Drift Analytics**, **Kill Switch & Response**, **Policy Center & Compliance**, **Human Approvals**, **Audit Trail**, **Integrations**, or **Agent Network**. These pages share sample agent records during the current browser session.
 3. In **Agent Registry**, search or filter the sample agents, inspect a profile, or add a sample agent. Changes exist only in the current browser session.
 4. In **Permission Management**, filter or search the directory, select an agent, grant a predefined sample scope, or revoke a scope after confirmation. These edits are shared with the Registry and Agent Detail screens but only in local frontend state.
 5. In **Agent Detail**, inspect the selected sample identity, edit its scopes, view example events, or change its sample status. Confirmations state that no live agent is affected.
@@ -267,9 +281,20 @@ All sample records and metrics are presented for interface demonstration; they a
     - **Copy Event JSON & Export Attestation:** Click **Copy Event JSON** to copy raw payloads or **Export Signed Attestation** to download an Ed25519 verification certificate.
     - **Validate Entire Merkle Ledger:** Click **Verify Ledger: 0x8f4b...39e** to open the cryptographic validation modal and confirm zero-drift WORM compliance.
     - **Export Full Forensic Dump:** Click **Export Forensic PCAP / JSON** to download the complete indexed event bundle.
-15. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
-16. Use the export buttons to download JSON snapshots of the visible sample data.
-17. Use the workspace profile button to return to the access screen.
+15. In **Tool & System Integrations Control Plane (Integrations — Page 16)**:
+    - **Filter by Infra Category:** Click category filter pills (**All**, **Databases**, **APIs & Webhooks**, **Cloud Infrastructure**, **Browsers & Sandboxes**, **Code & Git Repos**) or type in the search bar to filter connected resources.
+    - **Switch View Mode:** Toggle between Card Grid View and Compact Table View.
+    - **Select & Inspect Asset:** Click any integration card or table row (e.g. `PostgreSQL Core Ledger`, `AWS S3 Vault`, `SWIFT Core Banking API`, `Chromium Headless Sandbox`) to load its deep-dive parameters into the right inspection drawer.
+    - **Review Tripwires & Sparkline:** Examine active perimeter tripwires (DDL triggers, rate limiters, column masking) and parse latency sparkline.
+    - **Register New Asset:** Click **Register New Tool (+)** to open the enrollment modal, configure asset name, category, endpoint URI, and assigned agent.
+    - **Test Gateway Handshake:** Click **Test Gateway Connection** to simulate mTLS 1.3 verification with latency metrics.
+    - **View Proxy Logs:** Click **Inspect Proxy Access Logs** to review recent AST tokenizer audit events and blocked query attempts.
+    - **Emergency Lease Revocation:** Click **Revoke All Agent Leases** to confirm immediate session token revocation and resource isolation.
+    - **Re-validate Enclaves:** Click **Re-validate Enclaves** to trigger cluster-wide PCR0 attestation re-verification.
+    - **Export Matrix:** Click **Export Matrix** to download the complete integrations perimeter state as JSON.
+16. In **Agent Network**, filter illustrative links by protocol, select nodes or connections, adjust zoom, and use sample ping, sever, and review controls. No network packets are sent.
+17. Use the export buttons to download JSON snapshots of the visible sample data.
+18. Use the workspace profile button to return to the access screen.
 
 ## Build for preview
 
@@ -310,6 +335,9 @@ NexusGuard/
 │   │   │   ├── Governance/
 │   │   │   │   ├── GovernanceCenter.tsx
 │   │   │   │   └── governance-center.css
+│   │   │   ├── Integrations/
+│   │   │   │   ├── IntegrationsControl.tsx
+│   │   │   │   └── integrations-control.css
 │   │   │   ├── IntentFirewall/
 │   │   │   │   ├── IntentFirewall.tsx
 │   │   │   │   └── intent-firewall.css
