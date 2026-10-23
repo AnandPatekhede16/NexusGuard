@@ -24,10 +24,15 @@ type AnomalyEvent = {
   actionTaken?: string;
 };
 
+function getRelativeUtcTime(minutesAgo: number): string {
+  const d = new Date(Date.now() - minutesAgo * 60 * 1000);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC';
+}
+
 const initialAnomalyEvents: AnomalyEvent[] = [
   {
     id: 'anom-901',
-    time: '14:34:11.890',
+    time: getRelativeUtcTime(2),
     agent: 'RED-AGENT-01',
     title: 'Memory Buffer Deserialization Overflow',
     description: 'Attempted memory heap inspection targeting kernel-adjacent shared tensor cache',
@@ -39,7 +44,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   },
   {
     id: 'anom-902',
-    time: '14:28:04.112',
+    time: getRelativeUtcTime(5),
     agent: 'FIN-AGENT-01',
     title: 'Unusual Schema Write `corp_salaries_2024`',
     description: 'Payload included UPDATE query with 14 rows mutated without elevated clearance token',
@@ -51,7 +56,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   },
   {
     id: 'anom-903',
-    time: '14:19:42.503',
+    time: getRelativeUtcTime(9),
     agent: 'RES-AGENT-01',
     title: 'Excessive API Query Rate to External S3 Bucket',
     description: 'Rapid GetObject bursts targeting candidate archive metadata. Bucket policy clamped.',
@@ -63,7 +68,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   },
   {
     id: 'anom-904',
-    time: '14:12:09.301',
+    time: getRelativeUtcTime(14),
     agent: 'COD-AGENT-01',
     title: 'Prompt Injection Marker in File Header',
     description: 'Ingested document contained standard delimiter bypass sequence `--- SYSTEM PROMPT OVERRIDE ---`',
@@ -75,7 +80,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   },
   {
     id: 'anom-905',
-    time: '13:58:33.220',
+    time: getRelativeUtcTime(19),
     agent: 'DB-AGENT-01',
     title: 'Wildcard SELECT on Non-Indexed Core Table',
     description: 'Agent executed non-paginated query resulting in query timeout and resource throttling.',
@@ -87,7 +92,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   },
   {
     id: 'anom-906',
-    time: '13:41:19.004',
+    time: getRelativeUtcTime(25),
     agent: 'RED-AGENT-01',
     title: 'Unauthorized Outbound TCP Socket Attempt',
     description: 'Direct socket dial to external IP 185.220.101.5 on port 4444. Hard network kill initiated.',
