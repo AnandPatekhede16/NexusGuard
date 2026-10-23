@@ -876,7 +876,7 @@ Weekly RedAgent adversarial regressions confirmed 1,842 of 1,842 threat payloads
             <span className="hidden-mobile">AUG 2024 (92.4%)</span>
             <span>NOV 2024 (94.2%)</span>
             <span className="hidden-mobile">FEB 2025 (95.8%)</span>
-            <span className="text-mint font-bold">CURRENT: APR 2025 (96.4%)</span>
+            <span className="text-mint font-bold">CURRENT: {new Date().toLocaleString('default', { month: 'short' }).toUpperCase()} {new Date().getFullYear()} (96.4%)</span>
           </div>
         </div>
 
@@ -1065,7 +1065,7 @@ Weekly RedAgent adversarial regressions confirmed 1,842 of 1,842 threat payloads
                   ) : (
                     <Clock size={16} className="text-outline shrink-0" />
                   )}
-                  <span>1. Validating mTLS Ed25519 identity certificates &amp; AWS Nitro enclaves (24/24 agents)...</span>
+                  <span>1. Validating mTLS Ed25519 identity certificates &amp; Nitro enclaves ({agents.length}/{agents.length} sovereign agents)...</span>
                 </div>
 
                 <div className={`scan-step-item ${scanStep >= 2 ? 'step-done' : 'step-pending'}`}>
@@ -1105,7 +1105,7 @@ Weekly RedAgent adversarial regressions confirmed 1,842 of 1,842 threat payloads
                   <CheckCircle2 size={20} className="text-mint" />
                   <div>
                     <strong className="text-mint">Fleet Posture 96.4% Verified</strong>
-                    <p className="text-xs text-on-surface-variant m-0">All 24 agents verified compliant with zero active boundary infractions.</p>
+                    <p className="text-xs text-on-surface-variant m-0">All {agents.length} sovereign agents verified compliant with zero active boundary infractions.</p>
                   </div>
                 </div>
               )}
