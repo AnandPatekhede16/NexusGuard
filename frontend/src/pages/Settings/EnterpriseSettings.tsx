@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { useState, useEffect, type Dispatch, type SetStateAction } from 'react';
 import {
   Activity, AlertTriangle, ArrowRight, BadgeCheck, Check,
   CheckCircle2, ChevronRight, Copy, Database, Download,
@@ -28,6 +28,16 @@ export default function EnterpriseSettings({
   const [activeSection, setActiveSection] = useState<SettingsSection>('topology');
 
   // Form states
+  // Dynamic sync ticker
+  const [syncElapsed, setSyncElapsed] = useState(8);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSyncElapsed((prev) => (prev >= 60 ? 1 : prev + 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const [orgName, setOrgName] = useState('NexusGuard Global Cyber Defense Operations');
   const [tenantId] = useState('org_98bf4e2910ba');
   const [primaryEnclave, setPrimaryEnclave] = useState('US-EAST-SECURE-PROD-CLUSTER-01 (Active Master)');
@@ -78,7 +88,8 @@ export default function EnterpriseSettings({
     setTimeout(() => {
       setIsSaving(false);
       setIsSealed(true);
-      onNotify?.('Enterprise settings successfully committed to AWS Nitro enclaves and Merkle ledger #4,891,013.');
+      setSyncElapsed(0);
+      onNotify?.('Enterprise settings successfully committed to AWS Nitro enclaves, Oracle 11g Express backend, and Merkle ledger #4,891,013.');
       setTimeout(() => {
         setIsSealed(false);
       }, 2500);
@@ -111,6 +122,20 @@ export default function EnterpriseSettings({
           riskScoreFloor: 90,
           trustDegradationFloor: 30,
         },
+        sovereignAgentsEnrolled: [
+          { id: 'DB-AGENT-01', name: 'DB Orchestrator', model: 'gpt-4o' },
+          { id: 'FIN-AGENT-01', name: 'Finance Agent Alpha', model: 'claude-3-5-sonnet' },
+          { id: 'COD-AGENT-01', name: 'DevOps Synth Bot', model: 'deepseek-coder' },
+          { id: 'RES-AGENT-01', name: 'Research Core Vector', model: 'gemini-1.5-pro' },
+          { id: 'RED-AGENT-01', name: 'Adversarial Probe X (RedAgent)', model: 'llama-3.1-70b' },
+        ],
+      },
+      relationalDatabaseBackend: {
+        engine: 'Oracle Database 11g Express Edition',
+        serviceEndpoint: 'localhost:1521/ORCL',
+        clientMode: 'Oracle Thick Client (oracledb)',
+        enclaveZeroTrustAst: 'ENABLED',
+        activeTables: 15,
       },
       cryptographicAudit: {
         wormStorageLedger: 'ENABLED',
@@ -153,7 +178,7 @@ export default function EnterpriseSettings({
 
   // Force Cycle mTLS
   const handleForceCycleMtls = () => {
-    onNotify?.('Initiated zero-downtime mTLS keypair rotation across all 24 connected agent enclaves.');
+    onNotify?.('Initiated zero-downtime mTLS keypair rotation across all 5 sovereign agent enclaves (DB-AGENT-01, FIN-AGENT-01, COD-AGENT-01, RES-AGENT-01, RED-AGENT-01).');
   };
 
   // Rotate KMS Key
@@ -396,7 +421,7 @@ export default function EnterpriseSettings({
               </div>
               <div className="flex items-center justify-between text-xs text-outline">
                 <span>Last Sync:</span>
-                <span className="text-on-surface">14s ago</span>
+                <span className="text-mint font-semibold">{syncElapsed}s ago</span>
               </div>
             </div>
           </div>
@@ -714,6 +739,44 @@ export default function EnterpriseSettings({
                   </div>
                 </div>
                 <span className="field-hint font-mono">Instant network isolation, memory dump export, and session revocation.</span>
+              </div>
+
+              {/* 5 Sovereign Agent Enclaves Bound to Policy */}
+              <div className="param-panel-card full-width">
+                <div className="flex items-center justify-between">
+                  <label className="field-label font-mono">Protected Sovereign Agent Enclaves</label>
+                  <span className="font-mono text-xs text-mint font-bold">5 OF 5 SYNCHRONIZED</span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2 font-mono text-xs">
+                  {[
+                    { id: 'DB-AGENT-01', name: 'DB Orchestrator', model: 'gpt-4o', tone: 'cyan' },
+                    { id: 'FIN-AGENT-01', name: 'Finance Agent Alpha', model: 'claude-3-5-sonnet', tone: 'mint' },
+                    { id: 'COD-AGENT-01', name: 'DevOps Synth Bot', model: 'deepseek-coder', tone: 'mint' },
+                    { id: 'RES-AGENT-01', name: 'Research Core Vector', model: 'gemini-1.5-pro', tone: 'cyan' },
+                    { id: 'RED-AGENT-01', name: 'Adversarial Probe X (RedAgent)', model: 'llama-3.1-70b', tone: 'red' },
+                  ].map((ag) => (
+                    <span
+                      key={ag.id}
+                      className={`px-2.5 py-1 rounded bg-surface-high border ${
+                        ag.tone === 'red'
+                          ? 'border-red/40 text-red'
+                          : ag.tone === 'mint'
+                          ? 'border-mint/40 text-mint'
+                          : 'border-cyan/40 text-cyan'
+                      } flex items-center gap-1.5`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          ag.tone === 'red' ? 'bg-red' : ag.tone === 'mint' ? 'bg-mint' : 'bg-cyan'
+                        }`}
+                      />
+                      <strong>{ag.id}</strong> ({ag.name} ? {ag.model})
+                    </span>
+                  ))}
+                </div>
+                <span className="field-hint font-mono mt-2">
+                  All 5 sovereign autonomous agents are hardware-attested with ephemeral Ed25519 mTLS credentials and Oracle 11g AST enforcement.
+                </span>
               </div>
             </div>
           </section>

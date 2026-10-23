@@ -45,46 +45,47 @@ export type IntegrationAsset = {
 const initialAssets: IntegrationAsset[] = [
   {
     id: 'int-01',
-    name: 'PostgreSQL Core Ledger',
+    name: 'Oracle 11g Express Relational Database (ORCL)',
     category: 'databases',
-    cluster: 'Cluster-01:5432',
-    endpoint: 'postgresql://pg-fin-cluster.internal:5432/corp_prod',
-    protocol: 'PostgreSQL 16.2 / TLS 1.3',
-    badgeLabel: 'AST Firewall Active',
+    cluster: 'localhost:1521 / SID: ORCL',
+    endpoint: 'oracle://nexusguard@localhost:1521/ORCL',
+    protocol: 'Oracle Net8 / SQL*Net / Thick Mode',
+    badgeLabel: 'Zero-Mutation AST Active',
     badgeTone: 'mint',
-    throughput: '1,412 req/min',
-    latency: '0.4ms',
+    throughput: '2,840 queries/min',
+    latency: '0.38ms',
     iconType: 'database',
     accentColor: '#00e5ff',
     scopedAgents: [
-      { id: 'FIN-AGENT-01', perm: 'Read-Only', tone: 'mint' },
-      { id: 'DB-AGENT-01', perm: 'R/W 2-Man Quorum', tone: 'cyan' },
+      { id: 'DB-AGENT-01', perm: 'Full Schema R/W (DBA Quorum)', tone: 'cyan' },
+      { id: 'FIN-AGENT-01', perm: 'Scoped Query (treasury_reserves)', tone: 'mint' },
+      { id: 'RED-AGENT-01', perm: 'ACCESS REVOKED (Zero-Trust Isolation)', tone: 'red' },
     ],
     hardRules: [
-      'DROP / ALTER TABLE strictly barred. Salary schema locked.',
-      'Max 25 queries/sec per agent session.',
+      'DROP / ALTER / TRUNCATE strictly barred. 15 System Tables locked.',
+      'Thick Driver SQL*Net integrity check on all DB operations.',
     ],
-    enforcementEngine: 'AST Deterministic Tree Checker',
-    sessionAuthMode: 'Dynamic Nitro Ephemeral (15m)',
-    payloadHashing: 'SHA-256 Pre-Execution',
-    assignedPolicyPack: 'SOC2-FIN-LEDGER-V3',
+    enforcementEngine: 'Oracle Net8 AST Query Gatekeeper',
+    sessionAuthMode: 'Oracle Thick Client Session Pool (Dynamic Lease)',
+    payloadHashing: 'SHA-256 Pre-Execution Hash',
+    assignedPolicyPack: 'ORACLE-11G-GOV-PACK-V1',
     tripwires: [
       {
         name: 'Zero-Tolerance DDL Tripwire',
         type: 'danger',
-        desc: 'Any execution containing DROP, ALTER, or TRUNCATE will immediately quarantine the invoking agent and trigger an alert.',
+        desc: 'Any execution containing DROP, ALTER, or TRUNCATE will immediately quarantine the invoking agent and trigger Defcon 1 kill switch.',
         status: 'ACTIVE',
       },
       {
         name: 'Adaptive Rate-Limiter',
         type: 'info',
-        desc: 'Max 25 queries/sec per agent session. Spikes above 30 rps result in 10-second token bucket dampening.',
+        desc: 'Max 30 queries/sec per agent session. Spikes above 35 qps trigger dynamic session throttling.',
         status: 'ENFORCED',
       },
       {
         name: 'Sensitive Column Masking',
         type: 'warning',
-        desc: 'Columns ssn, bank_routing, salary masked with HMAC SHA-256 tokens unless 2-man authorization signed.',
+        desc: 'Columns in USERS, AGENT_CREDENTIALS, and APPROVAL_SIGNATURES masked with HMAC SHA-256 tokens unless 2-man authorization signed.',
         status: 'ACTIVE',
       },
     ],
@@ -105,8 +106,9 @@ const initialAssets: IntegrationAsset[] = [
     iconType: 'cloud',
     accentColor: '#5be9ad',
     scopedAgents: [
-      { id: 'RES-AGENT-01', perm: 'Scoped Read', tone: 'cyan' },
-      { id: 'HR-AGENT-01', perm: 'Restricted', tone: 'red' },
+      { id: 'RES-AGENT-01', perm: 'Scoped Read & Ingest', tone: 'cyan' },
+      { id: 'FIN-AGENT-01', perm: 'Encrypted Vault Read', tone: 'mint' },
+      { id: 'RED-AGENT-01', perm: 'ACCESS DENIED (Quarantine)', tone: 'red' },
     ],
     hardRules: [
       'External unencrypted bucket sync prohibited via KMS SSE-C.',
@@ -147,8 +149,9 @@ const initialAssets: IntegrationAsset[] = [
     iconType: 'bank',
     accentColor: '#ff5449',
     scopedAgents: [
-      { id: 'FIN-AGENT-01', perm: 'Query Only', tone: 'cyan' },
-      { id: 'ALL-OTHERS', perm: 'Direct Transfer BLOCKED', tone: 'red' },
+      { id: 'FIN-AGENT-01', perm: 'Query & Prepare (Approval Required)', tone: 'cyan' },
+      { id: 'RED-AGENT-01', perm: 'BLOCKED (Adversarial Sentinel)', tone: 'red' },
+      { id: 'COD-AGENT-01', perm: 'Audit Telemetry Sink', tone: 'mint' },
     ],
     hardRules: [
       'Direct automated funds transfer prohibited by Enclave Policy-003.',
@@ -232,6 +235,7 @@ const initialAssets: IntegrationAsset[] = [
     accentColor: '#6ffbbe',
     scopedAgents: [
       { id: 'RES-AGENT-01', perm: 'ArXiv, PubMed, SEC Edgar only', tone: 'mint' },
+      { id: 'RED-AGENT-01', perm: 'Air-Gapped Probe Sandbox', tone: 'red' },
     ],
     hardRules: [
       'Strict domain whitelist. Arbitrary JavaScript eval blocked by sandbox.',
@@ -272,8 +276,9 @@ const initialAssets: IntegrationAsset[] = [
     iconType: 'terminal',
     accentColor: '#849396',
     scopedAgents: [
-      { id: 'COD-AGENT-01', perm: 'PR generation only', tone: 'cyan' },
-      { id: 'ALL-OTHERS', perm: 'Push to main barred', tone: 'red' },
+      { id: 'COD-AGENT-01', perm: 'PR Generation & GPG Sign', tone: 'mint' },
+      { id: 'RES-AGENT-01', perm: 'Code Audit Reader', tone: 'cyan' },
+      { id: 'RED-AGENT-01', perm: 'Push to main barred', tone: 'red' },
     ],
     hardRules: [
       'GPG signature required on all synthetic commits. No direct force push.',
@@ -314,8 +319,8 @@ const initialAssets: IntegrationAsset[] = [
     iconType: 'database',
     accentColor: '#a3c9ff',
     scopedAgents: [
-      { id: 'ANL-AGENT-03', perm: 'Aggregated Analytics Only', tone: 'mint' },
-      { id: 'FIN-AGENT-01', perm: 'Read Scoped Ledger', tone: 'cyan' },
+      { id: 'DB-AGENT-01', perm: 'ETL Pipeline Sync (2-Man Quorum)', tone: 'mint' },
+      { id: 'FIN-AGENT-01', perm: 'Read Scoped Financial Warehouse', tone: 'cyan' },
     ],
     hardRules: [
       'Row-level security enforces regional data sovereign isolation.',
@@ -458,7 +463,7 @@ export default function IntegrationsControl({
     setIsValidatingAll(true);
     setTimeout(() => {
       setIsValidatingAll(false);
-      onNotify?.('All 16 connected enclaves re-validated. Hardware PCR0 digests verified via AWS KMS.');
+      onNotify?.(`All ${assets.length} connected enclaves & 5 sovereign agent boundaries re-validated. Hardware PCR0 digests verified via AWS KMS & Oracle 11g Thick Driver.`);
     }, 900);
   };
 
@@ -913,7 +918,7 @@ export default function IntegrationsControl({
                 {/* Agent Nodes Group */}
                 <rect fill="#1d1f27" height="50" rx="4" width="100" x="20" y="45" stroke="#3b494c" strokeWidth="1" />
                 <text fill="#e1e2ec" fontFamily="JetBrains Mono" fontSize="10" fontWeight="600" textAnchor="middle" x="70" y="68">AGENT SWARM</text>
-                <text fill="#849396" fontFamily="JetBrains Mono" fontSize="8" textAnchor="middle" x="70" y="82">FIN / COD / RES</text>
+                <text fill="#849396" fontFamily="JetBrains Mono" fontSize="8" textAnchor="middle" x="70" y="82">DB/FIN/COD/RES/RED</text>
 
                 {/* Gateway Node */}
                 <rect fill="#191b23" height="70" rx="6" stroke="#00daf3" strokeWidth="1.5" width="150" x="240" y="35" />
@@ -925,7 +930,7 @@ export default function IntegrationsControl({
                 {/* Postgres */}
                 <rect fill="#1d1f27" height="34" rx="4" width="125" x="560" y="12" stroke="#3b494c" strokeWidth="1" />
                 <circle cx="575" cy="29" fill="#00e5ff" r="4" />
-                <text fill="#e1e2ec" fontFamily="JetBrains Mono" fontSize="9" textAnchor="middle" x="625" y="32">PostgreSQL Core</text>
+                <text fill="#00e5ff" fontFamily="JetBrains Mono" fontSize="9" fontWeight="bold" textAnchor="middle" x="625" y="32">Oracle 11g (ORCL)</text>
 
                 {/* S3 / Cloud */}
                 <rect fill="#1d1f27" height="34" rx="4" width="125" x="560" y="53" stroke="#3b494c" strokeWidth="1" />
@@ -1228,16 +1233,23 @@ export default function IntegrationsControl({
 
             <div className="modal-body">
               <pre className="logs-terminal font-mono">
-{`[14:32:17.804] FIN-AGENT-01 -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.4ms)
-  AST Tokenizer: Verified SELECT query. Zero schema write mutations.
-[14:32:02.119] FIN-AGENT-01 -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.5ms)
+{(() => {
+  const now = new Date();
+  const formatT = (offsetSeconds: number) => {
+    const d = new Date(now.getTime() - offsetSeconds * 1000);
+    return d.toTimeString().split(' ')[0] + '.' + String(d.getMilliseconds()).padStart(3, '0');
+  };
+  return `[${formatT(4)}] FIN-AGENT-01 -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.38ms)
+  AST Tokenizer: Verified query structure. Zero unauthorized mutations.
+[${formatT(18)}] FIN-AGENT-01 -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.42ms)
   AST Tokenizer: Validated WHERE clause against tenant ID 'CORP_EAST'.
-[14:28:05.116] FIN-AGENT-01 -> ${selectedAsset.endpoint} [STATUS: BLOCKED] (1.1ms)
-  SECURITY TRIPWIRE: Detected 'UPDATE payroll' attempt. Severed execution.
-[14:25:40.091] DB-AGENT-01  -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.8ms)
-  Dual-Key Quorum Verified: Snapshot replication query passed.
-[14:20:12.384] SYSTEM_CRON  -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.2ms)
-  Health Check: Enclave ping OK. Hardware PCR0 valid.`}
+[${formatT(42)}] RED-AGENT-01 -> ${selectedAsset.endpoint} [STATUS: BLOCKED] (0.19ms)
+  SECURITY TRIPWIRE: Detected untrusted ingress probe. Zero-Trust Isolation enforced.
+[${formatT(95)}] DB-AGENT-01  -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.84ms)
+  Oracle 11g Thick Client Session Quorum Verified: Snapshot replication query passed.
+[${formatT(180)}] SYSTEM_CRON  -> ${selectedAsset.endpoint} [STATUS: ALLOWED] (0.15ms)
+  Health Check: Enclave ping OK. Hardware PCR0 valid.`;
+})()}
               </pre>
             </div>
 
