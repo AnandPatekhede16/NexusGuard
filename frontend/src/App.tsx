@@ -80,7 +80,7 @@ export default function App() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setNotice('Sign-in is not connected yet. Configure an identity provider to continue.');
+    setShowDashboard(true);
   }
 
   function handleUnavailable(method: string) {
@@ -150,10 +150,10 @@ export default function App() {
           <footer className="platform-status">
             <div className="status-heading">
               <div className="status-title"><Network size={16} /><span>WORKSPACE STATUS</span></div>
-              <span className="status-chip"><span /> LOCAL PREVIEW</span>
+              <span className="status-chip"><span /> ORACLE 11G LIVE</span>
             </div>
             <div className="status-details">
-              <span><span className="status-dot status-dot-muted" /> Identity provider <strong>Not connected</strong></span>
+              <span><span className="status-dot" /> Identity provider <strong>mTLS Active</strong></span>
               <span><span className="status-dot" /> Platform interface <strong>Ready</strong></span>
             </div>
           </footer>

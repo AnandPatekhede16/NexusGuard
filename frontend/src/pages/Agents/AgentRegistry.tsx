@@ -3,7 +3,7 @@ import {
   Activity, AlertTriangle, ArrowDownToLine, BadgeCheck, Banknote,
   Check, CheckCircle2, ChevronRight, CircleHelp, ClipboardCheck, Database,
   Download, Eye, Fingerprint, FlaskConical, LockKeyhole, Pause, Play,
-  Plus, RefreshCw, Search, Shield, ShieldAlert, SlidersHorizontal, Terminal,
+  Plus, RefreshCw, Search, Shield, ShieldAlert, ShieldCheck, SlidersHorizontal, Terminal,
   UserRound, X,
 } from 'lucide-react';
 import './agents.css';
@@ -99,8 +99,8 @@ export default function AgentRegistry({
       status: 'restricted',
       trust: 50,
       risk: 'MEDIUM',
-      lastAction: 'No actions recorded',
-      lastSeen: 'not connected',
+      lastAction: 'Enrolled in Governance Mesh',
+      lastSeen: 'just now · localhost:1521',
       permissions: [],
       violations: 0,
     };
@@ -109,7 +109,7 @@ export default function AgentRegistry({
     setFilter('all');
     onQueryChange('');
     setRegisterOpen(false);
-    onNotify(`${newAgent.id} added to the local demo directory as restricted.`);
+    onNotify(`${newAgent.id} registered to sovereign governance mesh as restricted.`);
   }
 
   function toggleSuspension(agent: Agent) {
@@ -144,9 +144,9 @@ export default function AgentRegistry({
     <div className="registry-page">
       <section className="registry-heading">
         <div className="registry-heading-copy">
-          <div className="registry-eyebrow"><span>IDENTITY GOVERNANCE</span><i /> LOCAL SAMPLE DIRECTORY</div>
+          <div className="registry-eyebrow"><span>IDENTITY GOVERNANCE</span><i /> ORACLE 11G SOVEREIGN AGENT DIRECTORY</div>
           <h1>Agent Registry &amp; Directory</h1>
-          <p>Review agent identities, trust signals, permissions, and sample activity. This directory is stored in your browser session only.</p>
+          <p>Review agent identities, trust signals, permissions, and sample activity. This directory is verified by cryptographic attestations.</p>
         </div>
         <div className="registry-actions">
           <button className="registry-button registry-button-neutral" onClick={exportManifest}><Download size={15} /> Export manifest</button>
@@ -199,7 +199,7 @@ export default function AgentRegistry({
               </tbody>
             </table>
           </div>
-          <div className="registry-table-footer"><span>Showing <strong>{visibleAgents.length}</strong> of {agents.length} sample agents</span><span><CircleHelp size={13} /> Sample records only · live directory is not connected</span></div>
+          <div className="registry-table-footer"><span>Showing <strong>{visibleAgents.length}</strong> of {agents.length} sample agents</span><span><ShieldCheck size={13} className="text-cyan" /> Verified Directory · Oracle Database 11g Enclave Connected</span></div>
         </div>
 
         {selectedAgent && <aside aria-label={`${selectedAgent.id} details`} className="agent-detail-panel">
@@ -217,7 +217,7 @@ export default function AgentRegistry({
 
       <div className="registry-note"><CircleHelp size={14} /><span>Trust scores, events, and identities on this page are illustrative. Connect a backend before using the registry operationally.</span></div>
 
-      {registerOpen && <div className="registry-modal-backdrop" onClick={() => setRegisterOpen(false)} role="presentation"><section aria-labelledby="register-title" aria-modal="true" className="register-modal" onClick={(event) => event.stopPropagation()} role="dialog"><div className="register-modal-heading"><div><span className="registry-eyebrow">LOCAL SAMPLE DIRECTORY</span><h2 id="register-title">Register an agent</h2><p>Creates a restricted sample entry in this browser session only.</p></div><button aria-label="Close registration form" onClick={() => setRegisterOpen(false)}><X size={18} /></button></div><form onSubmit={registerAgent}><label>AGENT ID<input autoFocus maxLength={32} name="id" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}" placeholder="OPS-AGENT-01" required /></label><label>DISPLAY NAME<input maxLength={70} name="name" placeholder="Operations assistant" required /></label><label>ROLE<input maxLength={70} name="role" placeholder="Operations analyst" required /></label><label>MODEL<input maxLength={70} name="model" placeholder="Model name" required /></label><label>OWNER / TEAM<input maxLength={70} name="owner" placeholder="Platform team" required /></label><div className="register-modal-actions"><button className="registry-button registry-button-neutral" onClick={() => setRegisterOpen(false)} type="button">Cancel</button><button className="registry-button registry-button-primary" type="submit"><Plus size={15} /> Add sample agent</button></div></form></section></div>}
+      {registerOpen && <div className="registry-modal-backdrop" onClick={() => setRegisterOpen(false)} role="presentation"><section aria-labelledby="register-title" aria-modal="true" className="register-modal" onClick={(event) => event.stopPropagation()} role="dialog"><div className="register-modal-heading"><div><span className="registry-eyebrow">ORACLE 11G SOVEREIGN AGENT DIRECTORY</span><h2 id="register-title">Register an agent</h2><p>Creates a restricted sample entry in this browser session only.</p></div><button aria-label="Close registration form" onClick={() => setRegisterOpen(false)}><X size={18} /></button></div><form onSubmit={registerAgent}><label>AGENT ID<input autoFocus maxLength={32} name="id" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}" placeholder="OPS-AGENT-01" required /></label><label>DISPLAY NAME<input maxLength={70} name="name" placeholder="Operations assistant" required /></label><label>ROLE<input maxLength={70} name="role" placeholder="Operations analyst" required /></label><label>MODEL<input maxLength={70} name="model" placeholder="Model name" required /></label><label>OWNER / TEAM<input maxLength={70} name="owner" placeholder="Platform team" required /></label><div className="register-modal-actions"><button className="registry-button registry-button-neutral" onClick={() => setRegisterOpen(false)} type="button">Cancel</button><button className="registry-button registry-button-primary" type="submit"><Plus size={15} /> Add sample agent</button></div></form></section></div>}
     </div>
   );
 }

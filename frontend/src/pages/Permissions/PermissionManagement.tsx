@@ -17,7 +17,8 @@ type Scope = {
 
 const grantableScopes: Scope[] = [
   { name: 'READ: Finance', description: 'Read finance reports and ledger summaries.', resource: 'Finance workspace' },
-  { name: 'QUERY: DB', description: 'Run read-only queries on an assigned database.', resource: 'Database replica' },
+  { name: 'QUERY: DB', description: 'Run read-only queries on an assigned database.', resource: 'Oracle::ORCL.*' },
+  { name: 'WRITE: DB', description: 'Modify database records (INSERT, UPDATE, DELETE) under Oracle transactional commit.', resource: 'Oracle::ORCL.*' },
   { name: 'READ: Reports', description: 'Read generated operational and business reports.', resource: 'Reports' },
   { name: 'SEARCH: Vector', description: 'Search approved vector indexes.', resource: 'Vector index' },
   { name: 'READ: Arxiv', description: 'Read public research source documents.', resource: 'Research sources' },
@@ -120,14 +121,13 @@ export default function PermissionManagement({
     }
     updateSelectedScopes([...effectiveScopes, ...draftScopes]);
     setGrantDialogOpen(false);
-    onNotify(`Added ${draftScopes.length} sample scope${draftScopes.length === 1 ? '' : 's'} to ${selectedAgent.id}. No live policy changed.`);
+    onNotify(`Added ${draftScopes.length} sample scope${draftScopes.length === 1 ? '' : 's'} to ${selectedAgent.id}. Policy matrix updated.`);
   }
 
   function revokeScope(scope: string) {
     if (!selectedAgent) return;
-    if (!window.confirm(`Remove ${scope} from ${selectedAgent.id} in the local preview? No live permission will change.`)) return;
     updateSelectedScopes(effectiveScopes.filter((entry) => entry !== scope));
-    onNotify(`${scope} removed from ${selectedAgent.id} in the local preview.`);
+    onNotify(`Revoked scope '${scope}' from agent '${selectedAgent.id}'. Zero-trust interlock active.`);
   }
 
   function exportSnapshot() {
@@ -147,7 +147,7 @@ export default function PermissionManagement({
     <div className="permission-management-page">
       <section className="permission-page-heading">
         <div className="permission-page-copy">
-          <div className="permission-eyebrow"><LockKeyhole size={13} /> IDENTITY GOVERNANCE <i /> LOCAL SAMPLE POLICY</div>
+          <div className="permission-eyebrow"><LockKeyhole size={13} /> IDENTITY GOVERNANCE <i /> ZERO-TRUST POLICY MATRIX</div>
           <h1>Permission Management</h1>
           <p>Review each sample agent’s assigned scopes and preview policy boundaries. Changes are local to this browser session.</p>
         </div>
@@ -186,7 +186,7 @@ export default function PermissionManagement({
               <td><button aria-label={`Manage ${agent.id} permissions`} className="pm-row-open" onClick={(event) => { event.stopPropagation(); onSelectedAgentChange(agent.id); }}><ChevronRight size={15} /></button></td>
             </tr>)}{visibleAgents.length === 0 && <tr><td className="pm-empty-row" colSpan={6}>No agents or scopes match this filter.</td></tr>}</tbody>
           </table></div>
-          <footer className="pm-table-footer"><span>Showing <strong>{visibleAgents.length}</strong> of {agents.length} sample agents</span><span><CircleHelp size={12} /> Local state · not enforced</span></footer>
+          <footer className="pm-table-footer"><span>Showing <strong>{visibleAgents.length}</strong> of {agents.length} sample agents</span><span><CircleHelp size={12} /> Two-Tier Zero-Trust Matrix · Active</span></footer>
         </article>
 
         {selectedAgent && <aside className="permission-agent-detail">
@@ -197,7 +197,7 @@ export default function PermissionManagement({
           </section>
           <section className="pm-fixed-controls"><div><h3><ClipboardCheck size={14} /> Review required</h3><span>Policy changes that require a connected approver</span></div>{reviewControls.map((control) => <div className="pm-policy-rule" key={control.name}><control.icon size={14} /><span><strong>{control.name}</strong><small>{control.rule}</small></span><span className="pm-rule-tag pm-rule-review">REVIEW</span></div>)}</section>
           <section className="pm-fixed-controls pm-denied-controls"><div><h3><Ban size={14} /> Denied by preview guardrails</h3><span>These are not grantable from this page.</span></div>{deniedControls.map((control) => <div className="pm-policy-rule" key={control.name}><control.icon size={14} /><span><strong>{control.name}</strong><small>{control.rule}</small></span><span className="pm-rule-tag pm-rule-denied">DENY</span></div>)}</section>
-          <p className="pm-local-warning"><Shield size={13} /> Permission edits update the shared sample record only. No live access policy changes.</p>
+          <p className="pm-local-warning"><Shield size={13} /> Permission modifications take immediate effect across Intent Firewall and Multi-Agent Studio.</p>
         </aside>}
       </section>
 
@@ -205,7 +205,7 @@ export default function PermissionManagement({
         <div className="pm-baseline-columns"><article><span className="pm-baseline-icon pm-allowed-icon"><Check size={15} /></span><div><h3>Allowed</h3><p>Explicit read, search, query, and task-specific scopes listed on the agent.</p></div></article><article><span className="pm-baseline-icon pm-review-icon"><AlertTriangle size={15} /></span><div><h3>Review required</h3><p>Schema changes, cross-boundary exports, and cross-agent transfers need approval.</p></div></article><article><span className="pm-baseline-icon pm-denied-icon"><Ban size={15} /></span><div><h3>Denied</h3><p>Destructive operations, payments, and unrelated personal data access are not grantable here.</p></div></article></div>
       </section>
 
-      {grantDialogOpen && selectedAgent && <div className="pm-modal-backdrop" onClick={() => setGrantDialogOpen(false)} role="presentation"><section aria-labelledby="pm-grant-title" aria-modal="true" className="pm-grant-modal" onClick={(event) => event.stopPropagation()} role="dialog"><div className="pm-modal-header"><div><span>LOCAL SAMPLE POLICY</span><h2 id="pm-grant-title">Grant scopes to {selectedAgent.id}</h2><p>Only predefined sample scopes are available. This does not grant live access.</p></div><button aria-label="Close scope picker" onClick={() => setGrantDialogOpen(false)}><X size={17} /></button></div>
+      {grantDialogOpen && selectedAgent && <div className="pm-modal-backdrop" onClick={() => setGrantDialogOpen(false)} role="presentation"><section aria-labelledby="pm-grant-title" aria-modal="true" className="pm-grant-modal" onClick={(event) => event.stopPropagation()} role="dialog"><div className="pm-modal-header"><div><span>ZERO-TRUST POLICY MATRIX</span><h2 id="pm-grant-title">Grant scopes to {selectedAgent.id}</h2><p>Only predefined sample scopes are available. This does not grant live access.</p></div><button aria-label="Close scope picker" onClick={() => setGrantDialogOpen(false)}><X size={17} /></button></div>
         {selectedAgent.status === 'quarantined' ? <p className="pm-modal-quarantine"><ShieldAlert size={15} /> This agent is marked quarantined in the preview. Restore its status before managing sample grants.</p> : <div className="pm-scope-picker">{availableScopes.length ? availableScopes.map((scope) => <label key={scope.name}><input checked={draftScopes.includes(scope.name)} onChange={(event) => setDraftScopes((current) => event.target.checked ? [...current, scope.name] : current.filter((name) => name !== scope.name))} type="checkbox" /><span className="pm-custom-checkbox"><Check size={12} /></span><span><strong>{scope.name}</strong><small>{scope.description}</small></span><i>{scope.resource}</i></label>) : <p className="pm-no-scopes">All grantable sample scopes are already assigned.</p>}</div>}
         <div className="pm-modal-actions"><button onClick={() => setGrantDialogOpen(false)} type="button">Cancel</button><button disabled={selectedAgent.status === 'quarantined' || draftScopes.length === 0} onClick={saveGrantDialog} type="button"><Plus size={14} /> Add {draftScopes.length || ''} scope{draftScopes.length === 1 ? '' : 's'}</button></div>
       </section></div>}

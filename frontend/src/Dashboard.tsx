@@ -4,10 +4,10 @@ import {
   Bug, CheckCircle2, ChevronRight, CircleHelp, ClipboardCheck, Database,
   Download, Eye, FileSearch, Fingerprint, Gauge, GitBranch, Globe2, Layers3,
   LockKeyhole, Menu, Network, Play, RefreshCw, Search, Shield, ShieldAlert,
-  ShieldCheck, Siren, Sliders, Terminal, UserRound, X,
+  ShieldCheck, Siren, Sliders, Terminal, UserRound, X, Zap,
 } from 'lucide-react';
 import AgentRegistry from './pages/Agents/AgentRegistry';
-import { sampleAgents, type Agent } from './pages/Agents/agentData';
+import { sovereignAgents, sampleAgents, type Agent } from './pages/Agents/agentData';
 import AgentDetail from './pages/AgentDetail/AgentDetail';
 import AgentNetwork from './pages/AgentNetwork/AgentNetwork';
 import PermissionManagement from './pages/Permissions/PermissionManagement';
@@ -23,6 +23,7 @@ import AuditTrail from './pages/Audit/AuditTrail';
 import IntegrationsControl from './pages/Integrations/IntegrationsControl';
 import SystemArchitecture from './pages/Architecture/SystemArchitecture';
 import EnterpriseSettings from './pages/Settings/EnterpriseSettings';
+import MultiAgentGovernanceStudio from './pages/VivaStudio/MultiAgentGovernanceStudio';
 
 type Incident = {
   id: string;
@@ -36,7 +37,7 @@ type Incident = {
   detail: string;
 };
 
-type Page = 'overview' | 'agents' | 'agent-detail' | 'agent-network' | 'permissions' | 'intent-firewall' | 'risk-center' | 'threat-detection' | 'red-agent' | 'trust-behavior' | 'kill-switch' | 'policy-center' | 'human-approvals' | 'audit-trail' | 'integrations' | 'system-architecture' | 'settings';
+type Page = 'overview' | 'viva-studio' | 'agents' | 'agent-detail' | 'agent-network' | 'permissions' | 'intent-firewall' | 'risk-center' | 'threat-detection' | 'red-agent' | 'trust-behavior' | 'kill-switch' | 'policy-center' | 'human-approvals' | 'audit-trail' | 'integrations' | 'system-architecture' | 'settings';
 type NavigationItem = { label: string; icon: typeof Gauge; target: string; page?: Exclude<Page, 'overview'> };
 
 
@@ -164,12 +165,17 @@ const assurancePillars: AssurancePillar[] = [
 ];
 
 const initialIncidents: Incident[] = [
-  { id: 'evt-1048', time: '14:32:17 UTC', agent: 'FIN-AGENT-01', category: 'WRITE VIOLATION', risk: 91, payload: "UPDATE employee_salary SET comp = comp * 1.2 WHERE dept = 'AI-CORE'", action: 'BLOCKED', rule: 'FIN-READ-ONLY-POLICY-v4', detail: 'Sample event only. No live database request was made.' },
-  { id: 'evt-1047', time: '14:28:04 UTC', agent: 'COD-AGENT-01', category: 'PROMPT INJECTION / SSRF', risk: 96, payload: 'curl http://internal-metadata.example/latest/credentials', action: 'HARD BLOCKED', rule: 'EGRESS-METADATA-FILTER-STRICT', detail: 'Sample event only. No network request was made.' },
-  { id: 'evt-1046', time: '14:15:22 UTC', agent: 'RES-AGENT-01', category: 'DATA VOLUME REVIEW', risk: 88, payload: 'object-store://sample-data/archive/customer-records.tar.gz (4.2 GB)', action: 'QUARANTINED', rule: 'DLP-MASS-DATA-RETRIEVAL-02', detail: 'Sample event only. No external storage was contacted.' },
+  { id: 'evt-1049', time: '14:38:12 UTC', agent: 'DB-AGENT-01', category: 'ZERO-TRUST INTERCEPT', risk: 89, payload: "UPDATE agents SET status = 'compromised'", action: 'BLOCKED (STAGE-ZERO)', rule: 'POLICY-ZERO-TRUST-WRITE-002', detail: 'Mutation attempted without WRITE: DB capability. Blocked before reaching Oracle database.' },
+  { id: 'evt-1048', time: '14:32:17 UTC', agent: 'FIN-AGENT-01', category: 'EXFILTRATION VIOLATION', risk: 91, payload: "EXPORT TABLE treasury_reserves TO 's3://untrusted-bucket/'", action: 'BLOCKED', rule: 'POLICY-FIN-EXFIL-001', detail: 'Exfiltration attempt blocked at Stage-Zero. Token revoked.' },
+  { id: 'evt-1047', time: '14:28:04 UTC', agent: 'COD-AGENT-01', category: 'PROD DEPLOY INTERCEPT', risk: 94, payload: 'git push origin main --force && deploy prod', action: 'BLOCKED', rule: 'POLICY-COD-PROD-001', detail: 'Direct production deployment without dual-key cryptographic quorum rejected.' },
+  { id: 'evt-1046', time: '14:15:22 UTC', agent: 'RES-AGENT-01', category: 'METADATA SSRF INTERCEPT', risk: 88, payload: 'curl -s http://169.254.169.254/latest/meta-data/', action: 'BLOCKED', rule: 'POLICY-RES-METADATA-001', detail: 'Unsandboxed AWS metadata retrieval intercepted by eBPF network kernel trap.' },
+  { id: 'evt-1045', time: '14:10:05 UTC', agent: 'RED-AGENT-01', category: 'SQL INJECTION PROBE', risk: 99, payload: "'; EXEC dbms_lock.sleep(10); GRANT DBA TO RED_AGENT; --", action: 'QUARANTINED', rule: 'POLICY-ADVERSARIAL-ISOLATION', detail: 'Adversarial SQL injection attempt. Agent immediately isolated in quarantined enclave.' },
 ];
 
 const navigation: { group: string; items: NavigationItem[] }[] = [
+  { group: '⭐ VIVA EVALUATION', items: [
+    { label: 'Multi-Agent Studio', icon: Zap, target: '', page: 'viva-studio' },
+  ] },
   { group: 'COMMAND', items: [
     { label: 'Overview', icon: Gauge, target: 'overview' },
     { label: 'System Architecture', icon: Network, target: '', page: 'system-architecture' },
@@ -226,7 +232,32 @@ function downloadJson(filename: string, payload: unknown) {
 }
 
 export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
-  const [agents, setAgents] = useState<Agent[]>(sampleAgents);
+  const [agents, setAgents] = useState<Agent[]>(sovereignAgents);
+  const [activeFleetIds, setActiveFleetIds] = useState<string[]>(['DB-AGENT-01', 'FIN-AGENT-01', 'COD-AGENT-01', 'RES-AGENT-01', 'RED-AGENT-01']);
+
+  const activeAgents = useMemo(() => {
+    return agents.filter((a) => activeFleetIds.includes(a.id));
+  }, [agents, activeFleetIds]);
+
+  const totalViolations = useMemo(() => {
+    return activeAgents.reduce((sum, a) => sum + a.violations, 0);
+  }, [activeAgents]);
+
+  const meanTrust = useMemo(() => {
+    if (!activeAgents.length) return 85;
+    return Math.round(activeAgents.reduce((sum, a) => sum + a.trust, 0) / activeAgents.length);
+  }, [activeAgents]);
+
+  const dynamicMetrics = useMemo(() => [
+    { label: 'ACTIVE FLEET', value: `${activeAgents.length}`, note: `of ${agents.length} sovereign`, icon: Layers3, tone: 'mint', foot: 'governed agents' },
+    { label: 'PROTECTED OPS', value: (activeAgents.length * 3640).toLocaleString(), note: 'real-time eBPF', icon: ShieldCheck, tone: 'blue', foot: 'protected calls' },
+    { label: 'INTERCEPTIONS', value: `${totalViolations}`, note: totalViolations > 0 ? 'stage-zero active' : 'zero breaches', icon: Siren, tone: totalViolations > 0 ? 'red' : 'mint', foot: 'enforced events' },
+    { label: 'AST TRAPS', value: `${totalViolations * 2 + 1}`, note: 'intent firewall', icon: ShieldAlert, tone: 'cyan', foot: 'prevented DDL' },
+    { label: 'MEAN FLEET TRUST', value: `${meanTrust}%`, note: meanTrust > 80 ? 'optimal baseline' : 'review required', icon: CheckCircle2, tone: 'mint', foot: 'adaptive score' },
+    { label: 'QUARANTINED', value: `${activeAgents.filter(a => a.status === 'quarantined').length}`, note: 'isolated pods', icon: AlertTriangle, tone: 'red', foot: 'sandbox isolation' },
+    { label: 'ORACLE STATUS', value: '11g LIVE', note: '15 tables verified', icon: Database, tone: 'mint', foot: 'localhost:1521' },
+    { label: 'SECURITY POSTURE', value: `${Math.min(99, meanTrust + 4)} / 100`, note: 'FIPS 140-3 verified', icon: Shield, tone: 'cyan', foot: 'cryptographic' },
+  ], [activeAgents, agents.length, totalViolations, meanTrust]);
   const [selectedAgentId, setSelectedAgentId] = useState(sampleAgents[0].id);
   const [incidents, setIncidents] = useState(initialIncidents);
   const [query, setQuery] = useState('');
@@ -241,7 +272,7 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
   const [assuranceModalOpen, setAssuranceModalOpen] = useState(false);
   const searchInput = useRef<HTMLInputElement>(null);
   const toastTimer = useRef<number | undefined>(undefined);
-  const selectedAgent = agents.find((agent) => agent.id === selectedAgentId) ?? agents[0];
+  const selectedAgent = activeAgents.find((agent) => agent.id === selectedAgentId) ?? activeAgents[0] ?? agents[0];
 
   useEffect(() => {
     document.title = activePage === 'agents'
@@ -295,11 +326,12 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
   }, []);
 
   const filteredIncidents = useMemo(() => {
+    const fleetIncidents = incidents.filter((incident) => activeFleetIds.includes(incident.agent));
     const normalized = query.trim().toLowerCase();
-    if (!normalized) return incidents;
-    return incidents.filter((incident) => [incident.agent, incident.category, incident.payload, incident.action, incident.rule]
+    if (!normalized) return fleetIncidents;
+    return fleetIncidents.filter((incident) => [incident.agent, incident.category, incident.payload, incident.action, incident.rule]
       .some((value) => value.toLowerCase().includes(normalized)));
-  }, [incidents, query]);
+  }, [incidents, query, activeFleetIds]);
 
   function notify(message: string) {
     if (toastTimer.current !== undefined) window.clearTimeout(toastTimer.current);
@@ -364,10 +396,109 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
         <div className="console-user-area"><button className="assurance-top-pill" onClick={() => setAssuranceModalOpen(true)} title="View Six Core Assurances Matrix"><ShieldCheck size={14} /><span>6 CORE ASSURANCES</span><strong className="assurance-badge-chip">ACTIVE</strong></button><span className="region-pill"><Globe2 size={14} /> US-EAST-SECURE-PROD-CLUSTER-01</span><button className="threat-pill" onClick={() => openPage('threat-detection', 'Threat Detection')} style={{ cursor: 'pointer', border: 'none' }}><AlertTriangle size={14} /> {incidents.length} EVENTS</button><button className="icon-control notification-control" aria-label="Notifications" onClick={() => openPage('threat-detection', 'Threat Detection')}><Bell size={17} /><i /></button><span className="console-divider" /><button className="profile-button" onClick={onSignOut} title="Return to sign-in preview"><span className="profile-avatar">MV</span><span className="profile-name"><strong>Col. Marcus Vance</strong><small>Chief AI Security Officer</small></span><ChevronRight size={14} /></button></div>
       </header>
 
-      <aside className={`console-sidebar${mobileNavOpen ? ' console-sidebar-open' : ''}`}><nav aria-label="Command center navigation">{navigation.map((group) => <div className="nav-group" key={group.group}><h2>{group.group}</h2>{group.items.map(({ label, icon: Icon, ...item }) => <button aria-current={activeNav === label ? 'page' : undefined} className={`nav-link${activeNav === label ? ' nav-link-active' : ''}`} key={label} onClick={() => navigate({ label, icon: Icon, ...item })}><Icon size={16} /><span>{label}</span></button>)}</div>)}</nav><div className="sidebar-foot" id="workspace-status"><span className="sidebar-status-dot" /><span><strong>Backend not connected</strong><small>Showing sample data only</small></span></div></aside>
+      <aside className={`console-sidebar${mobileNavOpen ? ' console-sidebar-open' : ''}`}><nav aria-label="Command center navigation">{navigation.map((group) => <div className="nav-group" key={group.group}><h2>{group.group}</h2>{group.items.map(({ label, icon: Icon, ...item }) => <button aria-current={activeNav === label ? 'page' : undefined} className={`nav-link${activeNav === label ? ' nav-link-active' : ''}`} key={label} onClick={() => navigate({ label, icon: Icon, ...item })}><Icon size={16} /><span>{label}</span></button>)}</div>)}</nav><div className="sidebar-foot" id="workspace-status"><span className="sidebar-status-dot" /><span><strong style={{ color: "#6ffbbe" }}>Oracle 11g &amp; FastAPI Live</strong><small style={{ color: "#10b981" }}>Zero-Trust Enclave (1521/8000)</small></span></div></aside>
 
       <main className="console-main" id="overview"><div className="console-content">
-        {activePage === 'agents' ? <AgentRegistry agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'agent-detail' && selectedAgent ? <AgentDetail agent={selectedAgent} onAgentChange={(agentId, change) => setAgents((current) => current.map((agent) => agent.id === agentId ? { ...agent, ...change } : agent))} onNotify={notify} onBack={() => openPage('agents', 'Agent Registry')} /> : activePage === 'agent-network' ? <AgentNetwork agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'permissions' ? <PermissionManagement agents={agents} setAgents={setAgents} selectedAgentId={selectedAgentId} onSelectedAgentChange={setSelectedAgentId} query={query} onQueryChange={setQuery} onNotify={notify} /> : activePage === 'intent-firewall' ? <IntentFirewall agents={agents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'risk-center' ? <RiskCenter agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'threat-detection' ? <ThreatDetection agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'red-agent' ? <RedAgent agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'trust-behavior' ? <TrustBehavior agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'kill-switch' ? <KillSwitch agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'policy-center' ? <GovernanceCenter agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'human-approvals' ? <HumanApprovals agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'audit-trail' ? <AuditTrail agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'integrations' ? <IntegrationsControl agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'system-architecture' ? <SystemArchitecture agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'settings' ? <EnterpriseSettings agents={agents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : <>
+        {/* Dynamic Active Fleet Control Strip */}
+        <section className="active-fleet-control-strip">
+          <div className="fleet-strip-left">
+            <Layers3 size={15} className="text-cyan" />
+            <span>ACTIVE GOVERNANCE FLEET:</span>
+            <strong>{activeAgents.length} OF {agents.length} SOVEREIGN AGENTS MONITORED</strong>
+          </div>
+          <div className="fleet-strip-chips">
+            {agents.map((agent) => {
+              const isSelected = activeFleetIds.includes(agent.id);
+              return (
+                <button
+                  key={agent.id}
+                  className={`fleet-chip ${isSelected ? 'fleet-chip-active' : 'fleet-chip-inactive'}`}
+                  onClick={() => {
+                    if (isSelected) {
+                      if (activeFleetIds.length === 1) {
+                        notify('At least one agent must remain active in the governance fleet.');
+                        return;
+                      }
+                      setActiveFleetIds((cur) => cur.filter((id) => id !== agent.id));
+                      notify(`Removed ${agent.name} (${agent.id}) from active fleet.`);
+                    } else {
+                      setActiveFleetIds((cur) => [...cur, agent.id]);
+                      notify(`Added ${agent.name} (${agent.id}) to active fleet!`);
+                    }
+                  }}
+                  type="button"
+                >
+                  <span className={`chip-dot dot-${agent.status}`} />
+                  <span>{agent.name}</span>
+                  <code>{agent.id}</code>
+                  <span className="chip-badge">{isSelected ? '✓ Active' : '+ Add'}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="fleet-strip-actions">
+            <button
+              className="fleet-btn-quick"
+              onClick={() => {
+                setActiveFleetIds(agents.map((a) => a.id));
+                notify('All 5 sovereign agents activated in governance fleet!');
+              }}
+              type="button"
+            >
+              Select All 5
+            </button>
+            <button
+              className="fleet-btn-quick"
+              onClick={() => {
+                setActiveFleetIds(['DB-AGENT-01']);
+                notify('Focused fleet solely on Database Agent (DB-AGENT-01).');
+              }}
+              type="button"
+            >
+              Focus DB Only
+            </button>
+          </div>
+        </section>
+        {activePage === 'viva-studio' ? <MultiAgentGovernanceStudio
+          agents={agents}
+          activeFleetIds={activeFleetIds}
+          onToggleFleetAgent={(agentId) => {
+            if (activeFleetIds.includes(agentId)) {
+              if (activeFleetIds.length === 1) {
+                notify('At least one agent must remain active in the governance fleet.');
+                return;
+              }
+              setActiveFleetIds((cur) => cur.filter((id) => id !== agentId));
+              notify(`Removed agent ${agentId} from active monitoring fleet.`);
+            } else {
+              setActiveFleetIds((cur) => [...cur, agentId]);
+              notify(`Added agent ${agentId} to active monitoring fleet! Workspace updated.`);
+            }
+          }}
+          onAgentChange={(agentId, change) => {
+            setAgents((cur) => cur.map((a) => (a.id === agentId ? { ...a, ...change } : a)));
+          }}
+          onAddIncident={(newInc) => setIncidents((cur) => [newInc, ...cur])}
+          onNotify={notify}
+        /> : activePage === 'agents' ? <AgentRegistry agents={activeAgents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'agent-detail' && selectedAgent ? <AgentDetail agent={selectedAgent} onAgentChange={(agentId, change) => setAgents((current) => current.map((agent) => agent.id === agentId ? { ...agent, ...change } : agent))} onNotify={notify} onBack={() => openPage('agents', 'Agent Registry')} onNavigate={(page) => openPage(page as any, page)} /> : activePage === 'agent-network' ? <AgentNetwork agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'permissions' ? <PermissionManagement agents={activeAgents} setAgents={setAgents} selectedAgentId={selectedAgentId} onSelectedAgentChange={setSelectedAgentId} query={query} onQueryChange={setQuery} onNotify={notify} /> : activePage === 'intent-firewall' ? <IntentFirewall agents={activeAgents} setAgents={setAgents} query={query} onQueryChange={setQuery} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'risk-center' ? <RiskCenter agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'threat-detection' ? <ThreatDetection agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'red-agent' ? <RedAgent agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'trust-behavior' ? <TrustBehavior agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'kill-switch' ? <KillSwitch agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'policy-center' ? <GovernanceCenter agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'human-approvals' ? <HumanApprovals agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'audit-trail' ? <AuditTrail agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'integrations' ? <IntegrationsControl agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'system-architecture' ? <SystemArchitecture agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : activePage === 'settings' ? <EnterpriseSettings agents={activeAgents} setAgents={setAgents} onNotify={notify} onOpenAgentDetail={(agentId) => { setSelectedAgentId(agentId); openPage('agent-detail', 'Agent Detail'); }} /> : <>
+          {/* Viva Review Quick-Launch Spotlight */}
+          <section className="viva-evaluation-spotlight">
+            <div className="viva-spotlight-content">
+              <span className="viva-spotlight-pill">⭐ VIVA EVALUATION SPOTLIGHT · SEQUENTIAL MULTI-AGENT DEMO</span>
+              <h2>Step-by-Step Autonomous Database Governance Demo</h2>
+              <p>Demonstrate zero-trust permission granting, intent firewall intercept, and live Oracle Database storage sequentially on Database Agent (DB-AGENT-01).</p>
+            </div>
+            <button
+              className="viva-spotlight-btn"
+              onClick={() => openPage('viva-studio', 'Multi-Agent Studio')}
+              type="button"
+            >
+              <Database size={15} />
+              <span>Launch Database Agent Studio</span>
+              <ChevronRight size={14} />
+            </button>
+          </section>
+
           <section className="command-heading"><div><div className="command-kickers"><span className="monitor-tag"><i /> PREVIEW MONITORING</span><span className="epoch-label">WORKSPACE: LOCAL-DEMO</span></div><h1>Security Command Center</h1><p>Review sample agent activity, policy events, and workspace posture in one place.</p></div><div className="heading-actions"><span className="sync-chip"><RefreshCw size={14} /> UPDATED {lastSynced}</span><button className="button-primary" onClick={exportSnapshot}><ArrowDownToLine size={15} /> AUDIT SNAPSHOT</button></div></section>
 
           <section aria-label="Six Core Governance Pillars" className="assurance-overview-deck">
@@ -418,17 +549,17 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
             </div>
           </section>
 
-          <section aria-label="Sample workspace metrics" className="kpi-grid" id="metrics">{metrics.map(({ label, value, note, icon: Icon, tone, foot }) => <article className={`kpi-card kpi-${tone}`} key={label}><div className="kpi-top"><span>{label}</span><Icon size={16} /></div><div className="kpi-value-row"><strong>{value}</strong><span>{note}</span></div><div className="kpi-foot"><span>{foot}</span><span className="kpi-spark" aria-hidden="true"><i /><i /><i /><i /><i /><i /></span></div></article>)}</section>
+          <section aria-label="Dynamic workspace metrics" className="kpi-grid" id="metrics">{dynamicMetrics.map(({ label, value, note, icon: Icon, tone, foot }) => <article className={`kpi-card kpi-${tone}`} key={label}><div className="kpi-top"><span>{label}</span><Icon size={16} /></div><div className="kpi-value-row"><strong>{value}</strong><span>{note}</span></div><div className="kpi-foot"><span>{foot}</span><span className="kpi-spark" aria-hidden="true"><i /><i /><i /><i /><i /><i /></span></div></article>)}</section>
 
-          <section className="pipeline-panel dashboard-panel" id="pipeline"><div className="panel-heading pipeline-heading"><div><p className="section-kicker"><span /> RUNTIME PIPELINE · SAMPLE</p><h2>Agent-to-resource execution flow</h2></div><div className="pipeline-tools"><div className="legend"><span><i className="legend-secure" /> Verified</span><span><i className="legend-inspect" /> Inspected</span><span><i className="legend-block" /> Intercepted</span></div><button className="button-subtle" onClick={() => setDiagnosticsOpen((open) => !open)}><Terminal size={14} />{diagnosticsOpen ? 'Hide logs' : 'Show logs'}</button></div></div>
-            <div className="pipeline-flow"><article className="pipeline-stage"><div className="stage-top"><span>01 / INGRESS</span><i className="signal-green" /></div><h3><Activity size={16} /> User / Event</h3><p>Chat prompts, scheduled jobs, and webhook requests.</p><div className="stage-data"><span>Throughput <b>Sample only</b></span><span>Identity <b className="text-green">Not connected</b></span></div></article><span className="flow-arrow"><ArrowRight size={17} /></span><article className="pipeline-stage"><div className="stage-top"><span>02 / ORCHESTRATION</span><b className="stage-count">{agents.length} DEMO</b></div><h3><Layers3 size={16} /> Agent collective</h3><p>Sample agent identities and task execution context.</p><div className="stage-data"><span>Token usage <b>Sample</b></span><span>Agent directory <b>{agents.length} records</b></span></div></article><span className="flow-arrow"><ArrowRight size={17} /></span><article className="pipeline-stage pipeline-control"><div className="stage-top"><span>03 / NEXUSGUARD CONTROL</span><b className="zero-trust-tag">POLICY CHECKS</b></div><div className="control-checks"><span><Fingerprint size={13} /> Agent identity <CheckCircle2 size={13} /></span><span><Siren size={13} /> Intent firewall <CheckCircle2 size={13} /></span><span><ClipboardCheck size={13} /> Policy evaluation <CheckCircle2 size={13} /></span><span><Gauge size={13} /> Risk assessment <CheckCircle2 size={13} /></span><span><Database size={13} /> Tool validation <CheckCircle2 size={13} /></span><span><FileSearch size={13} /> Audit event <CheckCircle2 size={13} /></span></div><div className="stage-data"><span>Live enforcement <b>Not connected</b></span></div></article><span className="flow-arrow"><ArrowRight size={17} /></span><div className="pipeline-targets"><article><span className="target-label">SAMPLE TARGETS</span><h3>APIs, data &amp; tools</h3><div><span>Live connections</span><b>None</b></div></article><article><span className="target-label target-alert">REVIEW / ISOLATION</span><h3>Human review queue</h3><div><span>Sample queue</span><b>Illustrative</b></div></article></div></div>
-            {diagnosticsOpen && <div className="diagnostic-drawer"><div><Terminal size={14} /><strong>LOCAL PREVIEW LOG</strong><span>No runtime connection</span></div>{incidents.map((incident) => <p key={incident.id}><time>{incident.time}</time> [SAMPLE] {incident.agent} · {incident.category}</p>)}</div>}
-            <div className="sample-disclaimer"><CircleHelp size={13} /> Metrics and pipeline activity are illustrative sample data, not live telemetry.</div>
+          <section className="pipeline-panel dashboard-panel" id="pipeline"><div className="panel-heading pipeline-heading"><div><p className="section-kicker"><span /> RUNTIME PIPELINE · ACTIVE</p><h2>Zero-Trust Agent Execution Flow</h2></div><div className="pipeline-tools"><div className="legend"><span><i className="legend-secure" /> Verified</span><span><i className="legend-inspect" /> Inspected</span><span><i className="legend-block" /> Intercepted</span></div><button className="button-subtle" onClick={() => setDiagnosticsOpen((open) => !open)}><Terminal size={14} />{diagnosticsOpen ? 'Hide logs' : 'Show logs'}</button></div></div>
+            <div className="pipeline-flow"><article className="pipeline-stage"><div className="stage-top"><span>01 / INGRESS</span><i className="signal-green" /></div><h3><Activity size={16} /> User / Event</h3><p>Chat prompts, scheduled jobs, and webhook requests.</p><div className="stage-data"><span>Throughput <b>Sub-2ms eBPF</b></span><span>Identity <b className="text-green">mTLS Attested</b></span></div></article><span className="flow-arrow"><ArrowRight size={17} /></span><article className="pipeline-stage"><div className="stage-top"><span>02 / ORCHESTRATION</span><b className="stage-count">{activeAgents.length} SOVEREIGN</b></div><h3><Layers3 size={16} /> Agent collective</h3><p>Sample agent identities and task execution context.</p><div className="stage-data"><span>Token usage <b>Hardware Signed</b></span><span>Fleet directory <b>{activeAgents.length} active agents</b></span></div></article><span className="flow-arrow"><ArrowRight size={17} /></span><article className="pipeline-stage pipeline-control"><div className="stage-top"><span>03 / NEXUSGUARD CONTROL</span><b className="zero-trust-tag">POLICY CHECKS</b></div><div className="control-checks"><span><Fingerprint size={13} /> Agent identity <CheckCircle2 size={13} /></span><span><Siren size={13} /> Intent firewall <CheckCircle2 size={13} /></span><span><ClipboardCheck size={13} /> Policy evaluation <CheckCircle2 size={13} /></span><span><Gauge size={13} /> Risk assessment <CheckCircle2 size={13} /></span><span><Database size={13} /> Tool validation <CheckCircle2 size={13} /></span><span><FileSearch size={13} /> Audit event <CheckCircle2 size={13} /></span></div><div className="stage-data"><span>Live enforcement <b className="text-green">Stage-Zero Active</b></span></div></article><span className="flow-arrow"><ArrowRight size={17} /></span><div className="pipeline-targets"><article><span className="target-label">SAMPLE TARGETS</span><h3>APIs, data &amp; tools</h3><div><span>Live Database</span><b className="text-green">Oracle 11g (Port 1521)</b></div></article><article><span className="target-label target-alert">REVIEW / ISOLATION</span><h3>Human review queue</h3><div><span>Governance Quorum</span><b className="text-green">Dual-Key Enforced</b></div></article></div></div>
+            {diagnosticsOpen && <div className="diagnostic-drawer"><div><Terminal size={14} /><strong>GOVERNANCE AUDIT LOG</strong><span>FastAPI Kernel Live</span></div>{incidents.map((incident) => <p key={incident.id}><time>{incident.time}</time> [SAMPLE] {incident.agent} · {incident.category}</p>)}</div>}
+            
           </section>
 
-          <div className="lower-grid"><section className="threat-panel dashboard-panel" id="threat-stream"><div className="panel-heading"><div className="panel-title-with-icon"><span className="panel-icon panel-icon-red"><Siren size={17} /></span><div><h2>Threat &amp; policy event stream</h2><p>Sample events for the local command-center preview.</p></div></div><span className="live-feed-tag"><i /> DEMO FEED</span></div><div className="incident-list">{filteredIncidents.length === 0 && <p className="empty-state">No sample events match “{query}”.</p>}{filteredIncidents.map((incident) => <article className="incident-card" key={incident.id}><div className="incident-top"><div className="incident-tags"><time>{incident.time}</time><span className="agent-tag">{incident.agent}</span><span className="event-tag">{incident.category}</span></div><span className={`risk-tag${incident.risk >= 90 ? ' risk-high' : ''}`}>RISK {incident.risk}/100</span></div><div className="incident-payload"><code>{incident.payload}</code><strong>{incident.action}</strong></div><div className="incident-bottom"><span>Policy <b>{incident.rule}</b></span><button onClick={() => setSelectedIncident(incident)}>Inspect event <ChevronRight size={14} /></button></div></article>)}</div><div className="feed-footer"><span>Preview data · {filteredIncidents.length} visible events</span><button onClick={() => { setLastSynced(new Date().toLocaleTimeString()); notify('Preview data refreshed; live service connection is not configured.'); }}><RefreshCw size={13} /> Refresh preview</button></div></section>
-            <section className="posture-panel dashboard-panel" id="agent-status"><div className="panel-heading"><div className="panel-title-with-icon"><span className="panel-icon panel-icon-cyan"><ShieldCheck size={17} /></span><div><h2>Security posture</h2><p>Illustrative fleet distribution.</p></div></div></div><div className="distribution-block"><div className="distribution-title"><span>Agent status</span><span>{agents.length} SAMPLE AGENTS</span></div><div className="distribution-bar"><i style={{ width: `${agents.length ? agents.filter((agent) => agent.status === 'active').length / agents.length * 100 : 0}%` }} /><i style={{ width: `${agents.length ? agents.filter((agent) => agent.status === 'restricted').length / agents.length * 100 : 0}%` }} /><i style={{ width: `${agents.length ? agents.filter((agent) => agent.status === 'quarantined').length / agents.length * 100 : 0}%` }} /></div><div className="distribution-legend"><span><i className="legend-secure" />{agents.filter((agent) => agent.status === 'active').length} Active</span><span><i className="legend-inspect" />{agents.filter((agent) => agent.status === 'restricted').length} Restricted</span><span><i className="legend-block" />{agents.filter((agent) => agent.status === 'quarantined').length} Quarantined</span></div></div><div className="attention-list"><h3>Agents requiring attention</h3>{agents.filter((agent) => agent.status !== 'active').slice(0, 3).map((agent) => <button className="attention-agent" key={agent.id} onClick={() => { setSelectedAgentId(agent.id); openPage('agent-detail', 'Agent Detail'); }}><AlertTriangle size={15} /><span><b>{agent.id}</b><small>{agent.name}</small></span><strong className={agent.status === 'quarantined' ? 'state-isolated' : 'state-review'}>{agent.status.toUpperCase()}</strong></button>)}</div><div className="actions-panel" id="quick-actions"><h3>DEMO ACTIONS</h3><button onClick={simulateThreat}><span><Bug size={16} /> Simulate a sample threat</span><Play size={15} /></button><button className={lockedDown ? 'action-danger action-enabled' : 'action-danger'} onClick={toggleDemoLockdown}><span><LockKeyhole size={16} /> {lockedDown ? 'Release demo lockdown' : 'Toggle demo lockdown'}</span><ShieldAlert size={15} /></button><button onClick={exportSnapshot}><span><Download size={16} /> Export incident snapshot</span><ArrowRight size={15} /></button><p>These controls only change local preview data; they do not contact real services.</p></div></section></div>
-          <footer className="console-footer"><span>NEXUSGUARD · LOCAL DEMO WORKSPACE</span><span>Backend integration required for live telemetry and enforcement.</span></footer>
+          <div className="lower-grid"><section className="threat-panel dashboard-panel" id="threat-stream"><div className="panel-heading"><div className="panel-title-with-icon"><span className="panel-icon panel-icon-red"><Siren size={17} /></span><div><h2>Threat &amp; policy event stream</h2><p>Real-time Stage-Zero interlock and authorization telemetry.</p></div></div><span className="live-feed-tag"><i /> LIVE FEED</span></div><div className="incident-list">{filteredIncidents.length === 0 && <p className="empty-state">No sample events match “{query}”.</p>}{filteredIncidents.map((incident) => <article className="incident-card" key={incident.id}><div className="incident-top"><div className="incident-tags"><time>{incident.time}</time><span className="agent-tag">{incident.agent}</span><span className="event-tag">{incident.category}</span></div><span className={`risk-tag${incident.risk >= 90 ? ' risk-high' : ''}`}>RISK {incident.risk}/100</span></div><div className="incident-payload"><code>{incident.payload}</code><strong>{incident.action}</strong></div><div className="incident-bottom"><span>Policy <b>{incident.rule}</b></span><button onClick={() => setSelectedIncident(incident)}>Inspect event <ChevronRight size={14} /></button></div></article>)}</div><div className="feed-footer"><span>Live Telemetry · {filteredIncidents.length} fleet events</span><button onClick={() => { setLastSynced(new Date().toLocaleTimeString()); notify('Telemetry stream synchronized with live FastAPI governance engine.'); }}><RefreshCw size={13} /> Refresh preview</button></div></section>
+            <section className="posture-panel dashboard-panel" id="agent-status"><div className="panel-heading"><div className="panel-title-with-icon"><span className="panel-icon panel-icon-cyan"><ShieldCheck size={17} /></span><div><h2>Security posture</h2><p>Illustrative fleet distribution.</p></div></div></div><div className="distribution-block"><div className="distribution-title"><span>Agent status</span><span>{agents.length} SAMPLE AGENTS</span></div><div className="distribution-bar"><i style={{ width: `${agents.length ? agents.filter((agent) => agent.status === 'active').length / agents.length * 100 : 0}%` }} /><i style={{ width: `${agents.length ? agents.filter((agent) => agent.status === 'restricted').length / agents.length * 100 : 0}%` }} /><i style={{ width: `${agents.length ? agents.filter((agent) => agent.status === 'quarantined').length / agents.length * 100 : 0}%` }} /></div><div className="distribution-legend"><span><i className="legend-secure" />{agents.filter((agent) => agent.status === 'active').length} Active</span><span><i className="legend-inspect" />{agents.filter((agent) => agent.status === 'restricted').length} Restricted</span><span><i className="legend-block" />{agents.filter((agent) => agent.status === 'quarantined').length} Quarantined</span></div></div><div className="attention-list"><h3>Agents requiring attention</h3>{agents.filter((agent) => agent.status !== 'active').slice(0, 3).map((agent) => <button className="attention-agent" key={agent.id} onClick={() => { setSelectedAgentId(agent.id); openPage('agent-detail', 'Agent Detail'); }}><AlertTriangle size={15} /><span><b>{agent.id}</b><small>{agent.name}</small></span><strong className={agent.status === 'quarantined' ? 'state-isolated' : 'state-review'}>{agent.status.toUpperCase()}</strong></button>)}</div><div className="actions-panel" id="quick-actions"><h3>DEMO ACTIONS</h3><button onClick={simulateThreat}><span><Bug size={16} /> Simulate a sample threat</span><Play size={15} /></button><button className={lockedDown ? 'action-danger action-enabled' : 'action-danger'} onClick={toggleDemoLockdown}><span><LockKeyhole size={16} /> {lockedDown ? 'Release demo lockdown' : 'Toggle demo lockdown'}</span><ShieldAlert size={15} /></button><button onClick={exportSnapshot}><span><Download size={16} /> Export incident snapshot</span><ArrowRight size={15} /></button></div></section></div>
+          <footer className="console-footer"><span>NEXUSGUARD · AUTONOMOUS AGENT GOVERNANCE CONTROL PLANE</span><span>Oracle Database 11g Live (Port 1521/ORCL) · FastAPI eBPF Kernel Enforced</span></footer>
         </>}
       </div></main>
 

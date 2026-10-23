@@ -572,8 +572,8 @@ export default function TrustBehavior({
 
   // List of all telemetry items
   const allTelemetryList = useMemo(() => {
-    return Object.values(telemetryState);
-  }, [telemetryState]);
+    return Object.values(telemetryState).filter((item) => agents.some((a) => a.id === item.id));
+  }, [telemetryState, agents]);
 
   // Dynamic KPI Calculations
   const kpis = useMemo(() => {

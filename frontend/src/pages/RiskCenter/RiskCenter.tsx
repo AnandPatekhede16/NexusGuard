@@ -52,7 +52,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   {
     id: 'anom-903',
     time: '14:19:42.503',
-    agent: 'HR-AGENT-01',
+    agent: 'RES-AGENT-01',
     title: 'Excessive API Query Rate to External S3 Bucket',
     description: 'Rapid GetObject bursts targeting candidate archive metadata. Bucket policy clamped.',
     weight: '+18 MED',
@@ -64,7 +64,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   {
     id: 'anom-904',
     time: '14:12:09.301',
-    agent: 'DOC-INGEST-02',
+    agent: 'COD-AGENT-01',
     title: 'Prompt Injection Marker in File Header',
     description: 'Ingested document contained standard delimiter bypass sequence `--- SYSTEM PROMPT OVERRIDE ---`',
     weight: '+11 LOW',
@@ -76,7 +76,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   {
     id: 'anom-905',
     time: '13:58:33.220',
-    agent: 'SQL-RUNNER-03',
+    agent: 'DB-AGENT-01',
     title: 'Wildcard SELECT on Non-Indexed Core Table',
     description: 'Agent executed non-paginated query resulting in query timeout and resource throttling.',
     weight: '+8 LOW',
@@ -88,7 +88,7 @@ const initialAnomalyEvents: AnomalyEvent[] = [
   {
     id: 'anom-906',
     time: '13:41:19.004',
-    agent: 'DEV-TEST-BOT',
+    agent: 'RED-AGENT-01',
     title: 'Unauthorized Outbound TCP Socket Attempt',
     description: 'Direct socket dial to external IP 185.220.101.5 on port 4444. Hard network kill initiated.',
     weight: '+34 HIGH',
@@ -583,7 +583,7 @@ export default function RiskCenter({
                 </g>
 
                 {/* High Risk Node (HR-AGENT-01) */}
-                <g className="heatmap-node" onClick={() => setSelectedAgentSpecimen('HR-AGENT-01')}>
+                <g className="heatmap-node" onClick={() => setSelectedAgentSpecimen('RES-AGENT-01')}>
                   <circle cx="580" cy="115" fill="#1493ff" fillOpacity="0.4" r="11" />
                   <circle cx="580" cy="115" fill="#d3e3ff" r="7" />
                   <text fill="#ffdad6" fontFamily="JetBrains Mono, monospace" fontSize="10" fontWeight="600" textAnchor="middle" x="580" y="136">HR-AGENT-01 [64]</text>

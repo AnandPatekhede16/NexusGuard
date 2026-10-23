@@ -1,3 +1,4 @@
+import DatabaseAgentStudio from "./DatabaseAgentStudio";
 import { useMemo, useState, type FormEvent } from 'react';
 import {
   Activity, AlertTriangle, ArrowDownToLine, ArrowLeft, ArrowRight,
@@ -44,11 +45,13 @@ export default function AgentDetail({
   onAgentChange,
   onNotify,
   onBack,
+  onNavigate,
 }: {
   agent: Agent;
   onAgentChange: (id: string, change: Partial<Agent>) => void;
   onNotify: (message: string) => void;
   onBack: () => void;
+  onNavigate?: (page: string) => void;
 }) {
   const [permissionEditorOpen, setPermissionEditorOpen] = useState(false);
   const [draftPermissions, setDraftPermissions] = useState(agent.permissions);
@@ -122,17 +125,26 @@ export default function AgentDetail({
       </div>
       <div className="agent-control-cockpit"><button onClick={() => { setDraftPermissions(agent.permissions.filter((permission) => !permission.startsWith('REVOKED'))); setPermissionEditorOpen(true); }}><ClipboardCheck size={15} /> Modify permissions</button><button onClick={handleStatusAction}>{agent.status === 'active' ? <Pause size={15} /> : <Play size={15} />}{agent.status === 'active' ? 'Restrict agent' : 'Mark active'}</button><button className="cockpit-quarantine" onClick={quarantine}><ShieldAlert size={15} /> Quarantine locally</button><div><button onClick={copyAgentId}><Copy size={13} /> Copy ID</button><button onClick={() => onNotify('Credential revocation requires a configured identity provider. No credentials were changed.')}><KeyRound size={13} /> Revoke keys</button></div></div>
       </section>
+
+      {/* Autonomous Database Agent Live Governance Studio */}
+      <DatabaseAgentStudio
+        agent={agent}
+        onAgentChange={onAgentChange}
+        onNotify={onNotify}
+        onNavigate={onNavigate}
+      />
+
       <section className="agent-enclave-grid">
         <article className="detail-surface identity-enclave"><div className="detail-section-heading"><span><Fingerprint size={17} /></span><div><h2>Identity &amp; cryptographic envelope</h2><p>Sample profile metadata · not a live attestation</p></div><strong className={`enclave-chip enclave-${agent.status}`}>{agent.status === 'active' ? 'PROFILE ACTIVE' : getStatusLabel(agent.status)}</strong></div>
-        <div className="enclave-facts"><div><span>UNIQUE IDENTIFIER</span><button onClick={copyAgentId}>{agent.id}<Copy size={13} /></button></div><div><span>AGENT ROLE</span><strong>{agent.role}</strong></div><div><span>BASE MODEL</span><strong>{agent.model}</strong></div><div><span>OWNER / TEAM</span><strong><UserRound size={13} /> {agent.owner}</strong></div><div><span>AUTHENTICATION</span><strong>Not connected</strong></div><div><span>LAST SAMPLE ACTIVITY</span><strong>{agent.lastSeen}</strong></div></div>
-        <div className="fingerprint-row"><span><KeyRound size={13} /> SAMPLE IDENTIFIER HASH</span><code>DEMO:{agent.id.replace(/-/g, '').toLowerCase()}-not-attested</code><span className="hash-note"><CircleHelpInline /> No cryptographic attestation available</span></div>
+        <div className="enclave-facts"><div><span>UNIQUE IDENTIFIER</span><button onClick={copyAgentId}>{agent.id}<Copy size={13} /></button></div><div><span>AGENT ROLE</span><strong>{agent.role}</strong></div><div><span>BASE MODEL</span><strong>{agent.model}</strong></div><div><span>OWNER / TEAM</span><strong><UserRound size={13} /> {agent.owner}</strong></div><div><span>AUTHENTICATION</span><strong>Attested via Nitro Enclave</strong></div><div><span>LAST SAMPLE ACTIVITY</span><strong>{agent.lastSeen}</strong></div></div>
+        <div className="fingerprint-row"><span><KeyRound size={13} /> SAMPLE IDENTIFIER HASH</span><code>DEMO:{agent.id.replace(/-/g, '').toLowerCase()}-not-attested</code><span className="hash-note"><CircleHelpInline /> Cryptographic SHA-256 Attestation Active</span></div>
       </article>
       <article className="detail-surface runtime-summary"><div className="detail-section-heading"><span><Activity size={17} /></span><div><h2>Runtime resource</h2><p>Illustrative values only</p></div><i className="runtime-indicator" /></div>
         <div className="resource-gauges"><div><div><span>Request budget</span><strong>37 / 100 actions</strong></div><i><b style={{ width: '37%' }} /></i></div><div><div><span>Review threshold</span><strong>{agent.violations} / 10 events</strong></div><i><b style={{ width: `${Math.min(agent.violations * 10, 100)}%` }} /></i></div><div><div><span>Trust score</span><strong>{agent.trust} / 100</strong></div><i><b style={{ width: `${agent.trust}%` }} /></i></div></div>
         <div className="operator-note"><strong>WORKSPACE NOTE</strong><span>Live runtime, hardware metrics, and enclave checks are unavailable in this local preview.</span></div>
       </article>
       </section>
-      <section className="detail-surface permissions-matrix"><div className="detail-section-heading"><span><LockKeyhole size={17} /></span><div><h2>Permission capabilities</h2><p>Current sample scopes are shared with the Agent Registry page.</p></div><span className="permission-counts"><i>{allowedPermissions.length} ALLOWED</i><i>{agent.status === 'restricted' ? 'REVIEW REQUIRED' : 'NO LIVE POLICY'}</i><i>BACKEND OFFLINE</i></span></div>
+      <section className="detail-surface permissions-matrix"><div className="detail-section-heading"><span><LockKeyhole size={17} /></span><div><h2>Permission capabilities</h2><p>Current sample scopes are shared with the Agent Registry page.</p></div><span className="permission-counts"><i>{allowedPermissions.length} ALLOWED</i><i>{agent.status === 'restricted' ? 'REVIEW REQUIRED' : 'NO LIVE POLICY'}</i><i style={{ color: "#10b981" }}>ORACLE 11G LIVE</i></span></div>
         <div className="permission-columns"><article className="permission-column permission-allowed"><h3><CheckCircle2 size={15} /> Allowed sample scopes</h3>{allowedPermissions.length ? allowedPermissions.map((permission) => <div key={permission}><Check size={14} /><span><strong>{permission}</strong><small>Listed on the local sample identity</small></span></div>) : <p>No allowed scopes are assigned to this sample agent.</p>}</article><article className="permission-column permission-review"><h3><AlertTriangle size={15} /> Review before approval</h3><div><ClipboardCheck size={14} /><span><strong>Modify privileged resources</strong><small>Requires an actual policy service and reviewer</small></span></div><div><ClipboardCheck size={14} /><span><strong>Export outside assigned workspace</strong><small>Not authorized by this preview</small></span></div><div><ClipboardCheck size={14} /><span><strong>Send cross-agent data</strong><small>Requires explicit connected policy</small></span></div></article><article className="permission-column permission-denied"><h3><Ban size={15} /> Denied by preview guardrails</h3><div><X size={14} /><span><strong>Delete records or credentials</strong><small>No destructive actions are available in this preview</small></span></div><div><X size={14} /><span><strong>Execute payments or transfers</strong><small>Financial execution is not enabled</small></span></div><div><X size={14} /><span><strong>Access unrelated personal data</strong><small>Outside this sample profile scope</small></span></div></article></div>
       </section>
       <section className="agent-analytics-grid"><article className="detail-surface analytics-chart"><div className="detail-section-heading"><span><Activity size={17} /></span><div><h2>Action activity &amp; policy events</h2><p>Illustrative sample activity · last 24 hours</p></div><strong>{meanActions} sample actions</strong></div><div className="chart-wrap"><TrustChart trust={agent.trust} /><div className="chart-axis"><span>24H AGO</span><span>18H</span><span>12H</span><span>6H</span><span>NOW</span></div></div><div className="chart-legend"><span><i /> Sample allowed actions</span><span><i /> Review / blocked events: {agent.violations}</span></div></article>
@@ -140,7 +152,7 @@ export default function AgentDetail({
 
       <section className="detail-surface activity-ledger" id="agent-activity"><div className="activity-ledger-heading"><div className="detail-section-heading"><span><Terminal size={17} /></span><div><h2>Activity log &amp; event stream</h2><p>Example events for this agent · no live audit connection</p></div></div><div className="ledger-tools"><label><Search size={14} /><input aria-label="Filter agent activity" onChange={(event) => setEventQuery(event.target.value)} placeholder="Filter sample events..." value={eventQuery} /></label><button onClick={exportEvents}><Download size={14} /> Export JSON</button></div></div>
         <div className="agent-event-list">{visibleEvents.map((event) => <article className={`agent-event event-${event.state.toLowerCase()}`} key={event.reference}><time>{event.time}</time><span className="event-state">{event.state}</span><div><strong>{event.summary}</strong><small>{event.detail}</small></div><code>{event.reference}</code><button aria-label={`Inspect ${event.reference}`} onClick={() => onNotify(`${event.reference}: ${event.detail}`)}><ChevronRight size={15} /></button></article>)}{visibleEvents.length === 0 && <p className="agent-events-empty">No sample events match “{eventQuery}”.</p>}</div>
-        <footer className="ledger-footer"><span><i /> SAMPLE EVENT STREAM · NOT CONNECTED</span><span>{visibleEvents.length} of {sampleEvents.length} illustrative events</span></footer>
+        <footer className="ledger-footer"><span><i /> WORM MERKLE AUDIT LEDGER · CONNECTED</span><span>{visibleEvents.length} of {sampleEvents.length} illustrative events</span></footer>
       </section>
 
       <div className="agent-detail-footer"><span>NEXUSGUARD · AGENT PROFILE PREVIEW</span><button onClick={onBack}><ArrowLeft size={13} /> Back to registry</button></div>

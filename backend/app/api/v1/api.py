@@ -1,0 +1,8 @@
+"""API v1 router aggregation."""
+
+from fastapi import APIRouter
+from backend.app.api.v1.endpoints import health, agent_ops
+
+api_router = APIRouter()
+api_router.include_router(health.router)
+api_router.include_router(agent_ops.router)

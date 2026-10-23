@@ -127,8 +127,8 @@ const initialInterceptQueue: InterceptItem[] = [
   {
     id: 'hitl-03',
     incidentCode: 'INCIDENT HITL-9411',
-    agentId: 'HR-AGENT-01',
-    agentName: 'People Onboarder',
+    agentId: 'RES-AGENT-01',
+    agentName: 'Research Core Vector',
     riskScore: 65,
     urgency: 'routine',
     policyCode: 'POLICY-PRIV-002',
