@@ -773,7 +773,7 @@ export default function RiskCenter({
                 <Activity size={14} className="text-cyan mr-1" />
                 <span>Historical Risk Velocity Curve (Baseline: 18 Spiking to 72)</span>
               </div>
-              <span className="curve-spike-tag text-red font-bold">SPIKE AT 14:28:04 UTC</span>
+              <span className="curve-spike-tag text-red font-bold">SPIKE AT {getRelativeUtcTime(7)}</span>
             </div>
 
             {/* Time-Series Area Chart (SVG) */}
@@ -816,16 +816,16 @@ export default function RiskCenter({
                 <circle cx="440" cy="45" fill="#ffb4ab" r="5" />
                 <circle cx="440" cy="45" r="9" stroke="#ffb4ab" strokeOpacity="0.5" strokeWidth="1.5" className="node-halo-pulse" />
                 <text fill="#ffdad6" fontFamily="JetBrains Mono, monospace" fontSize="9" fontWeight="bold" textAnchor="middle" x="440" y="24">
-                  14:28:04 UTC (72)
+                  {getRelativeUtcTime(7)} (72)
                 </text>
               </svg>
 
               <div className="chart-time-labels">
-                <span>13:30 UTC</span>
-                <span>13:50 UTC</span>
-                <span>14:10 UTC</span>
-                <span>14:28 UTC (Anomalous Ingestion)</span>
-                <span className="text-red font-semibold">14:35 UTC (Now)</span>
+                <span>{getRelativeUtcTime(60)}</span>
+                <span>{getRelativeUtcTime(40)}</span>
+                <span>{getRelativeUtcTime(20)}</span>
+                <span>{getRelativeUtcTime(7)} (Anomalous Ingestion)</span>
+                <span className="text-red font-semibold">{getRelativeUtcTime(0)} (Now)</span>
               </div>
             </div>
 

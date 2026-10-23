@@ -231,19 +231,24 @@ export const sampleIntentEvents: IntentEvent[] = [
   },
 ];
 
+function getRelativeUtcSeconds(secondsAgo: number): string {
+  const d = new Date(Date.now() - secondsAgo * 1000);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC';
+}
+
 const entropyBarsData = [
-  { label: '14:30:00 - 32 ops/s', height: '35%', isSpike: false },
-  { label: '14:30:15 - 41 ops/s', height: '42%', isSpike: false },
-  { label: '14:30:30 - 37 ops/s', height: '38%', isSpike: false },
-  { label: '14:30:45 - 46 ops/s', height: '48%', isSpike: false },
-  { label: '14:31:00 - 50 ops/s', height: '52%', isSpike: false },
-  { label: '14:31:15 - 44 ops/s', height: '45%', isSpike: false },
-  { label: '14:31:30 - 59 ops/s', height: '61%', isSpike: false },
-  { label: '14:31:45 - 56 ops/s', height: '58%', isSpike: false },
-  { label: '14:32:00 - ANOMALOUS MUTATION SPIKE 94 ops/s', height: '96%', isSpike: true },
-  { label: '14:32:15 - 58 ops/s', height: '60%', isSpike: false },
-  { label: '14:32:30 - 53 ops/s', height: '55%', isSpike: false },
-  { label: '14:32:45 - 39 ops/s', height: '40%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(165)} - 32 ops/s`, height: '35%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(150)} - 41 ops/s`, height: '42%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(135)} - 37 ops/s`, height: '38%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(120)} - 46 ops/s`, height: '48%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(105)} - 50 ops/s`, height: '52%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(90)} - 44 ops/s`, height: '45%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(75)} - 59 ops/s`, height: '61%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(60)} - 56 ops/s`, height: '58%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(45)} - ANOMALOUS MUTATION SPIKE 94 ops/s`, height: '96%', isSpike: true },
+  { label: `${getRelativeUtcSeconds(30)} - 58 ops/s`, height: '60%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(15)} - 53 ops/s`, height: '55%', isSpike: false },
+  { label: `${getRelativeUtcSeconds(0)} - 39 ops/s`, height: '40%', isSpike: false },
 ];
 
 function downloadJson(filename: string, payload: unknown) {
