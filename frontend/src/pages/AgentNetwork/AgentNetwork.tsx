@@ -51,6 +51,11 @@ export interface HandshakeChannel {
   }[];
 }
 
+function getRelativeUtcTime(minutesAgo: number): string {
+  const d = new Date(Date.now() - minutesAgo * 60 * 1000);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC';
+}
+
 export interface AgentNetworkProps {
   agents: Agent[];
   setAgents?: Dispatch<SetStateAction<Agent[]>>;
@@ -68,7 +73,7 @@ const initialChannels: HandshakeChannel[] = [
     state: 'blocked',
     statusBadge: 'BLOCKED [HIGH RISK 91/100]',
     statusBadgeClass: 'bg-error text-on-error',
-    interceptTime: '14:32:17.402 UTC',
+    interceptTime: getRelativeUtcTime(2),
     channelCrypto: 'mTLS v1.3 Ed25519',
     signatureHash: 'SHA256:d8a9f4e2910ba71c504a...4e19',
     targetSchema: 'hr_financial_records.prod.cluster:5432',
@@ -97,7 +102,7 @@ const initialChannels: HandshakeChannel[] = [
     state: 'verified',
     statusBadge: 'VERIFIED [SAFE 12/100]',
     statusBadgeClass: 'bg-tertiary-container/20 text-tertiary-container',
-    interceptTime: '14:32:14.019 UTC',
+    interceptTime: getRelativeUtcTime(3),
     channelCrypto: 'mTLS v1.3 Ed25519',
     signatureHash: 'SHA256:7b1e4c90a12e33bc8910...901a',
     targetSchema: 'market_intel_vector_cache.prod:6379',
@@ -125,7 +130,7 @@ const initialChannels: HandshakeChannel[] = [
     state: 'monitored',
     statusBadge: 'HITL-AUDIT [MODERATE 58/100]',
     statusBadgeClass: 'bg-secondary-container/20 text-secondary',
-    interceptTime: '14:31:58.822 UTC',
+    interceptTime: getRelativeUtcTime(5),
     channelCrypto: 'Vector RPC / gRPC Protobuf',
     signatureHash: 'SHA256:4c2a9910fe208bca0192...71e4',
     targetSchema: 'code_ast_embeddings.vectorspace:8000',
@@ -154,7 +159,7 @@ const initialChannels: HandshakeChannel[] = [
     state: 'severed',
     statusBadge: 'ISOLATED / QUARANTINE [CRITICAL 99/100]',
     statusBadgeClass: 'bg-error-container/40 text-error',
-    interceptTime: '14:30:02.110 UTC',
+    interceptTime: getRelativeUtcTime(8),
     channelCrypto: 'mTLS v1.3 (REVOKED)',
     signatureHash: 'SHA256:ff00a12e88b901a1c900...dead',
     targetSchema: 'sandbox_isolated_socket:9999',
@@ -176,14 +181,14 @@ const initialChannels: HandshakeChannel[] = [
   },
   {
     id: 'chan-hr-auth',
-    from: 'HR-AGENT-01',
+    from: 'COD-AGENT-01',
     to: 'AUTH-BROKER',
-    title: 'HR-AGENT-01 ➔ AUTH-BROKER',
+    title: 'COD-AGENT-01 ➔ AUTH-BROKER',
     protocol: 'mTLS-Ed25519',
     state: 'verified',
     statusBadge: 'VALID [SAFE 08/100]',
     statusBadgeClass: 'bg-tertiary-container/20 text-tertiary-container',
-    interceptTime: '14:28:44.912 UTC',
+    interceptTime: getRelativeUtcTime(12),
     channelCrypto: 'mTLS v1.3 Ed25519',
     signatureHash: 'SHA256:3344a10fe99281c00291...4419',
     targetSchema: 'sso_idp_broker.cluster:443',
@@ -211,7 +216,7 @@ const initialChannels: HandshakeChannel[] = [
     state: 'verified',
     statusBadge: 'VERIFIED [SAFE 04/100]',
     statusBadgeClass: 'bg-tertiary-container/20 text-tertiary-container',
-    interceptTime: '14:33:02.115 UTC',
+    interceptTime: getRelativeUtcTime(1),
     channelCrypto: 'mTLS v1.3 Ed25519',
     signatureHash: 'SHA256:10e82c19a00bfe221980...55ab',
     targetSchema: 'research_gateway_proxy:443',
@@ -239,7 +244,7 @@ const initialChannels: HandshakeChannel[] = [
     state: 'verified',
     statusBadge: 'VERIFIED [SAFE 15/100]',
     statusBadgeClass: 'bg-tertiary-container/20 text-tertiary-container',
-    interceptTime: '14:31:12.784 UTC',
+    interceptTime: getRelativeUtcTime(6),
     channelCrypto: 'Vector RPC Protobuf',
     signatureHash: 'SHA256:88fa01bc9941a8002341...11fe',
     targetSchema: 'inter_agent_rpc.internal:50051',
@@ -261,13 +266,13 @@ const initialChannels: HandshakeChannel[] = [
   {
     id: 'chan-user-hr',
     from: 'USER-GATEWAY',
-    to: 'HR-AGENT-01',
-    title: 'USER-GATEWAY ➔ HR-AGENT-01',
+    to: 'COD-AGENT-01',
+    title: 'USER-GATEWAY ➔ DB-AGENT-01',
     protocol: 'REST API',
     state: 'verified',
     statusBadge: 'THROTTLED [SAFE 22/100]',
     statusBadgeClass: 'bg-secondary-container/20 text-secondary',
-    interceptTime: '14:29:10.519 UTC',
+    interceptTime: getRelativeUtcTime(9),
     channelCrypto: 'REST HTTPS / OAuth2',
     signatureHash: 'SHA256:99bc1034fe01a8900412...33cd',
     targetSchema: 'workday_api_proxy:8443',
@@ -371,8 +376,8 @@ const nodesData: MeshNode[] = [
     floatClass: 'node-float-2',
   },
   {
-    id: 'HR-AGENT-01',
-    name: 'HR-AGENT-01',
+    id: 'COD-AGENT-01',
+    name: 'COD-AGENT-01',
     role: 'Workday Connect',
     tier: 'PERIPHERAL APP',
     cluster: 'Cluster-HR-SEC',
@@ -1322,7 +1327,7 @@ export default function AgentNetwork({
                   >
                     <div className="flex flex-col min-w-0">
                       <span className="font-label-sm text-label-sm font-semibold text-on-surface truncate">
-                        HR-AGENT-01 ➔ AUTH-BROKER
+                        COD-AGENT-01 ➔ AUTH-BROKER
                       </span>
                       <span className="font-label-sm text-label-sm text-outline">14:28:44 UTC • Scoped Token Renewal</span>
                     </div>

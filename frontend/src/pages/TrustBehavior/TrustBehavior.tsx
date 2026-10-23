@@ -572,7 +572,25 @@ export default function TrustBehavior({
 
   // List of all telemetry items
   const allTelemetryList = useMemo(() => {
-    return Object.values(telemetryState).filter((item) => agents.some((a) => a.id === item.id));
+    return Object.values(telemetryState)
+      .filter((item) => agents.some((a) => a.id === item.id))
+      .map((item) => {
+        const matchingAgent = agents.find((a) => a.id === item.id);
+        if (matchingAgent) {
+          return {
+            ...item,
+            adaptiveScore: matchingAgent.trust,
+            behavioralState: matchingAgent.status === 'quarantined'
+              ? ('CRITICAL ISOLATION' as const)
+              : matchingAgent.trust >= 85
+                ? ('OPTIMAL (Stable)' as const)
+                : matchingAgent.trust >= 60
+                  ? ('MONITORED (Rate-Cap)' as const)
+                  : ('DEGRADED (Review)' as const),
+          };
+        }
+        return item;
+      });
   }, [telemetryState, agents]);
 
   // Dynamic KPI Calculations
