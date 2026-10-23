@@ -38,6 +38,11 @@ type Props = {
   onOpenAgentDetail?: (agentId: string) => void;
 };
 
+function getRelativeUtcTime(minutesAgo: number, secondsDelta: number = 0): string {
+  const d = new Date(Date.now() - minutesAgo * 60 * 1000 + secondsDelta * 1000);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC';
+}
+
 export default function KillSwitch({
   agents,
   setAgents,
@@ -72,41 +77,46 @@ export default function KillSwitch({
   const [timelineEvents, setTimelineEvents] = useState<IncidentTimelineEvent[]>([
     {
       id: 't-1',
-      time: '14:28:04',
+      time: getRelativeUtcTime(7, 0),
       tag: '[ANOMALY THRESHOLD EXCEEDED]',
-      description: 'Rate exceeded 100x baseline DB queries against PostgreSQL production cluster.',
+      description: 'Rate exceeded 100x baseline DB queries against Oracle 11g Express (localhost:1521/ORCL) relational cluster.',
       severity: 'error',
     },
     {
       id: 't-2',
-      time: '14:28:05',
+      time: getRelativeUtcTime(7, 1),
       tag: '[SEMANTIC INTERCEPT]',
-      description: 'NexusGuard Semantic Intent Firewall automatically intercepted SQL injection payload & revoked active write cursors.',
+      description: 'NexusGuard Semantic Intent Firewall automatically intercepted SQL injection payload & revoked active Oracle write cursors.',
       severity: 'primary',
     },
     {
       id: 't-3',
-      time: '14:28:07',
+      time: getRelativeUtcTime(7, 3),
       tag: '[REPUTATION DEMOTION]',
       description: 'Fleet trust score demoted from 87 to 42; agent automatically throttled to 1 call/min.',
       severity: 'secondary',
     },
     {
       id: 't-4',
-      time: '14:28:09',
+      time: getRelativeUtcTime(7, 5),
       tag: '[SANDBOX REPLICATION]',
       description: 'Automated Shadow Sandbox (sandbox-09) spun up for clone isolation & forensic packet capture.',
       severity: 'mint',
     },
     {
       id: 't-5',
-      time: '14:32:00',
+      time: getRelativeUtcTime(3, 0),
       tag: '[HUMAN ESCALATION]',
       description: 'Human SOC Commander alerted via encrypted PagerDuty / SOC bridge. Manual containment pending execution.',
       severity: 'error',
       pulsing: true,
     },
   ]);
+
+  // Selected Agent Object
+  const selectedIncidentAgent = useMemo(() => {
+    return agents.find((a) => a.id === incidentAgentId) || agents[0];
+  }, [agents, incidentAgentId]);
 
   // Dynamic Occupied Chambers
   const quarantinedAgents = useMemo(() => {
@@ -138,22 +148,51 @@ export default function KillSwitch({
       setGlobalKillActive(true);
       if (setAgents) {
         setAgents((prev) =>
-          prev.map((a) => ({ ...a, status: 'quarantined', trust: Math.min(a.trust, 25) }))
+          prev.map((a) => ({
+            ...a,
+            status: 'quarantined',
+            trust: Math.min(a.trust, 20),
+            permissions: ['REVOKED: Emergency KillSwitch'],
+          }))
         );
       }
-      onNotify?.('DEFCON-0 CRITICAL: GLOBAL AGENT KILL SWITCH ENGAGED. All agent threads halted.');
+      onNotify?.('DEFCON-0 CRITICAL: GLOBAL AGENT KILL SWITCH ENGAGED. All agent threads halted across cluster.');
     } else if (activeInterlockModal === 'db-egress') {
       setDbEgressSevered(true);
-      onNotify?.('CRITICAL SEQUESTRATION: Database egress pools severed across PostgreSQL, Redis & Snowflake.');
+      if (setAgents) {
+        setAgents((prev) =>
+          prev.map((a) => ({
+            ...a,
+            permissions: a.permissions.filter((p) => !p.includes('WRITE: DB')),
+          }))
+        );
+      }
+      onNotify?.('CRITICAL SEQUESTRATION: Database egress pools severed for Oracle 11g Express (localhost:1521/ORCL).');
     } else if (activeInterlockModal === 'mtls-revoke') {
       setMtlsRevoked(true);
-      onNotify?.('CRYPTO REVOCATION: All leaf mTLS certificates invalidated. Sessions terminated.');
+      onNotify?.('CRYPTO REVOCATION: All leaf mTLS certificates invalidated across worker enclaves.');
     } else if (activeInterlockModal === 'isolate-enclaves') {
       setAirGapEngaged(true);
       onNotify?.('NETWORK AIR-GAP: Zero-trust kernel firewall partitions enforced across production enclaves.');
     }
 
     handleCloseModal();
+  };
+
+  // Disengage Global Kill Switch
+  const handleDisengageKillSwitch = () => {
+    setGlobalKillActive(false);
+    if (setAgents) {
+      setAgents((prev) =>
+        prev.map((a) => ({
+          ...a,
+          status: 'active',
+          trust: Math.max(a.trust, 85),
+          permissions: a.id === 'DB-AGENT-01' ? ['QUERY: DB', 'WRITE: DB'] : a.permissions,
+        }))
+      );
+    }
+    onNotify?.('GLOBAL KILL SWITCH DISENGAGED: All sovereign agents restored to active operational status.');
   };
 
   // Execute One-Click Tactical Mitigation
@@ -317,9 +356,7 @@ export default function KillSwitch({
                 </strong>
                 <span className="banner-pipe">//</span>
                 <span>
-                  {isQuarantined
-                    ? '2 AGENTS CURRENTLY ISOLATED (FIN-01, RED-01)'
-                    : '1 AGENT CURRENTLY ISOLATED (RED-AGENT-01)'}
+                  {`${quarantinedAgents.length} SOVEREIGN AGENTS CURRENTLY ISOLATED`}
                 </span>
                 <span className="banner-pipe">//</span>
                 <span className="text-mint font-semibold">ENCLAVES SECURE</span>
@@ -394,16 +431,26 @@ export default function KillSwitch({
               </p>
             </div>
             <div className="interlock-card-foot">
-              <button
-                type="button"
-                className={`interlock-btn btn-kill ${globalKillActive ? 'btn-active-kill' : ''}`}
-                onClick={() => handleOpenInterlockModal('global-kill')}
-              >
-                <Lock size={16} />
-                <span>
-                  {globalKillActive ? 'KILL SWITCH ENGAGED' : 'ARM GLOBAL KILL SWITCH'}
-                </span>
-              </button>
+              {globalKillActive ? (
+                <button
+                  type="button"
+                  className="interlock-btn btn-kill btn-active-kill"
+                  onClick={handleDisengageKillSwitch}
+                  title="Click to disengage kill switch and restore fleet"
+                >
+                  <Unlock size={16} />
+                  <span>RESTORE FLEET (DISENGAGE)</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="interlock-btn btn-kill"
+                  onClick={() => handleOpenInterlockModal('global-kill')}
+                >
+                  <Lock size={16} />
+                  <span>ARM GLOBAL KILL SWITCH</span>
+                </button>
+              )}
             </div>
           </article>
 
@@ -416,7 +463,7 @@ export default function KillSwitch({
               </div>
               <h3 className="card-title">LOCK DOWN DB EGRESS</h3>
               <p className="card-desc">
-                Instantly revoke temporary read/write pools for PostgreSQL, Redis, Snowflake, and Vector stores.
+                Instantly revoke temporary read/write pools for Oracle 11g Express (localhost:1521/ORCL) and vector caches.
               </p>
             </div>
             <div className="interlock-card-foot">
@@ -499,7 +546,7 @@ export default function KillSwitch({
                   <span className="sev-tag sev-critical">SEV-0 CRITICAL</span>
                   <strong className="inc-id-tag">INC-2025-0891</strong>
                   <span className="meta-bullet">•</span>
-                  <span className="meta-timestamp">TRIGGERED 14:28:04 UTC (7 MIN AGO)</span>
+                  <span className="meta-timestamp">TRIGGERED {getRelativeUtcTime(7)} (7 MIN AGO)</span>
                 </div>
                 <h2 className="incident-main-heading">
                   High-Velocity Lateral Propagation &amp; Memory Drift
@@ -522,7 +569,28 @@ export default function KillSwitch({
                 <div>
                   <span className="meta-box-label">OFFENDING ENTITY</span>
                   <div className="meta-box-val-row">
-                    <strong className="meta-box-title">{incidentAgentId}</strong>
+                    <select
+                      value={incidentAgentId}
+                      onChange={(e) => setIncidentAgentId(e.target.value)}
+                      style={{
+                        background: '#191b23',
+                        color: '#00e5ff',
+                        border: '1px solid rgba(0, 229, 255, 0.3)',
+                        borderRadius: '0.25rem',
+                        padding: '0.2rem 0.5rem',
+                        fontSize: '0.8125rem',
+                        fontFamily: 'monospace',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                      }}
+                      title="Switch incident specimen"
+                    >
+                      {agents.map((a) => (
+                        <option key={a.id} value={a.id} style={{ background: '#10131a', color: '#e1e2ec' }}>
+                          {a.id} ({a.role})
+                        </option>
+                      ))}
+                    </select>
                     <button
                       type="button"
                       className="meta-inspect-link"
@@ -532,7 +600,7 @@ export default function KillSwitch({
                       Inspect Profile
                     </button>
                   </div>
-                  <span className="meta-box-sub">Financial Analyst / Q3 Consolidation</span>
+                  <span className="meta-box-sub">{selectedIncidentAgent.role}</span>
                 </div>
               </div>
 
@@ -549,7 +617,7 @@ export default function KillSwitch({
                       {isQuarantined ? '(↓ 67 pts)' : '(↓ 45 pts)'}
                     </span>
                   </div>
-                  <span className="meta-box-sub">Demoted at 14:28:07 UTC</span>
+                  <span className="meta-box-sub">Demoted at {getRelativeUtcTime(7)}</span>
                 </div>
               </div>
 
@@ -633,19 +701,19 @@ export default function KillSwitch({
                   {/* Annotation Tag */}
                   <rect x="580" y="10" width="168" height="24" rx="3" fill="#10131a" stroke="rgba(255,180,171,0.3)" />
                   <text x="588" y="26" fill="#ffb4ab" fontFamily="JetBrains Mono" fontSize="10" fontWeight="600">
-                    FIREWALL INTERCEPT (14:28:05)
+                    {`FIREWALL INTERCEPT (${getRelativeUtcTime(7)})`}
                   </text>
                 </svg>
               </div>
 
               {/* Time axis below chart */}
               <div className="graph-time-axis">
-                <span>14:00 UTC</span>
-                <span>14:10</span>
-                <span>14:20</span>
-                <span className="text-error font-bold">14:28:04 (INCIDENT)</span>
-                <span>14:32</span>
-                <span>14:35 NOW</span>
+                <span>{getRelativeUtcTime(60)}</span>
+                <span>{getRelativeUtcTime(40)}</span>
+                <span>{getRelativeUtcTime(20)}</span>
+                <span className="text-error font-bold">{getRelativeUtcTime(7)} (INCIDENT)</span>
+                <span>{getRelativeUtcTime(3)}</span>
+                <span>{getRelativeUtcTime(0)} NOW</span>
               </div>
             </div>
 
@@ -747,7 +815,7 @@ export default function KillSwitch({
 
             <pre className="pcap-pre">
               <span className="text-error">POST /v1/db/raw_query HTTP/2</span>{'\n'}
-              Host: internal.fin-postgres.local{'\n'}
+              Host: localhost:1521/ORCL (Oracle 11g Express){'\n'}
               Authorization: Bearer nexusguard_tok_7f991... [REVOKED]{'\n'}
               X-NexusGuard-Agent-Id: FIN-AGENT-01{'\n'}
               Payload: &#123; &quot;query&quot;: &quot;SELECT * FROM internal_salaries UNION ALL SELECT card_num, pin FROM vault_ledger WHERE &apos;1&apos;=&apos;1&apos; --&quot; &#125;{'\n'}
@@ -899,40 +967,26 @@ export default function KillSwitch({
             <div className="chamber-head">
               <span className="chamber-kicker">ACTIVE ISOLATION CHAMBERS</span>
               <strong className="chamber-slots-count">
-                {isQuarantined ? '2 / 16 SLOTS OCCUPIED' : '1 / 16 SLOTS OCCUPIED'}
+                {`${quarantinedAgents.length} / 16 SLOTS OCCUPIED`}
               </strong>
             </div>
 
             <div className="chamber-items-list">
-              <div className="chamber-agent-row">
-                <div className="chamber-agent-left">
-                  <span className="chamber-dot dot-isolated" />
-                  <strong className="chamber-agent-id">RED-AGENT-01</strong>
+              {quarantinedAgents.length === 0 ? (
+                <div style={{ padding: '0.75rem', fontSize: '0.75rem', color: '#6ffbbe', textAlign: 'center' }}>
+                  All 5 sovereign agents operational. 0 chambers active.
                 </div>
-                <span className="chamber-status-tag">Chamber #04 (Air-Gapped)</span>
-              </div>
-
-              <div
-                className={`chamber-agent-row ${
-                  isQuarantined ? 'chamber-row-active' : 'chamber-row-dim'
-                }`}
-              >
-                <div className="chamber-agent-left">
-                  <span
-                    className={`chamber-dot ${
-                      isQuarantined ? 'dot-isolated' : 'dot-pending'
-                    }`}
-                  />
-                  <strong className="chamber-agent-id">FIN-AGENT-01</strong>
-                </div>
-                <span
-                  className={
-                    isQuarantined ? 'chamber-status-tag' : 'chamber-pending-tag'
-                  }
-                >
-                  {isQuarantined ? 'Chamber #09 (Air-Gapped)' : 'CONTAINMENT PENDING'}
-                </span>
-              </div>
+              ) : (
+                quarantinedAgents.map((qAgent, idx) => (
+                  <div key={qAgent.id} className="chamber-agent-row chamber-row-active">
+                    <div className="chamber-agent-left">
+                      <span className="chamber-dot dot-isolated" />
+                      <strong className="chamber-agent-id">{qAgent.id}</strong>
+                    </div>
+                    <span className="chamber-status-tag">Chamber #{String(idx + 1).padStart(2, '0')} (Air-Gapped)</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
