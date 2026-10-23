@@ -33,6 +33,11 @@ export type ComplianceControl = {
   isHighRisk?: boolean;
 };
 
+function getRelativeUtcTime(minutesAgo: number): string {
+  const d = new Date(Date.now() - minutesAgo * 60 * 1000);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC';
+}
+
 const initialControls: ComplianceControl[] = [
   {
     id: 'ctrl-1',
@@ -43,13 +48,13 @@ const initialControls: ComplianceControl[] = [
     standard: 'NIST MAP 1.1',
     standardDesc: 'Agent Identity & Machine Attestation',
     mechanism: 'Automated mTLS Ed25519 & Nitro Enclave check',
-    scope: '24/24 Agents',
+    scope: '5/5 Sovereign Agents',
     status: 'ENFORCED',
     statusRate: '100%',
     evidenceLeaf: 'Leaf #194,821',
     blockNumber: 4198102,
     hash: '0x8f4b0918c72839e9a11003fa08219481be8329a10023',
-    lastAudited: '4m ago',
+    lastAudited: getRelativeUtcTime(4),
     verifyingNode: 'enclave-validator-us-east-01',
     isHighRisk: true,
   },
@@ -62,13 +67,13 @@ const initialControls: ComplianceControl[] = [
     standard: 'NIST MEASURE 2.4',
     standardDesc: 'Deterministic Intent Validation',
     mechanism: 'Intent Firewall AST parser',
-    scope: 'All LLM Callouts',
+    scope: 'All Autonomous Tools',
     status: 'ACTIVE',
     statusRate: '99.98%',
     evidenceLeaf: 'Leaf #194,802',
     blockNumber: 4198099,
     hash: '0x7c3a0198e4129b82aa1022ff08119022ba9120a10944',
-    lastAudited: '8m ago',
+    lastAudited: getRelativeUtcTime(8),
     verifyingNode: 'firewall-eval-us-east-04',
     isHighRisk: false,
   },
@@ -78,7 +83,7 @@ const initialControls: ComplianceControl[] = [
     name: 'Prompt Injection Isolation & Adversarial Defense',
     category: 'MANAGE',
     framework: 'nist',
-    standard: 'ISO 42001 §9.2',
+    standard: 'ISO 42001 ?9.2',
     standardDesc: 'Prompt Injection Isolation',
     mechanism: 'Heuristic vector sanitization & RedAgent simulation',
     scope: 'Ingress Payloads',
@@ -87,7 +92,7 @@ const initialControls: ComplianceControl[] = [
     evidenceLeaf: 'Leaf #194,765',
     blockNumber: 4198050,
     hash: '0x3a9f11029c8821bb450091ff78129481bb2091c10118',
-    lastAudited: '12m ago',
+    lastAudited: getRelativeUtcTime(12),
     verifyingNode: 'redagent-strike-enclave-09',
     isHighRisk: true,
   },
@@ -100,13 +105,13 @@ const initialControls: ComplianceControl[] = [
     standard: 'SOC2 CC6.1 / SEC',
     standardDesc: 'Cryptographic Event Non-Repudiation',
     mechanism: 'Merkle-tree signed WORM storage',
-    scope: 'Global Ledger',
+    scope: 'Oracle 11g WORM Ledger',
     status: 'CERTIFIED',
     statusRate: '100%',
     evidenceLeaf: 'Leaf #194,710',
     blockNumber: 4197992,
     hash: '0x6e2b9188a10022cc771188ff91209384bc9102a90044',
-    lastAudited: '18m ago',
+    lastAudited: getRelativeUtcTime(18),
     verifyingNode: 'worm-immutable-vault-02',
     isHighRisk: false,
   },
@@ -119,14 +124,33 @@ const initialControls: ComplianceControl[] = [
     standard: 'EU AI Act Art 14',
     standardDesc: 'Mandatory Dual-Key Human Approval',
     mechanism: '2-man quorum sign-off for financial/PII mutation',
-    scope: 'Tier-1 Finance',
+    scope: 'Tier-1 Finance & Prod Deploy',
     status: 'ENFORCED',
     statusRate: '100%',
     evidenceLeaf: 'Leaf #194,688',
     blockNumber: 4197960,
     hash: '0x5d1c0988f41199ee882200aa90219481cd8210b10033',
-    lastAudited: '24m ago',
+    lastAudited: getRelativeUtcTime(24),
     verifyingNode: 'governance-quorum-router-01',
+    isHighRisk: true,
+  },
+  {
+    id: 'ctrl-6',
+    code: 'GOV-AI-06',
+    name: 'Relational Zero-Mutation Schema Invariant',
+    category: 'GOVERN',
+    framework: 'nist',
+    standard: 'NIST SP 800-53 / CIS',
+    standardDesc: 'Zero-Mutation Relational Schema Protection',
+    mechanism: 'AST Gatekeeper blocking DDL DROPs on Oracle 11g',
+    scope: 'Oracle 11g Express (localhost:1521/ORCL)',
+    status: 'ENFORCED',
+    statusRate: '100%',
+    evidenceLeaf: 'Leaf #194,844',
+    blockNumber: 4198115,
+    hash: '0x9d2a0149e81200fa883391bb08219481cd7102a10055',
+    lastAudited: getRelativeUtcTime(2),
+    verifyingNode: 'oracle-11g-enclave-guard-01',
     isHighRisk: true,
   },
 ];
@@ -204,7 +228,7 @@ export default function GovernanceCenter({
       default:
         return [
           { name: 'GOVERN', rate: '98%', desc: 'Organizational governance, accountability roles defined, agent ownership clear.' },
-          { name: 'MAP', rate: '95%', desc: 'Context and risk mapping across all 24 deployed autonomous models.' },
+          { name: 'MAP', rate: '95%', desc: 'Context and risk mapping across all 5 sovereign autonomous models.' },
           { name: 'MEASURE', rate: '97%', desc: 'Continuous quantitative behavioral telemetry & entropy evaluation.' },
           { name: 'MANAGE', rate: '96%', desc: 'Automated containment, kill switch, and dual-approval escalation workflows.' },
         ];
@@ -232,7 +256,7 @@ export default function GovernanceCenter({
     setTimeout(() => setScanStep(4), 2100);
     setTimeout(() => {
       setIsScanning(false);
-      onNotify?.('Automated compliance scan completed across all 24 agents. WORM ledger updated.');
+      onNotify?.('Automated compliance scan completed across all 5 sovereign agents. WORM ledger updated.');
     }, 2800);
   };
 
@@ -247,7 +271,7 @@ export default function GovernanceCenter({
         aiGovernanceScore: '96.4 / 100',
         policyInvariantsRate: '97.8%',
         cryptoAuditRate: '99.2%',
-        identityAttestationRate: '100% (24/24 Agents)',
+        identityAttestationRate: '100% (5/5 Sovereign Agents)',
         hitlOversightRate: '100.0%',
         dataBoundariesRate: '98.6%',
       },
@@ -281,7 +305,7 @@ Date: ${new Date().toLocaleDateString()}
 Status: SOC-AUDIT READY • NIST AI RMF PASS (96.4/100)
 
 ## Executive Summary
-All 24 active autonomous agents operate inside authenticated mTLS enclaves.
+All 5 sovereign autonomous agents operate inside authenticated mTLS enclaves.
 Zero uncontained privilege escalations were detected during the past 90 days.
 Weekly RedAgent adversarial regressions confirmed 1,842 of 1,842 threat payloads neutralized.
 
@@ -358,7 +382,7 @@ Weekly RedAgent adversarial regressions confirmed 1,842 of 1,842 threat payloads
               type="button"
               className="gov-btn gov-btn-primary"
               onClick={handleTriggerScan}
-              title="Trigger real-time compliance scan across all 24 agents"
+              title="Trigger real-time compliance scan across all 5 sovereign agents"
             >
               <Radar size={15} />
               <span>Schedule Automated Compliance Scan</span>
@@ -422,7 +446,7 @@ Weekly RedAgent adversarial regressions confirmed 1,842 of 1,842 threat payloads
             <span className="kpi-badge badge-mint">100%</span>
           </div>
           <div className="kpi-metric-row">
-            <span className="kpi-num text-mint">24 / 24</span>
+            <span className="kpi-num text-mint">{agents.length} / {agents.length}</span>
           </div>
           <div className="kpi-foot-text">
             mTLS &amp; AWS Nitro Enclave
