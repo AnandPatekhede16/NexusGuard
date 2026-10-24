@@ -317,6 +317,20 @@ export default function AuditTrail({
   const [events, setEvents] = useState<AuditEvent[]>(initialAuditEvents);
   const [selectedEventId, setSelectedEventId] = useState<string>(initialAuditEvents[1].id); // default to row 2 critical block
   const [isRefreshing, setIsRefreshing] = useState<boolean>(true);
+
+  // Dynamic live time update when Real-Time Refresh is enabled
+  useEffect(() => {
+    if (!isRefreshing) return;
+    const interval = setInterval(() => {
+      setEvents((prev) =>
+        prev.map((ev, idx) => ({
+          ...ev,
+          timeShort: getRelativeUtcTime(idx * 3 + 1, 0),
+        }))
+      );
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [isRefreshing]);
   const [copiedJson, setCopiedJson] = useState<boolean>(false);
   const [verifyModalOpen, setVerifyModalOpen] = useState<boolean>(false);
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
@@ -506,9 +520,9 @@ export default function AuditTrail({
                 <div className="time-picker-dropdown">
                   <div
                     className="time-opt"
-                    onClick={() => { setTimeRange('2025-05-18 00:00 - 23:59 UTC'); setTimePickerOpen(false); }}
+                    onClick={() => { setTimeRange(`${new Date().toISOString().slice(0, 10)} 00:00 - 23:59 UTC`); setTimePickerOpen(false); }}
                   >
-                    Today (2025-05-18 Full Day)
+                    Today ({new Date().toISOString().slice(0, 10)} Full Day)
                   </div>
                   <div
                     className="time-opt"
@@ -751,7 +765,10 @@ export default function AuditTrail({
                     <tr
                       key={ev.id}
                       className={`audit-row ${isSelected ? 'row-selected' : ''} ${isBlocked ? 'row-blocked' : ''}`}
-                      onClick={() => setSelectedEventId(ev.id)}
+                      onClick={() => {
+                        setSelectedEventId(ev.id);
+                        onNotify?.(`Inspecting Forensic Merkle Trace for Event #${ev.id} [${ev.agentId}]`);
+                      }}
                     >
                       <td className="font-mono text-outline whitespace-nowrap">
                         {ev.timeShort}
@@ -805,9 +822,15 @@ export default function AuditTrail({
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedEventId(ev.id);
+                            onNotify?.(`Loaded SHA-256 Merkle Proof for Event #${ev.id} [${ev.decision}]`);
+                            const el = document.getElementById('forensic-panel');
+                            if (el) {
+                              el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
                           }}
+                          title="Inspect SHA-256 Merkle Proof & Forensic Trace"
                         >
-                          {isSelected ? 'ACTIVE' : 'Trace'}
+                          {isSelected ? 'INSPECTING' : 'Inspect'}
                         </button>
                       </td>
                     </tr>
@@ -820,7 +843,7 @@ export default function AuditTrail({
       </section>
 
       {/* Forensic Trace Expansion Panel (Active Incident Focus) */}
-      <section className="forensic-panel-card">
+      <section className="forensic-panel-card" id="forensic-panel">
         {/* Header of Forensic Panel */}
         <div className="forensic-header">
           <div className="forensic-header-left">
