@@ -474,6 +474,19 @@ export default function MultiAgentGovernanceStudio({
                     <span>{currentAgent.permissions.includes('WRITE: Finance') ? 'Revoke "WRITE: Finance"' : 'Grant "WRITE: Finance"'}</span>
                   </button>
                 </div>
+
+                <div className={`permission-toggle-item ${currentAgent.permissions.includes('WRITE: DB') ? 'perm-granted' : 'perm-revoked'}`}>
+                  <div className="perm-item-header">
+                    <Database size={16} />
+                    <strong>WRITE: DB</strong>
+                    <span className="perm-badge">{currentAgent.permissions.includes('WRITE: DB') ? 'GRANTED' : 'REVOKED'}</span>
+                  </div>
+                  <p>Grants direct write capability to Oracle Database schemas (INSERT, UPDATE, DELETE).</p>
+                  <button className="perm-action-btn" onClick={() => toggleCurrentAgentPermission('WRITE: DB')} type="button">
+                    <RefreshCw size={12} />
+                    <span>{currentAgent.permissions.includes('WRITE: DB') ? 'Revoke "WRITE: DB"' : 'Grant "WRITE: DB"'}</span>
+                  </button>
+                </div>
               </>
             )}
 
