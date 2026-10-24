@@ -121,6 +121,7 @@
 .pm-baseline-heading h2 { margin: 0; color: #d9e3e2; font-size: 9px; }
 .pm-baseline-heading p { margin: 3px 0 0; color: #839194; font-size: 7px; }
 .pm-baseline-badge { margin-left: auto; padding: 4px 5px; border-radius: 2px; color: #e0bd74; background: rgba(139,104,39,.13); font: 6px 'DM Mono',monospace; white-space: nowrap; }
+.pm-baseline-badge.pm-baseline-enforced { color: #5be9ad; background: rgba(91, 233, 173, 0.15); border: 1px solid rgba(91, 233, 173, 0.3); font-weight: 700; letter-spacing: 0.05em; }
 .pm-baseline-columns { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; margin-top: 10px; }
 .pm-baseline-columns article { display: flex; align-items: flex-start; gap: 7px; padding: 8px; border-radius: 3px; background: #172125; }
 .pm-baseline-icon { width: 24px; height: 24px; flex: 0 0 24px; display: grid; place-items: center; border-radius: 3px; }

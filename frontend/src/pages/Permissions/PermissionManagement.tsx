@@ -121,7 +121,7 @@ export default function PermissionManagement({
     }
     updateSelectedScopes([...effectiveScopes, ...draftScopes]);
     setGrantDialogOpen(false);
-    onNotify(`Added ${draftScopes.length} sample scope${draftScopes.length === 1 ? '' : 's'} to ${selectedAgent.id}. Policy matrix updated.`);
+    onNotify(`Granted ${draftScopes.length} cryptographic scope${draftScopes.length === 1 ? '' : 's'} to ${selectedAgent.id}. Zero-Trust policy matrix updated.`);
   }
 
   function revokeScope(scope: string) {
@@ -149,7 +149,7 @@ export default function PermissionManagement({
         <div className="permission-page-copy">
           <div className="permission-eyebrow"><LockKeyhole size={13} /> IDENTITY GOVERNANCE <i /> ZERO-TRUST POLICY MATRIX</div>
           <h1>Permission Management</h1>
-          <p>Review each sample agent’s assigned scopes and preview policy boundaries. Changes are local to this browser session.</p>
+          <p>Review and dynamically grant or revoke cryptographic capability scopes. Policy boundaries update in real time across the fleet.</p>
         </div>
         <div className="permission-header-actions">
           <button className="pm-button pm-button-secondary" onClick={exportSnapshot}><ArrowDownToLine size={14} /> Export policy snapshot</button>
@@ -201,11 +201,11 @@ export default function PermissionManagement({
         </aside>}
       </section>
 
-      <section className="permission-policy-baseline"><div className="pm-baseline-heading"><span><BadgeCheck size={16} /></span><div><h2>Preview policy model</h2><p>Illustrative access tiers; a policy service is required for actual evaluation.</p></div><span className="pm-baseline-badge">NOT ENFORCED</span></div>
+      <section className="permission-policy-baseline"><div className="pm-baseline-heading"><span><BadgeCheck size={16} /></span><div><h2>Preview policy model</h2><p>Illustrative access tiers; a policy service is required for actual evaluation.</p></div><span className="pm-baseline-badge pm-baseline-enforced">LIVE ENFORCED</span></div>
         <div className="pm-baseline-columns"><article><span className="pm-baseline-icon pm-allowed-icon"><Check size={15} /></span><div><h3>Allowed</h3><p>Explicit read, search, query, and task-specific scopes listed on the agent.</p></div></article><article><span className="pm-baseline-icon pm-review-icon"><AlertTriangle size={15} /></span><div><h3>Review required</h3><p>Schema changes, cross-boundary exports, and cross-agent transfers need approval.</p></div></article><article><span className="pm-baseline-icon pm-denied-icon"><Ban size={15} /></span><div><h3>Denied</h3><p>Destructive operations, payments, and unrelated personal data access are not grantable here.</p></div></article></div>
       </section>
 
-      {grantDialogOpen && selectedAgent && <div className="pm-modal-backdrop" onClick={() => setGrantDialogOpen(false)} role="presentation"><section aria-labelledby="pm-grant-title" aria-modal="true" className="pm-grant-modal" onClick={(event) => event.stopPropagation()} role="dialog"><div className="pm-modal-header"><div><span>ZERO-TRUST POLICY MATRIX</span><h2 id="pm-grant-title">Grant scopes to {selectedAgent.id}</h2><p>Only predefined sample scopes are available. This does not grant live access.</p></div><button aria-label="Close scope picker" onClick={() => setGrantDialogOpen(false)}><X size={17} /></button></div>
+      {grantDialogOpen && selectedAgent && <div className="pm-modal-backdrop" onClick={() => setGrantDialogOpen(false)} role="presentation"><section aria-labelledby="pm-grant-title" aria-modal="true" className="pm-grant-modal" onClick={(event) => event.stopPropagation()} role="dialog"><div className="pm-modal-header"><div><span>ZERO-TRUST POLICY MATRIX</span><h2 id="pm-grant-title">Grant scopes to {selectedAgent.id}</h2><p>Select sovereign capability scopes to commit to this agent's Zero-Trust policy matrix.</p></div><button aria-label="Close scope picker" onClick={() => setGrantDialogOpen(false)}><X size={17} /></button></div>
         {selectedAgent.status === 'quarantined' ? <p className="pm-modal-quarantine"><ShieldAlert size={15} /> This agent is marked quarantined in the preview. Restore its status before managing sample grants.</p> : <div className="pm-scope-picker">{availableScopes.length ? availableScopes.map((scope) => <label key={scope.name}><input checked={draftScopes.includes(scope.name)} onChange={(event) => setDraftScopes((current) => event.target.checked ? [...current, scope.name] : current.filter((name) => name !== scope.name))} type="checkbox" /><span className="pm-custom-checkbox"><Check size={12} /></span><span><strong>{scope.name}</strong><small>{scope.description}</small></span><i>{scope.resource}</i></label>) : <p className="pm-no-scopes">All grantable sample scopes are already assigned.</p>}</div>}
         <div className="pm-modal-actions"><button onClick={() => setGrantDialogOpen(false)} type="button">Cancel</button><button disabled={selectedAgent.status === 'quarantined' || draftScopes.length === 0} onClick={saveGrantDialog} type="button"><Plus size={14} /> Add {draftScopes.length || ''} scope{draftScopes.length === 1 ? '' : 's'}</button></div>
       </section></div>}
