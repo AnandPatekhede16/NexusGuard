@@ -1442,3 +1442,63 @@
   border-top: 1px solid rgba(59, 73, 76, 0.4);
   background: #0b0e15;
 }
+
+
+/* RedAgent Interactive Vector Select & Live Step Animations */
+.vector-dropdown-select {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: #191b23;
+  color: #00e5ff;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 0.375rem;
+  font-family: 'DM Mono', 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  margin-top: 0.375rem;
+  margin-bottom: 0.625rem;
+  transition: all 0.15s ease;
+}
+.vector-dropdown-select:hover, .vector-dropdown-select:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+.payload-custom-textarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: #0f1117;
+  color: #ffdad6;
+  border: 1px solid rgba(255, 84, 73, 0.4);
+  border-radius: 0.375rem;
+  font-family: 'DM Mono', 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  margin-top: 0.375rem;
+}
+.payload-custom-textarea:focus {
+  border-color: #ff5449;
+  box-shadow: 0 0 12px rgba(255, 84, 73, 0.4);
+}
+.step-row-active .stream-step-body {
+  border-color: #ff5449 !important;
+  box-shadow: 0 0 22px rgba(255, 84, 73, 0.5) !important;
+  background: rgba(147, 0, 10, 0.22) !important;
+  animation: pulse-step 0.9s infinite alternate;
+}
+.step-row-done .stream-step-body {
+  border-color: rgba(91, 233, 173, 0.5) !important;
+  background: rgba(91, 233, 173, 0.06) !important;
+}
+.step-row-waiting {
+  opacity: 0.42;
+  transition: opacity 0.3s ease;
+}
+@keyframes pulse-step {
+  from { box-shadow: 0 0 8px rgba(255, 84, 73, 0.25); }
+  to { box-shadow: 0 0 28px rgba(255, 84, 73, 0.65); }
+}

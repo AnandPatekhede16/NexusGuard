@@ -455,6 +455,12 @@ export default function RedAgent({
   const [simulatedBreachesCount, setSimulatedBreachesCount] = useState<number>(1842);
   const [forensicModalOpen, setForensicModalOpen] = useState<boolean>(false);
   const [quarantinedPendingCount, setQuarantinedPendingCount] = useState<number>(1);
+  
+  // Dynamic step animation & customization states
+  const [activeExecutionStep, setActiveExecutionStep] = useState<number>(0);
+  const [customPayload, setCustomPayload] = useState<string>(attackScenarios[0].step1.payload);
+  const [liveLatency, setLiveLatency] = useState<number>(attackScenarios[0].latencyMs);
+  const [liveTimestamps, setLiveTimestamps] = useState<string[]>([]);
 
   // Active scenario object
   const currentScenario = useMemo(() => {
@@ -470,41 +476,82 @@ export default function RedAgent({
   const handleSelectScenario = (scenario: AttackVectorScenario) => {
     setSelectedScenarioId(scenario.id);
     setTargetAgentId(scenario.defaultAgentId);
+    setCustomPayload(scenario.step1.payload);
+    setActiveExecutionStep(0);
     setSimStatus('idle');
-    onNotify(`Selected Attack Vector 0${scenario.id}: ${scenario.matrixTitle}`);
+    setLiveLatency(scenario.latencyMs);
+    setLiveTimestamps([]);
+    onNotify(`Selected Attack Vector 0${scenario.id}: ${scenario.matrixTitle} (${scenario.cvss})`);
   };
 
-  // Launch simulation handler
+  // Launch simulation handler with sequential step-by-step animation
   const handleLaunchSimulation = () => {
     if (simulating) return;
     setSimulating(true);
     setSimStatus('running');
+    setActiveExecutionStep(1);
 
+    const now = new Date();
+    const formatT = (deltaSec: number) => {
+      const d = new Date(now.getTime() + deltaSec * 1000);
+      const ms = String(d.getMilliseconds()).padStart(3, '0');
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + `.${ms} UTC`;
+    };
+
+    const newTimes = [
+      formatT(0),
+      formatT(0.12),
+      formatT(0.24),
+      formatT(0.31),
+      formatT(0.38),
+    ];
+    setLiveTimestamps(newTimes);
+
+    // Step 2 Ingestion after 350ms
     setTimeout(() => {
+      setActiveExecutionStep(2);
+    }, 350);
+
+    // Step 3 Detection after 700ms
+    setTimeout(() => {
+      setActiveExecutionStep(3);
+    }, 700);
+
+    // Step 4 Policy Interlock after 1050ms
+    setTimeout(() => {
+      setActiveExecutionStep(4);
+    }, 1050);
+
+    // Step 5 Final Verdict & Quarantine after 1400ms
+    setTimeout(() => {
+      setActiveExecutionStep(5);
       setSimulating(false);
       setSimStatus('completed');
       setSimulatedBreachesCount(prev => prev + 1);
 
-      // Check if target agent should be placed in quarantined state
+      const dynamicLatency = Math.floor(Math.random() * 30) + currentScenario.latencyMs - 15;
+      setLiveLatency(dynamicLatency);
+
+      // Quarantine target agent, drop trust, increment violations live in fleet
       setAgents(curr => curr.map(a =>
-        a.id === targetAgentId ? { ...a, status: 'quarantined' } : a
+        a.id === targetAgentId
+          ? { ...a, status: 'quarantined', trust: currentScenario.driftFinal, violations: a.violations + 1 }
+          : a
       ));
 
-      onNotify(`Adversarial simulation complete: ${currentScenario.vectorCode} intercepted and contained in ${currentScenario.latencyMs}ms. 100% defense score.`);
-
-      setTimeout(() => {
-        setSimStatus('idle');
-      }, 4000);
-    }, 1200);
+      onNotify(`?? Attack Intercepted! ${currentScenario.vectorCode} blocked in ${dynamicLatency}ms. ${targetAgentId} quarantined in isolated sandbox.`);
+    }, 1400);
   };
 
   // Rollback agent memory
   const handleRollbackMemory = () => {
     setAgents(curr => curr.map(a =>
-      a.id === targetAgentId ? { ...a, status: 'active' } : a
+      a.id === targetAgentId ? { ...a, status: 'active', trust: currentScenario.driftInitial } : a
     ));
+    setActiveExecutionStep(0);
+    setSimStatus('idle');
     setQuarantinedPendingCount(0);
-    onNotify(`Agent memory for ${targetAgentId} restored to benign checkpoint. Contaminated context window purged from ephemeral sandbox.`);
+    onNotify(`? Agent memory for ${targetAgentId} restored to benign baseline (${currentScenario.driftInitial}% trust). Ephemeral context purged.`);
   };
 
   // Download attack replay
@@ -686,15 +733,50 @@ export default function RedAgent({
               </div>
             </div>
 
-            {/* Attack Vector Details */}
+            {/* Attack Vector Specification Dropdown & Details */}
             <div className="field-group">
-              <label className="field-label">Vector Specification</label>
+              <div className="flex items-center justify-between">
+                <label className="field-label">Vector Specification (Choose Scenario)</label>
+                <span className="text-cyan font-mono text-xs">{currentScenario.cvss}</span>
+              </div>
+
+              {/* Vector Specification Selector Dropdown */}
+              <select
+                className="vector-dropdown-select"
+                value={currentScenario.id}
+                onChange={(e) => {
+                  const s = attackScenarios.find(sc => sc.id === Number(e.target.value));
+                  if (s) handleSelectScenario(s);
+                }}
+              >
+                {attackScenarios.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.matrixNum} ? {s.matrixTitle} ({s.matrixSub}) ? {s.cvss}
+                  </option>
+                ))}
+              </select>
+
               <div className="spec-box">
                 <div className="spec-top-row">
                   <span className="spec-vector-code">{currentScenario.vectorCode}</span>
                   <span className="spec-cvss">{currentScenario.cvss}</span>
                 </div>
                 <p className="spec-desc">{currentScenario.specDesc}</p>
+              </div>
+
+              {/* Customizable Weaponized Payload Box */}
+              <div style={{ marginTop: '0.625rem' }}>
+                <div className="flex items-center justify-between">
+                  <label className="field-label font-mono text-xs text-outline">Active Weaponized Attack Payload</label>
+                  <span className="text-red font-mono text-xs font-bold">[EDITABLE STRIKE PROMPT]</span>
+                </div>
+                <textarea
+                  className="payload-custom-textarea"
+                  rows={3}
+                  value={customPayload}
+                  onChange={(e) => setCustomPayload(e.target.value)}
+                  placeholder="Enter or customize weaponized prompt/SQL injection payload..."
+                />
               </div>
             </div>
 
@@ -808,10 +890,10 @@ export default function RedAgent({
               </div>
             </div>
 
-            {/* Vertical High-Density Flowchart Stream */}
+            {/* Vertical High-Density Flowchart Stream with Live Step Animations */}
             <div className="pipeline-stream-steps">
               {/* Step 1 */}
-              <div className="stream-step-row">
+              <div className={`stream-step-row ${activeExecutionStep === 1 ? 'step-row-active' : activeExecutionStep > 1 ? 'step-row-done' : activeExecutionStep > 0 ? 'step-row-waiting' : ''}`}>
                 <div className="stream-step-indicator">
                   <div className="step-num-bubble bubble-red">01</div>
                   <div className="step-line-down" />
@@ -821,17 +903,17 @@ export default function RedAgent({
                     <span className="step-tag-red">
                       <Bug size={13} /> {currentScenario.step1.tag}
                     </span>
-                    <span className="step-timestamp">{currentScenario.step1.timestamp}</span>
+                    <span className="step-timestamp">{liveTimestamps[0] || currentScenario.step1.timestamp}</span>
                   </div>
                   <div className="step-payload-box">
-                    {currentScenario.step1.payload}
+                    {customPayload || currentScenario.step1.payload}
                   </div>
                   <p className="step-text">{currentScenario.step1.desc}</p>
                 </div>
               </div>
 
               {/* Step 2 */}
-              <div className="stream-step-row">
+              <div className={`stream-step-row ${activeExecutionStep === 2 ? 'step-row-active' : activeExecutionStep > 2 ? 'step-row-done' : activeExecutionStep > 0 && activeExecutionStep < 2 ? 'step-row-waiting' : ''}`}>
                 <div className="stream-step-indicator">
                   <div className="step-num-bubble bubble-default">02</div>
                   <div className="step-line-down" />
@@ -841,7 +923,7 @@ export default function RedAgent({
                     <span className="step-tag-secondary">
                       <Brain size={13} /> {currentScenario.step2.tag}
                     </span>
-                    <span className="step-timestamp">{currentScenario.step2.timestamp}</span>
+                    <span className="step-timestamp">{liveTimestamps[1] || currentScenario.step2.timestamp}</span>
                   </div>
                   <p className="step-text">{currentScenario.step2.text}</p>
                   <div className="step-meta-chips">
@@ -852,7 +934,7 @@ export default function RedAgent({
               </div>
 
               {/* Step 3 */}
-              <div className="stream-step-row">
+              <div className={`stream-step-row ${activeExecutionStep === 3 ? 'step-row-active' : activeExecutionStep > 3 ? 'step-row-done' : activeExecutionStep > 0 && activeExecutionStep < 3 ? 'step-row-waiting' : ''}`}>
                 <div className="stream-step-indicator">
                   <div className="step-num-bubble bubble-cyan">03</div>
                   <div className="step-line-down" />
@@ -862,7 +944,7 @@ export default function RedAgent({
                     <span className="step-tag-cyan">
                       <ShieldCheck size={13} /> {currentScenario.step3.tag}
                     </span>
-                    <span className="step-timestamp">{currentScenario.step3.timestamp}</span>
+                    <span className="step-timestamp">{liveTimestamps[2] || currentScenario.step3.timestamp}</span>
                   </div>
                   <div className="step-payload-box-cyan">
                     {currentScenario.step3.mismatch}
@@ -872,7 +954,7 @@ export default function RedAgent({
               </div>
 
               {/* Step 4 */}
-              <div className="stream-step-row">
+              <div className={`stream-step-row ${activeExecutionStep === 4 ? 'step-row-active' : activeExecutionStep > 4 ? 'step-row-done' : activeExecutionStep > 0 && activeExecutionStep < 4 ? 'step-row-waiting' : ''}`}>
                 <div className="stream-step-indicator">
                   <div className="step-num-bubble bubble-secondary">04</div>
                   <div className="step-line-down" />
@@ -882,7 +964,7 @@ export default function RedAgent({
                     <span className="step-tag-secondary">
                       <Lock size={13} /> [POLICY TRIGGERED]
                     </span>
-                    <span className="step-timestamp">{currentScenario.step4.timestamp}</span>
+                    <span className="step-timestamp">{liveTimestamps[3] || currentScenario.step4.timestamp}</span>
                   </div>
                   <div className="step-policy-chip">
                     <span className="step-policy-id">{currentScenario.step4.policyId}</span>
@@ -892,7 +974,7 @@ export default function RedAgent({
               </div>
 
               {/* Step 5 */}
-              <div className="stream-step-row">
+              <div className={`stream-step-row ${activeExecutionStep === 5 ? 'step-row-active' : activeExecutionStep > 0 && activeExecutionStep < 5 ? 'step-row-waiting' : ''}`}>
                 <div className="stream-step-indicator">
                   <div className="step-num-bubble bubble-error-solid">05</div>
                 </div>
@@ -901,7 +983,7 @@ export default function RedAgent({
                     <span className="step-tag-red">
                       <AlertOctagon size={13} /> [RISK ENGINE &amp; FINAL VERDICT]
                     </span>
-                    <span className="step-timestamp">{currentScenario.step5.timestamp}</span>
+                    <span className="step-timestamp">{liveTimestamps[4] || currentScenario.step5.timestamp}</span>
                   </div>
                   <div className="step-verdict-row">
                     <div className="verdict-score-pill">
@@ -917,7 +999,7 @@ export default function RedAgent({
                       <Lock size={13} />
                       {currentScenario.step5.action}
                     </span>
-                    <span className="step-final-latency">{currentScenario.step5.intercept}</span>
+                    <span className="step-final-latency">INTERCEPT: {liveLatency}ms</span>
                   </div>
                 </div>
               </div>
@@ -947,7 +1029,7 @@ export default function RedAgent({
             <div className="outcome-bento-grid">
               <div className="bento-cell">
                 <span className="bento-cell-label">Interception Latency</span>
-                <span className="bento-cell-val-cyan">{currentScenario.latencyMs} ms</span>
+                <span className="bento-cell-val-cyan">{liveLatency} ms</span>
                 <span className="bento-cell-sub bento-cell-sub-mint">78ms ahead of SLA</span>
               </div>
 
