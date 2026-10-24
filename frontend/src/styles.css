@@ -1213,3 +1213,68 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   color: #00e5ff;
   border-color: #00e5ff;
 }
+
+
+/* DEFCON-1 EMERGENCY LOCKDOWN BANNER & STATES */
+.defcon-lockdown-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  background: rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  border-radius: 6px;
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.35);
+  animation: pulse-border 2s infinite ease-in-out;
+  margin-bottom: 6px;
+}
+.defcon-lockdown-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.defcon-title {
+  color: #ff5449;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.defcon-desc {
+  margin: 4px 0 0;
+  color: #ffb4ab;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.defcon-release-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ff5449;
+  color: #1a0000;
+  border: none;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 0 15px rgba(255, 84, 73, 0.5);
+  transition: all 0.15s ease;
+}
+.defcon-release-btn:hover {
+  background: #ff786e;
+  transform: translateY(-1px);
+}
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 15px rgba(220, 38, 38, 0.2); }
+  50% { border-color: rgba(239, 68, 68, 1); box-shadow: 0 0 35px rgba(220, 38, 38, 0.5); }
+}
+.actions-panel button.action-enabled {
+  border-color: #ff5449 !important;
+  background: rgba(220, 38, 38, 0.35) !important;
+  color: #ffb4ab !important;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+}
