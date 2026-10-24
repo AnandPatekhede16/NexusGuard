@@ -67,7 +67,52 @@ const capabilities = [
   },
 ];
 
+export type UserProfile = {
+  name: string;
+  email: string;
+  role: string;
+  initials: string;
+};
+
+function formatUserProfile(rawEmail: string): UserProfile {
+  if (!rawEmail || !rawEmail.includes('@')) {
+    return {
+      name: 'Anand Patekhede',
+      email: 'anand.patekhede@nexusguard.io',
+      role: 'Chief AI Security Officer',
+      initials: 'AP',
+    };
+  }
+  const prefix = rawEmail.split('@')[0].trim();
+  const cleaned = prefix.replace(/[._\-+]/g, ' ').trim();
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  const name = parts.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ') || 'Anand Patekhede';
+  const initials = parts.length > 1
+    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    : name.slice(0, 2).toUpperCase();
+  return {
+    name,
+    email: rawEmail,
+    role: 'Chief AI Security Officer',
+    initials,
+  };
+}
+
 export default function App() {
+  const [currentUser, setCurrentUser] = useState<UserProfile>(() => {
+    const saved = localStorage.getItem('nexusguard_user');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return {
+      name: 'Anand Patekhede',
+      email: 'anand.patekhede@nexusguard.io',
+      role: 'Chief AI Security Officer',
+      initials: 'AP',
+    };
+  });
   const [showDashboard, setShowDashboard] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState('');
@@ -80,6 +125,13 @@ export default function App() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = (formData.get('email') as string) || '';
+    const profile = formatUserProfile(email);
+    setCurrentUser(profile);
+    try {
+      localStorage.setItem('nexusguard_user', JSON.stringify(profile));
+    } catch {}
     setShowDashboard(true);
   }
 
@@ -88,7 +140,18 @@ export default function App() {
   }
 
   if (showDashboard) {
-    return <Dashboard onSignOut={() => setShowDashboard(false)} />;
+    return (
+      <Dashboard
+        onSignOut={() => setShowDashboard(false)}
+        user={currentUser}
+        onUpdateUser={(updated) => {
+          setCurrentUser(updated);
+          try {
+            localStorage.setItem('nexusguard_user', JSON.stringify(updated));
+          } catch {}
+        }}
+      />
+    );
   }
 
   return (
@@ -172,7 +235,7 @@ export default function App() {
                 <label htmlFor="email">WORK EMAIL</label>
                 <div className="input-wrap">
                   <Mail className="input-icon" size={17} aria-hidden="true" />
-                  <input autoComplete="username" id="email" name="email" placeholder="you@company.com" required type="email" />
+                  <input autoComplete="username" defaultValue={currentUser.email || 'anand.patekhede@nexusguard.io'} id="email" name="email" placeholder="you@company.com" required type="email" />
                 </div>
               </div>
 

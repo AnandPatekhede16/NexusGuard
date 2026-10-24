@@ -236,7 +236,21 @@ function downloadJson(filename: string, payload: unknown) {
   window.setTimeout(() => URL.revokeObjectURL(href), 1000);
 }
 
-export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
+export default function Dashboard({
+  onSignOut,
+  user,
+  onUpdateUser,
+}: {
+  onSignOut: () => void;
+  user?: { name: string; email?: string; role: string; initials: string };
+  onUpdateUser?: (user: { name: string; email: string; role: string; initials: string }) => void;
+}) {
+  const profileUser = user || {
+    name: 'Anand Patekhede',
+    initials: 'AP',
+    role: 'Chief AI Security Officer',
+    email: 'anand.patekhede@nexusguard.io',
+  };
   const [agents, setAgents] = useState<Agent[]>(sovereignAgents);
   const [activeFleetIds, setActiveFleetIds] = useState<string[]>(['DB-AGENT-01', 'FIN-AGENT-01', 'COD-AGENT-01', 'RES-AGENT-01', 'RED-AGENT-01']);
   const [lockedDown, setLockedDown] = useState(false);
@@ -463,7 +477,7 @@ export default function Dashboard({ onSignOut }: { onSignOut: () => void }) {
           )}
         </div>
         <label className="console-search"><Search size={16} /><input aria-label="Search incidents" onChange={(event) => setQuery(event.target.value)} placeholder="Search agents, intents, policies..." ref={searchInput} value={query} /><kbd>Ctrl K</kbd></label>
-        <div className="console-user-area"><button className="assurance-top-pill" onClick={() => setAssuranceModalOpen(true)} title="View Six Core Assurances Matrix"><ShieldCheck size={14} /><span>6 CORE ASSURANCES</span><strong className="assurance-badge-chip">ACTIVE</strong></button><span className="region-pill"><Globe2 size={14} /> US-EAST-SECURE-PROD-CLUSTER-01</span><button className="threat-pill" onClick={() => openPage('threat-detection', 'Threat Detection')} style={{ cursor: 'pointer', border: 'none' }}><AlertTriangle size={14} /> {incidents.length} EVENTS</button><button className="icon-control notification-control" aria-label="Notifications" onClick={() => openPage('threat-detection', 'Threat Detection')}><Bell size={17} /><i /></button><span className="console-divider" /><button className="profile-button" onClick={onSignOut} title="Return to sign-in preview"><span className="profile-avatar">MV</span><span className="profile-name"><strong>Col. Marcus Vance</strong><small>Chief AI Security Officer</small></span><ChevronRight size={14} /></button></div>
+        <div className="console-user-area"><button className="assurance-top-pill" onClick={() => setAssuranceModalOpen(true)} title="View Six Core Assurances Matrix"><ShieldCheck size={14} /><span>6 CORE ASSURANCES</span><strong className="assurance-badge-chip">ACTIVE</strong></button><span className="region-pill"><Globe2 size={14} /> US-EAST-SECURE-PROD-CLUSTER-01</span><button className="threat-pill" onClick={() => openPage('threat-detection', 'Threat Detection')} style={{ cursor: 'pointer', border: 'none' }}><AlertTriangle size={14} /> {incidents.length} EVENTS</button><button className="icon-control notification-control" aria-label="Notifications" onClick={() => openPage('threat-detection', 'Threat Detection')}><Bell size={17} /><i /></button><span className="console-divider" /><button className="profile-button" onClick={onSignOut} title={`Signed in as ${profileUser.name} (${profileUser.email || 'Admin'}). Click to sign out.`}><span className="profile-avatar">{profileUser.initials}</span><span className="profile-name"><strong>{profileUser.name}</strong><small>{profileUser.role}</small></span><ChevronRight size={14} /></button></div>
       </header>
 
       <aside className={`console-sidebar${mobileNavOpen ? ' console-sidebar-open' : ''}`}><nav aria-label="Command center navigation">{navigation.map((group) => <div className="nav-group" key={group.group}><h2>{group.group}</h2>{group.items.map(({ label, icon: Icon, ...item }) => <button aria-current={activeNav === label ? 'page' : undefined} className={`nav-link${activeNav === label ? ' nav-link-active' : ''}`} key={label} onClick={() => navigate({ label, icon: Icon, ...item })}><Icon size={16} /><span>{label}</span></button>)}</div>)}</nav><div className="sidebar-foot" id="workspace-status"><span className="sidebar-status-dot" /><span><strong style={{ color: "#6ffbbe" }}>Oracle 11g &amp; FastAPI Live</strong><small style={{ color: "#10b981" }}>Zero-Trust Enclave (1521/8000)</small></span></div></aside>
